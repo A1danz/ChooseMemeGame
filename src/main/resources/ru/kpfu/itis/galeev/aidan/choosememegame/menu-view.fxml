@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="anchor-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox layoutX="400.0" layoutY="183.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="300.0">
+               <children>
+                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/logo.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label styleClass="menu-label" text="Меню">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+                  <HBox alignment="CENTER" prefHeight="100.0">
+                     <children>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/settings.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </HBox>
+               </children>
+            </HBox>
+            <Line endX="870.0" endY="100.0" startX="30.0" startY="100.0" stroke="#c4c4c4" strokeWidth="0.8">
+               <VBox.margin>
+                  <Insets left="30.0" />
+               </VBox.margin>
+            </Line>
+            <HBox prefHeight="450.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="250.0" prefHeight="450.0" prefWidth="200.0" styleClass="room-connect-box">
+                     <children>
+                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="connect-description">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@img/rabbit.png" />
+                           </image>
+                        </ImageView>
+                        <Label alignment="CENTER" styleClass="username" text="a1dan" textAlignment="CENTER" wrapText="true">
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="-15.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" maxWidth="170.0" prefWidth="170.0" promptText="id" styleClass="input-room">
+                           <VBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <Button mnemonicParsing="false" prefWidth="170.0" styleClass="connect-btn" text="Войти">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </Button>
+                        <Label alignment="CENTER" styleClass="connect-description" text="Введите id комнаты, чтобы присоединиться к игре!" textAlignment="CENTER" wrapText="true">
+                           <VBox.margin>
+                              <Insets top="65.0" />
+                           </VBox.margin>
+                           <padding>
+                              <Insets left="5.0" right="5.0" />
+                           </padding>
+                           <font>
+                              <Font name="Rubik Medium" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets left="5.0" right="5.0" top="10.0" />
+                     </padding>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="900.0" prefHeight="450.0" prefWidth="430.0" spacing="10.0" styleClass="room-connect-box">
+                     <padding>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                     </padding>
+                     <children>
+                        <Label styleClass="menu-rooms-label" text="Комнаты" />
+                        <ScrollPane maxHeight="400.0" prefHeight="370.0" prefWidth="410.0">
+                           <content>
+                              <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="390.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="120.0" prefWidth="200.0" spacing="5.0">
+                                       <children>
+                                          <ImageView fitHeight="100.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@img/rabbit.png" />
+                                             </image>
+                                          </ImageView>
+                                          <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="400.0" spacing="15.0">
+                                             <children>
+                                                <VBox alignment="CENTER_LEFT">
+                                                   <children>
+                                                      <Label alignment="TOP_LEFT" styleClass="label-room-name" text="Комната Айдан, @aidan" />
+                                                      <Label alignment="TOP_LEFT" styleClass="label-author-name" text="Тема: стандартная" />
+                                                      <Label alignment="TOP_LEFT" styleClass="label-participants" text="Количество участников: 6/10" />
+                                                   </children>
+                                                </VBox>
+                                                <Button mnemonicParsing="false" styleClass="enter-btn" text="Подключиться" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </HBox>
+                                    <Line endX="100.0" startX="-100.0" stroke="#473f91" strokeWidth="0.5">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </Line>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="120.0" prefWidth="200.0" spacing="5.0">
+                                       <children>
+                                          <ImageView fitHeight="100.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@img/rabbit.png" />
+                                             </image>
+                                          </ImageView>
+                                          <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="400.0" spacing="15.0">
+                                             <children>
+                                                <VBox alignment="CENTER_LEFT">
+                                                   <children>
+                                                      <Label alignment="TOP_LEFT" styleClass="label-room-name" text="Комната Айдан, @aidan" />
+                                                      <Label alignment="TOP_LEFT" styleClass="label-author-name" text="Тема: стандартная" />
+                                                      <Label alignment="TOP_LEFT" styleClass="label-participants" text="Количество участников: 6/10" />
+                                                   </children>
+                                                </VBox>
+                                                <Button mnemonicParsing="false" styleClass="enter-btn" text="Подключиться" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </HBox>
+                                    <Line endX="100.0" startX="-100.0" stroke="#473f91" strokeWidth="0.5" />
+                                    <HBox alignment="CENTER_LEFT" prefHeight="120.0" prefWidth="200.0" spacing="5.0">
+                                       <children>
+                                          <ImageView fitHeight="100.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@img/rabbit.png" />
+                                             </image>
+                                          </ImageView>
+                                          <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="400.0" spacing="15.0">
+                                             <children>
+                                                <VBox alignment="CENTER_LEFT">
+                                                   <children>
+                                                      <Label alignment="TOP_LEFT" styleClass="label-room-name" text="Комната Айдан, @aidan" />
+                                                      <Label alignment="TOP_LEFT" styleClass="label-author-name" text="Тема: стандартная" />
+                                                      <Label alignment="TOP_LEFT" styleClass="label-participants" text="Количество участников: 6/10" />
+                                                   </children>
+                                                </VBox>
+                                                <Button mnemonicParsing="false" styleClass="enter-btn" text="Подключиться" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </HBox>
+                                    <Line endX="100.0" startX="-100.0" stroke="#473f91" strokeWidth="0.5" />
+                                    <HBox alignment="CENTER_LEFT" prefHeight="120.0" prefWidth="200.0" spacing="5.0">
+                                       <children>
+                                          <ImageView fitHeight="100.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@img/rabbit.png" />
+                                             </image>
+                                          </ImageView>
+                                          <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="400.0" spacing="15.0">
+                                             <children>
+                                                <VBox alignment="CENTER_LEFT">
+                                                   <children>
+                                                      <Label alignment="TOP_LEFT" styleClass="label-room-name" text="Комната Айдан, @aidan" />
+                                                      <Label alignment="TOP_LEFT" styleClass="label-author-name" text="Тема: стандартная" />
+                                                      <Label alignment="TOP_LEFT" styleClass="label-participants" text="Количество участников: 6/10" />
+                                                   </children>
+                                                </VBox>
+                                                <Button mnemonicParsing="false" styleClass="enter-btn" text="Подключиться" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </HBox>
+                                    <Line endX="100.0" startX="-100.0" stroke="#473f91" strokeWidth="0.5" />
+                                 </children>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="avatar">
+                           <image>
+                              <Image url="@img/refresh.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="250.0" prefHeight="450.0" prefWidth="200.0" styleClass="room-connect-box">
+                     <children>
+                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="connect-description">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@img/plus.png" />
+                           </image>
+                        </ImageView>
+                        <Label alignment="CENTER" styleClass="username" text="Создание комнаты" textAlignment="CENTER" wrapText="true">
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="-10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <VBox alignment="CENTER" spacing="5.0">
+                           <children>
+                              <TextField alignment="CENTER" prefWidth="170.0" promptText="Название комнаты" styleClass="input-room">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </TextField>
+                              <TextField alignment="CENTER" prefWidth="170.0" promptText="Кол-во человек" styleClass="input-room">
+                                 <VBox.margin>
+                                    <Insets top="2.0" />
+                                 </VBox.margin>
+                              </TextField>
+                              <ComboBox prefWidth="190.0" promptText="Тема" styleClass="combo-box-custom">
+                                 <VBox.margin>
+                                    <Insets top="2.0" />
+                                 </VBox.margin>
+                              </ComboBox>
+                           </children>
+                        </VBox>
+                        <Button mnemonicParsing="false" prefWidth="190.0" styleClass="connect-btn" text="Создать">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </Button>
+                     </children>
+                     <padding>
+                        <Insets left="5.0" right="5.0" top="10.0" />
+                     </padding>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets left="25.0" right="25.0" top="25.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

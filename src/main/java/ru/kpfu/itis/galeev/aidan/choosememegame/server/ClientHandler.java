@@ -22,7 +22,9 @@ public class ClientHandler implements Runnable {
     public void run() {
         try {
             String line = null;
+            System.out.println("START HANDLING MESSAGE");
             line = in.readLine();
+            System.out.println("STOP HANDLING MESSAGE");
             System.out.println(line);
             if (line != null) {
                 String[] valuesOfLine = line.substring(5).split(";");

@@ -28,13 +28,13 @@ public class MainApplication extends Application implements CustomApplication {
         stage.show();
     }
 
-    public static void main(String[] args) {
-        launch();
-    }
-
     @Override
     public void registerClient(String username) {
         client.registerUser(username);
+    }
+
+    public static void main(String[] args) {
+        launch();
     }
 
     public static CustomApplication getInstance() {
