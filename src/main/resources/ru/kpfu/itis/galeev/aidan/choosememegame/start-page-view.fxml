@@ -37,5 +37,14 @@
             </Button>
          </children>
       </VBox>
+      <VBox alignment="CENTER" fx:id="loadingBox" prefHeight="900.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" visible="false">
+         <children>
+            <ImageView fx:id="loadingStatus" fitHeight="600.0" fitWidth="900.0" opacity="0.3" pickOnBounds="true" preserveRatio="true" scaleX="1.14" scaleY="1.14" visible="false">
+               <image>
+                  <Image url="@img/loading.gif" />
+               </image>
+            </ImageView>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

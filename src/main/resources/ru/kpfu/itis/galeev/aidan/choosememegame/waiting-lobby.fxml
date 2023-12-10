@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="anchor-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.kpfu.itis.galeev.aidan.choosememegame.controllers.MenuSceneController">
+   <children>
+      <VBox layoutX="400.0" layoutY="183.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="300.0">
+               <children>
+                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/logo.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label styleClass="menu-label" text="Лобби">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+                  <HBox alignment="CENTER" prefHeight="100.0">
+                     <children>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/settings.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </HBox>
+               </children>
+            </HBox>
+            <Line endX="870.0" endY="100.0" startX="30.0" startY="100.0" stroke="#c4c4c4" strokeWidth="0.8">
+               <VBox.margin>
+                  <Insets left="30.0" />
+               </VBox.margin>
+            </Line>
+            <HBox prefHeight="450.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" maxHeight="450.0" maxWidth="200.0" prefHeight="450.0" prefWidth="200.0" styleClass="room-connect-box">
+                     <children>
+                        <ImageView fx:id="imageUserAvatar" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" styleClass="avatar">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@img/avatars/default/1.png" />
+                           </image>
+                        </ImageView>
+                        <Label alignment="CENTER" styleClass="info-label" text="Комната Айдана Галеева" textAlignment="CENTER" wrapText="true" />
+                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <VBox alignment="TOP_CENTER" spacing="5.0">
+                                 <children>
+                                    <HBox alignment="TOP_CENTER">
+                                       <children>
+                                          <Label prefWidth="140.0" styleClass="info-header" text="Кол-во участинков" />
+                                          <Label alignment="CENTER" prefWidth="45.0" styleClass="info-content" text="6/10" textAlignment="CENTER">
+                                             <HBox.margin>
+                                                <Insets left="-1.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="TOP_CENTER" minWidth="100.0">
+                                       <children>
+                                          <Label styleClass="info-header" text="Тема" />
+                                          <Label alignment="CENTER" prefWidth="137.0" styleClass="info-content" text="стандартная">
+                                             <HBox.margin>
+                                                <Insets left="-1.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="TOP_CENTER" minWidth="100.0">
+                                       <children>
+                                          <Label styleClass="info-header" text="Создатель" />
+                                          <Label alignment="CENTER" prefWidth="103.0" styleClass="info-content" text="12">
+                                             <HBox.margin>
+                                                <Insets left="-1.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="TOP_CENTER" minWidth="100.0">
+                                       <children>
+                                          <Label styleClass="info-header" text="Статус" />
+                                          <Label alignment="CENTER" prefWidth="125.0" styleClass="info-content" text="ожидание">
+                                             <HBox.margin>
+                                                <Insets left="-1.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <Button mnemonicParsing="false" prefWidth="188.0" styleClass="btn-exit" text="Поикнуть комнату">
+                                 <VBox.margin>
+                                    <Insets top="20.0" />
+                                 </VBox.margin>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets left="5.0" right="5.0" top="10.0" />
+                     </padding>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="900.0" prefHeight="450.0" prefWidth="640.0" spacing="10.0" styleClass="room-connect-box">
+                     <padding>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                     </padding>
+                     <children>
+                        <Label maxWidth="1.7976931348623157E308" styleClass="menu-rooms-label" text="До начала: 00:00" />
+                        <GridPane hgap="10.0" vgap="10.0">
+                          <columnConstraints>
+                             <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
+
+                          </columnConstraints>
+                          <rowConstraints>
+                              <RowConstraints maxHeight="120.0" minHeight="120.0" prefHeight="120.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="120.0" minHeight="120.0" prefHeight="120.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <VBox alignment="TOP_CENTER" maxWidth="120.0" prefHeight="120.0" prefWidth="100.0" styleClass="player-card">
+                                 <children>
+                                    <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/MEME.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label alignment="CENTER" maxWidth="130.0" prefWidth="459.0" styleClass="player-name" text="123456789012" textAlignment="CENTER">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER" maxWidth="120.0" prefHeight="120.0" prefWidth="100.0" styleClass="player-card" GridPane.columnIndex="1">
+                                 <children>
+                                    <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/MEME.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label alignment="CENTER" maxWidth="130.0" prefWidth="459.0" styleClass="player-name" text="123456789012" textAlignment="CENTER">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER" maxWidth="120.0" prefHeight="120.0" prefWidth="100.0" styleClass="player-card" GridPane.columnIndex="2">
+                                 <children>
+                                    <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/MEME.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label alignment="CENTER" maxWidth="130.0" prefWidth="459.0" styleClass="player-name" text="123456789012" textAlignment="CENTER">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER" maxWidth="120.0" prefHeight="120.0" prefWidth="100.0" styleClass="player-card" GridPane.columnIndex="3">
+                                 <children>
+                                    <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/MEME.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label alignment="CENTER" maxWidth="130.0" prefWidth="459.0" styleClass="player-name" text="123456789012" textAlignment="CENTER">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER" maxWidth="120.0" prefHeight="120.0" prefWidth="100.0" styleClass="player-card" GridPane.columnIndex="4">
+                                 <children>
+                                    <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/MEME.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label alignment="CENTER" maxWidth="130.0" prefWidth="459.0" styleClass="player-name" text="123456789012" textAlignment="CENTER">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER" maxWidth="120.0" prefHeight="120.0" prefWidth="100.0" styleClass="player-card" GridPane.rowIndex="1">
+                                 <children>
+                                    <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/MEME.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label alignment="CENTER" maxWidth="130.0" prefWidth="459.0" styleClass="player-name" text="123456789012" textAlignment="CENTER">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER" maxWidth="120.0" prefHeight="120.0" prefWidth="100.0" styleClass="player-card" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <children>
+                                    <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/MEME.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label alignment="CENTER" maxWidth="130.0" prefWidth="459.0" styleClass="player-name" text="123456789012" textAlignment="CENTER">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" maxHeight="120.0" maxWidth="116.0" minHeight="116.0" minWidth="116.0" prefHeight="120.0" prefWidth="116.0" styleClass="player-card" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                                 <children>
+                                    <ImageView fitHeight="116.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/forbidden.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" maxHeight="120.0" maxWidth="116.0" minHeight="116.0" minWidth="116.0" prefHeight="120.0" prefWidth="116.0" styleClass="player-card" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                 <children>
+                                    <ImageView fitHeight="116.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/forbidden.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" maxHeight="120.0" maxWidth="116.0" minHeight="116.0" minWidth="116.0" prefHeight="120.0" prefWidth="116.0" styleClass="player-card" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                 <children>
+                                    <ImageView fitHeight="116.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/forbidden.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </GridPane>
+                        <HBox alignment="CENTER" prefWidth="200.0" spacing="50.0">
+                           <children>
+                              <Label styleClass="start-page-title" text="Карточек: 145" />
+                              <Label styleClass="start-page-title" text="Вопросов: 75" />
+                           </children>
+                        </HBox>
+                        <Label styleClass="game-loading-label" text="Пожалуйста, ожидайте, игра скоро начнется..." />
+                     </children>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets left="25.0" right="25.0" top="25.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+      <ImageView fitHeight="450.0" fitWidth="655.0" layoutX="235.0" layoutY="125.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@img/ezgif.com-resize%20(1).gif" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

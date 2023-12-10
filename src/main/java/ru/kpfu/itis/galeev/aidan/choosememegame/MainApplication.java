@@ -5,39 +5,34 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ru.kpfu.itis.galeev.aidan.choosememegame.client.Client;
+import ru.kpfu.itis.galeev.aidan.choosememegame.config.Config;
 
 import java.io.IOException;
+import java.lang.ref.Cleaner;
 
-public class MainApplication extends Application implements CustomApplication {
-    Client client;
-    private static CustomApplication instance;
+public class MainApplication extends Application {
+    private static Client client;
 
     public MainApplication() {
-        instance = this;
+        client = new Client();
     }
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("start-page-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 900, 600);
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource(Config.START_SCENE));
+        Scene scene = new Scene(fxmlLoader.load(), Config.SCENE_WIDTH, Config.SCENE_HEIGHT);
 
-        client = new Client();
 
         stage.setTitle("ChooseMeme");
         stage.setScene(scene);
         stage.show();
     }
 
-    @Override
-    public void registerClient(String username) {
-        client.registerUser(username);
-    }
-
     public static void main(String[] args) {
         launch();
     }
 
-    public static CustomApplication getInstance() {
-        return instance;
+    public static Client getClient() {
+        return client;
     }
 }

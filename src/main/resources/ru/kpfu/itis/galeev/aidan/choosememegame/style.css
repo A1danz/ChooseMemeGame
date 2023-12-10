@@ -70,7 +70,10 @@ AnchorPane {
 }
 
 .avatar {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 2, 0.1, 0, 1)
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 2, 0.1, 0, 1);
+    -fx-background-radius: 50%;
+    -fx-border-radius: 50%;
+    -fx-background-color: white;
 }
 
 .room-connect-box {
@@ -158,4 +161,92 @@ AnchorPane {
     -fx-padding: 2px 10px;
     -fx-font-weight: bold;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 2, 0.1, 0, 1);
+}
+
+.input-help-text {
+    -fx-font-size: 10px;
+    -fx-font-family: Rubik;
+    -fx-font-weight: normal;
+    -fx-text-fill: #7679ee;
+}
+
+.info-label {
+    -fx-text-fill: #473f91;
+    -fx-font-family: Rubik;
+    -fx-font-size: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 2, 0.1, 0, 1);
+    -fx-font-weight: bold;
+}
+
+.info-header {
+    -fx-background-color: white;
+    -fx-background-radius: 5px 0px 0px 5px;
+    -fx-border-color: #7679ee;
+    -fx-border-radius: 5px 0px 0px 5px;
+    -fx-border-width: 1px;
+    -fx-text-fill: #473f91;
+    -fx-prompt-text-fill: #7679ee;
+    -fx-font-family: Rubik;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 3px 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 2, 0.1, 0, 0)
+}
+
+.info-content {
+    -fx-background-color: white;
+    -fx-background-radius: 0px 5px 5px 0px;
+    -fx-border-color: #7679ee;
+    -fx-border-radius: 0px 5px 5px 0px;
+    -fx-border-width: 1px;
+    -fx-text-fill: #473f91;
+    -fx-prompt-text-fill: #7679ee;
+    -fx-font-family: Rubik;
+    -fx-font-size: 12px;
+    -fx-font-weight: normal;
+    -fx-padding: 3px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 2, 0.1, 0, 0)
+}
+
+.btn-exit {
+    -fx-background-color: #ef233c;
+    -fx-background-radius: 5px 5px 5px 5px;
+    -fx-border-color: #d90429;
+    -fx-border-radius: 5px 5px 5px 5px;
+    -fx-border-width: 1px;
+    -fx-text-fill: white;
+    -fx-font-family: Rubik;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 3px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 2, 0.1, 0, 0)
+}
+
+.player-card {
+    -fx-background-image: url(img/background.png);
+    -fx-background-radius: 5px;
+    -fx-text-fill: white;
+    -fx-font-family: Rubik;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 3px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 2, 0.1, 0, 0)
+}
+
+.player-name {
+    -fx-background-color: white;
+    -fx-background-radius: 5px;
+    -fx-text-fill: #efd400;
+    -fx-font-family: Rubik;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 3px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 0)
+}
+
+.game-loading-label {
+    -fx-font-style: Rubik;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #7679ee;
 }
