@@ -25,7 +25,8 @@ public class Server {
                     this,
                     10,
                     "standart",
-                    2
+                    2,
+                    "andrey's lobby"
             ));
 
             lobbies.put("Aidanich", new Lobby(
@@ -33,7 +34,8 @@ public class Server {
                     this,
                     10,
                     "hasbik",
-                    8
+                    8,
+                    "aidanich's lobby"
             ));
             while(true) {
                 Socket client = serverSocket.accept();

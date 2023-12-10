@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="anchor-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.kpfu.itis.galeev.aidan.choosememegame.controllers.MenuSceneController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="anchor-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.kpfu.itis.galeev.aidan.choosememegame.controllers.LobbySceneController">
    <children>
       <VBox layoutX="400.0" layoutY="183.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -74,7 +74,7 @@
                                     <HBox alignment="TOP_CENTER">
                                        <children>
                                           <Label prefWidth="140.0" styleClass="info-header" text="Кол-во участинков" />
-                                          <Label alignment="CENTER" prefWidth="45.0" styleClass="info-content" text="6/10" textAlignment="CENTER">
+                                          <Label fx:id="labelParticipantsCount" alignment="CENTER" prefWidth="45.0" styleClass="info-content" text="1/10" textAlignment="CENTER">
                                              <HBox.margin>
                                                 <Insets left="-1.0" />
                                              </HBox.margin>
@@ -84,7 +84,7 @@
                                     <HBox alignment="TOP_CENTER" minWidth="100.0">
                                        <children>
                                           <Label styleClass="info-header" text="Тема" />
-                                          <Label alignment="CENTER" prefWidth="137.0" styleClass="info-content" text="стандартная">
+                                          <Label fx:id="labelTheme" alignment="CENTER" prefWidth="137.0" styleClass="info-content" text="стандартная">
                                              <HBox.margin>
                                                 <Insets left="-1.0" />
                                              </HBox.margin>
@@ -94,7 +94,7 @@
                                     <HBox alignment="TOP_CENTER" minWidth="100.0">
                                        <children>
                                           <Label styleClass="info-header" text="Создатель" />
-                                          <Label alignment="CENTER" prefWidth="103.0" styleClass="info-content" text="12">
+                                          <Label fx:id="labelCreatorName" alignment="CENTER" prefWidth="103.0" styleClass="info-content" text="12">
                                              <HBox.margin>
                                                 <Insets left="-1.0" />
                                              </HBox.margin>
@@ -104,7 +104,7 @@
                                     <HBox alignment="TOP_CENTER" minWidth="100.0">
                                        <children>
                                           <Label styleClass="info-header" text="Статус" />
-                                          <Label alignment="CENTER" prefWidth="125.0" styleClass="info-content" text="ожидание">
+                                          <Label fx:id="labelStatus" alignment="CENTER" prefWidth="125.0" styleClass="info-content" text="ожидание">
                                              <HBox.margin>
                                                 <Insets left="-1.0" />
                                              </HBox.margin>
@@ -113,7 +113,7 @@
                                     </HBox>
                                  </children>
                               </VBox>
-                              <Button mnemonicParsing="false" prefWidth="188.0" styleClass="btn-exit" text="Поикнуть комнату">
+                              <Button fx:id="btnExit" mnemonicParsing="false" prefWidth="188.0" styleClass="btn-exit" text="Поикнуть комнату">
                                  <VBox.margin>
                                     <Insets top="20.0" />
                                  </VBox.margin>
@@ -162,90 +162,47 @@
                                     </Label>
                                  </children>
                               </VBox>
-                              <VBox alignment="TOP_CENTER" maxWidth="120.0" prefHeight="120.0" prefWidth="100.0" styleClass="player-card" GridPane.columnIndex="1">
-                                 <children>
-                                    <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@img/MEME.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label alignment="CENTER" maxWidth="130.0" prefWidth="459.0" styleClass="player-name" text="123456789012" textAlignment="CENTER">
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                 </children>
-                              </VBox>
+                              <VBox alignment="TOP_CENTER" maxWidth="120.0" prefHeight="120.0" prefWidth="100.0" styleClass="player-card" GridPane.columnIndex="1" />
                               <VBox alignment="TOP_CENTER" maxWidth="120.0" prefHeight="120.0" prefWidth="100.0" styleClass="player-card" GridPane.columnIndex="2">
                                  <children>
-                                    <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="116.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@img/MEME.png" />
+                                          <Image url="@img/forbidden.png" />
                                        </image>
                                     </ImageView>
-                                    <Label alignment="CENTER" maxWidth="130.0" prefWidth="459.0" styleClass="player-name" text="123456789012" textAlignment="CENTER">
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                 </children>
-                              </VBox>
+                                 </children></VBox>
                               <VBox alignment="TOP_CENTER" maxWidth="120.0" prefHeight="120.0" prefWidth="100.0" styleClass="player-card" GridPane.columnIndex="3">
                                  <children>
-                                    <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="116.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@img/MEME.png" />
+                                          <Image url="@img/forbidden.png" />
                                        </image>
                                     </ImageView>
-                                    <Label alignment="CENTER" maxWidth="130.0" prefWidth="459.0" styleClass="player-name" text="123456789012" textAlignment="CENTER">
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                 </children>
-                              </VBox>
+                                 </children></VBox>
                               <VBox alignment="TOP_CENTER" maxWidth="120.0" prefHeight="120.0" prefWidth="100.0" styleClass="player-card" GridPane.columnIndex="4">
                                  <children>
-                                    <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="116.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@img/MEME.png" />
+                                          <Image url="@img/forbidden.png" />
                                        </image>
                                     </ImageView>
-                                    <Label alignment="CENTER" maxWidth="130.0" prefWidth="459.0" styleClass="player-name" text="123456789012" textAlignment="CENTER">
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                 </children>
-                              </VBox>
+                                 </children></VBox>
                               <VBox alignment="TOP_CENTER" maxWidth="120.0" prefHeight="120.0" prefWidth="100.0" styleClass="player-card" GridPane.rowIndex="1">
                                  <children>
-                                    <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="116.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@img/MEME.png" />
+                                          <Image url="@img/forbidden.png" />
                                        </image>
                                     </ImageView>
-                                    <Label alignment="CENTER" maxWidth="130.0" prefWidth="459.0" styleClass="player-name" text="123456789012" textAlignment="CENTER">
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                 </children>
-                              </VBox>
+                                 </children></VBox>
                               <VBox alignment="TOP_CENTER" maxWidth="120.0" prefHeight="120.0" prefWidth="100.0" styleClass="player-card" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <children>
-                                    <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="116.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@img/MEME.png" />
+                                          <Image url="@img/forbidden.png" />
                                        </image>
                                     </ImageView>
-                                    <Label alignment="CENTER" maxWidth="130.0" prefWidth="459.0" styleClass="player-name" text="123456789012" textAlignment="CENTER">
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                 </children>
-                              </VBox>
+                                 </children></VBox>
                               <VBox alignment="CENTER" maxHeight="120.0" maxWidth="116.0" minHeight="116.0" minWidth="116.0" prefHeight="120.0" prefWidth="116.0" styleClass="player-card" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                                  <children>
                                     <ImageView fitHeight="116.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
@@ -277,8 +234,8 @@
                         </GridPane>
                         <HBox alignment="CENTER" prefWidth="200.0" spacing="50.0">
                            <children>
-                              <Label styleClass="start-page-title" text="Карточек: 145" />
-                              <Label styleClass="start-page-title" text="Вопросов: 75" />
+                              <Label fx:id="cardsCount" styleClass="start-page-title" text="Карточек: 145" />
+                              <Label fx:id="questionsCount" styleClass="start-page-title" text="Вопросов: 75" />
                            </children>
                         </HBox>
                         <Label styleClass="game-loading-label" text="Пожалуйста, ожидайте, игра скоро начнется..." />

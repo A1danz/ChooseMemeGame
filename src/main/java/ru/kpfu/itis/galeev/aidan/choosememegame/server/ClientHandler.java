@@ -58,16 +58,14 @@ public class ClientHandler implements Runnable {
                             for (Lobby lobby : lobbies) {
                                 if (lobby.getParticipantsCount() != lobby.getLobbyCapacity()) {
                                     User creator = lobby.getCreator();
-                                    // creator,lobby_capacity,theme, participantsCount
-                                    stringBuilder.append(creator.getUsername())
-                                            .append(",")
-                                            .append(creator.getPathToAvatar())
-                                            .append(",")
-                                            .append(lobby.getLobbyCapacity())
-                                            .append(",")
-                                            .append(lobby.getTheme())
-                                            .append(",")
-                                            .append(lobby.getParticipantsCount())
+                                    // creator,lobby_capacity,theme, participantsCount, lobby_name
+                                    stringBuilder.append(
+                                            creator.getUsername()).append(",")
+                                            .append(creator.getPathToAvatar()).append(",")
+                                            .append(lobby.getLobbyCapacity()).append(",")
+                                            .append(lobby.getTheme()).append(",")
+                                            .append(lobby.getParticipantsCount()).append(",")
+                                            .append(lobby.getName()).append(",")
                                             .append(";");
                                 }
                             }
@@ -91,7 +89,8 @@ public class ClientHandler implements Runnable {
                                             server,
                                             Integer.parseInt(lobbyOptions[1]),
                                             lobbyOptions[2],
-                                            1
+                                            1,
+                                            lobbyOptions[0]
                                     ));
                                     out.write(ServerMessages.SUCCESS_CREATE_LOBBY + "\n");
                                     out.flush();
@@ -103,7 +102,6 @@ public class ClientHandler implements Runnable {
                             }
                             break;
                         default:
-                            System.out.println(command.equals(ServerMessages.COMMAND_CREATE_LOBBY));
                             throw new UnsupportedOperationException("Unsupported command: " + command);
                     }
                 }

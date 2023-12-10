@@ -3,26 +3,34 @@ package ru.kpfu.itis.galeev.aidan.choosememegame.controllers;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.InputMethodRequests;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.stage.Stage;
 import ru.kpfu.itis.galeev.aidan.choosememegame.MainApplication;
 import ru.kpfu.itis.galeev.aidan.choosememegame.client.Client;
 import ru.kpfu.itis.galeev.aidan.choosememegame.config.Config;
 import ru.kpfu.itis.galeev.aidan.choosememegame.model.GameTheme;
 import ru.kpfu.itis.galeev.aidan.choosememegame.model.Lobby;
 import ru.kpfu.itis.galeev.aidan.choosememegame.model.User;
+import ru.kpfu.itis.galeev.aidan.choosememegame.utils.DataHolder;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,22 +83,34 @@ public class MenuSceneController {
     private ImageView loadingImage;
 
     @FXML
+    private VBox loadingBox;
+
+    private void initInputRoom() {
+        inputRoomCapacity.textProperty().addListener((observable, oldString, newString) -> {
+            if (!newString.matches(CAPACITY_REGEX) && !newString.isEmpty() && !newString.equals("1")) {
+                inputRoomCapacity.setText(oldString);
+            }
+        });
+    }
+
+    private void initInputCapacity() {
+        inputRoomName.textProperty().addListener(((observableValue, oldString, newString) -> {
+            if (!newString.matches(ROOM_NAME_REGEX) && !newString.isEmpty()) {
+                inputRoomName.setText(oldString);
+            }
+        }));
+    }
+    @FXML
     public void initialize() {
         try {
-            inputRoomCapacity.textProperty().addListener((observable, oldString, newString) -> {
-                if (!newString.matches(CAPACITY_REGEX) && !newString.isEmpty() && !newString.equals("1")) {
-                    inputRoomCapacity.setText(oldString);
-                }
-            });
-
-            inputRoomName.textProperty().addListener(((observableValue, oldString, newString) -> {
-                if (!newString.matches(ROOM_NAME_REGEX) && !newString.isEmpty()) {
-                    inputRoomName.setText(oldString);
-                }
-            }));
             Client client = MainApplication.getClient();
+
+            initInputRoom();
+            initInputCapacity();
             initUserData(client.getUser());
             initGameThemes();
+            initRefreshBtn();
+
             showLoading(true);
             new Thread(() -> {
                 uploadRooms();
@@ -135,7 +155,7 @@ public class MenuSceneController {
                     VBox vbox2 = new VBox();
                     vbox2.setAlignment(Pos.CENTER_LEFT);
 
-                    Label label1 = new Label("Комната Айдан, @" + creator.getUsername());
+                    Label label1 = new Label(lobby.getName() + ", @" + creator.getUsername());
                     label1.setAlignment(Pos.TOP_LEFT);
                     label1.getStyleClass().add("label-room-name");
 
@@ -190,7 +210,21 @@ public class MenuSceneController {
         }
     }
 
+    private void initRefreshBtn() {
+        btnRefreshRooms.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                showLoading(true);
+                roomsBox.getChildren().clear();
+                new Thread(() -> {
+                    uploadRooms();
+                }).start();
+            }
+        });
+    }
+
     private void showLoading(boolean status) {
+        loadingBox.setVisible(status);
         loadingImage.setVisible(status);
     }
 
@@ -220,11 +254,27 @@ public class MenuSceneController {
                     Integer.parseInt(inputRoomCapacity.getText()),
                     NAME_THEMES.get(comboBoxTheme.getValue()));
             if (resultOfCreatingLobby.equals("Лобби успешно создано")) {
-                System.out.println("SUCCESS");
+                try {
+                    swapToLobbyScene(MainApplication.getClient().getUser().getUsername());
+                } catch (IOException ex) {
+                    System.out.println(ex);
+                    alert.setContentText("Не удалось подключиться к лобби");
+                    alert.showAndWait();
+                }
             } else {
                 alert.setContentText(resultOfCreatingLobby);
                 alert.showAndWait();
             }
         }
+    }
+
+    private void swapToLobbyScene(String lobbyCreator) throws IOException {
+        DataHolder.connectingLobby = lobbyCreator;
+        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource(Config.LOBBY_SCENE));
+        Parent root = loader.load();
+
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) inputRoomName.getScene().getWindow();
+        stage.setScene(scene);
     }
 }

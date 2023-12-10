@@ -12,6 +12,7 @@ import ru.kpfu.itis.galeev.aidan.choosememegame.server.Server;
 
 
 public class Lobby {
+    private String name;
     private User creator;
     private ObservableList<ClientHandler> usersInLobby;
     private final int lobbyCapacity;
@@ -19,12 +20,13 @@ public class Lobby {
     final int[] participantsCountWrapper = new int[]{0};
 
 
-    public Lobby(User creator, Server server, int lobbyCapacity, String theme, int participantsCount) {
+    public Lobby(User creator, Server server, int lobbyCapacity, String theme, int participantsCount, String name) {
         this.creator = creator;
         this.lobbyCapacity = lobbyCapacity;
         this.theme = theme;
         usersInLobby = FXCollections.observableArrayList();
         this.participantsCountWrapper[0] = participantsCount;
+        this.name = name;
         usersInLobby.addListener(new ListChangeListener<ClientHandler>() {
             @Override
             public void onChanged(Change<? extends ClientHandler> change) {
@@ -69,5 +71,13 @@ public class Lobby {
 
     public int getParticipantsCount() {
         return participantsCountWrapper[0];
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -79,13 +79,14 @@ public class Client {
             for (String strLobby : strLobbies) {
                 String[] lobbyFields = strLobby.split(",");
                 if (lobbyFields.length == 0) break;
-                // creator,lobby_capacity,theme, participantsCount
+                // creator(username, path),lobby_capacity,theme, participantsCount, lobby_name
                 lobbies.add(new Lobby(
                         new User(lobbyFields[0], lobbyFields[1]),
                         null,
                         Integer.parseInt(lobbyFields[2]),
                         lobbyFields[3],
-                        Integer.parseInt(lobbyFields[4]))
+                        Integer.parseInt(lobbyFields[4]),
+                        lobbyFields[5])
                 );
             }
             return lobbies;
