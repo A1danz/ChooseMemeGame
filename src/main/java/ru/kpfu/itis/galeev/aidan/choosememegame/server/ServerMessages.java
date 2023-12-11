@@ -2,6 +2,7 @@ package ru.kpfu.itis.galeev.aidan.choosememegame.server;
 
 public interface ServerMessages {
     String SUCCESS_AUTH = "SUCCESS";
+    String COMMAND_USER = "USER";
     String OCCUPIED_USERNAME = "occupied";
     String COMMAND_AUTH = "AUTH";
     String COMMAND_LOBBY_USERS = "LOBBY_USER";

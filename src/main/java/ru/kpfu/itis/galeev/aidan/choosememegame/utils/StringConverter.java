@@ -16,7 +16,7 @@ public class StringConverter {
         return message.replace("\\,", ",").replace("\\/\\/", "//");
     }
 
-    public static String writeCommand(String command, String[] arguments) {
+    public static String createCommand(String command, String[] arguments) {
         StringBuilder sb = new StringBuilder();
         sb.append(command).append(ServerMessages.COMMANDS_SEPARATOR);
         for (String argument : arguments) {
@@ -30,7 +30,7 @@ public class StringConverter {
         return sb.toString();
     }
 
-    public static Map.Entry<String, String[]> getResult(String givenString) {
+    public static Map.Entry<String, String[]> getCommand(String givenString) {
         String[] command = givenString.split(ServerMessages.COMMANDS_SEPARATOR);
         if (command.length == 2) {
             return new AbstractMap.SimpleEntry<>(command[0], command[1].split(ServerMessages.ARGUMENTS_SEPARATOR));

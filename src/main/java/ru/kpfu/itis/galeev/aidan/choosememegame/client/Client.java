@@ -4,12 +4,14 @@ import ru.kpfu.itis.galeev.aidan.choosememegame.config.Config;
 import ru.kpfu.itis.galeev.aidan.choosememegame.model.Lobby;
 import ru.kpfu.itis.galeev.aidan.choosememegame.model.User;
 import ru.kpfu.itis.galeev.aidan.choosememegame.server.ServerMessages;
+import ru.kpfu.itis.galeev.aidan.choosememegame.utils.StringConverter;
 
 import java.io.*;
 import java.net.SecureCacheResponse;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Client {
     private BufferedReader in;
@@ -33,7 +35,8 @@ public class Client {
 
     private void sendInfoAboutUser() {
         try {
-            out.write("USER" + ServerMessages.COMMANDS_SEPARATOR + user.getUsername() + "\n");
+            out.write(StringConverter.createCommand(ServerMessages.COMMAND_USER, new String[]{user.getUsername()}));
+            //out.write("USER" + ServerMessages.COMMANDS_SEPARATOR + user.getUsername() + "\n");
             out.flush();
             System.out.println("INFO SENDED");
         } catch (IOException e) {
@@ -49,9 +52,10 @@ public class Client {
 
     public String getAuthResult() {
         try {
-            String[] line = in.readLine().split(ServerMessages.COMMANDS_SEPARATOR);
-            if (line[0].equals(ServerMessages.COMMAND_AUTH)) {
-                String result = line[1];
+//            String[] line = in.readLine().split(ServerMessages.COMMANDS_SEPARATOR);
+            Map.Entry<String, String[]> messageByServer = StringConverter.getCommand(in.readLine());
+            if (messageByServer.getKey().equals(ServerMessages.COMMAND_AUTH)) {
+                String result = messageByServer.getValue()[0];
                 if (result.equals(ServerMessages.SUCCESS_AUTH)) {
                     return ServerMessages.SUCCESS_AUTH;
                 } else if (result.equals(ServerMessages.OCCUPIED_USERNAME)) {

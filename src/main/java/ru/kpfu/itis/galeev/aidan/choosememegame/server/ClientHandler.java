@@ -2,12 +2,14 @@ package ru.kpfu.itis.galeev.aidan.choosememegame.server;
 
 import ru.kpfu.itis.galeev.aidan.choosememegame.model.Lobby;
 import ru.kpfu.itis.galeev.aidan.choosememegame.model.User;
+import ru.kpfu.itis.galeev.aidan.choosememegame.utils.StringConverter;
 
 import java.io.*;
 import java.net.SecureCacheResponse;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class ClientHandler implements Runnable {
@@ -35,19 +37,24 @@ public class ClientHandler implements Runnable {
                 if ((line = in.readLine()) != null) {
                     System.out.println(line);
                     String[] lineValues = line.split(ServerMessages.COMMANDS_SEPARATOR);
-                    String command = lineValues[0];
+                    Map.Entry<String, String[]> messageByClient = StringConverter.getCommand(line);
+                    //String command = lineValues[0];
+                    String command = messageByClient.getKey();
                     switch (command) {
-                        case "USER":
-                            String username = lineValues[1];
-                            out.write(ServerMessages.COMMAND_AUTH);
-                            out.write(ServerMessages.COMMANDS_SEPARATOR);
+                        case ServerMessages.COMMAND_USER:
+                            String username = messageByClient.getValue()[0];
+//                            out.write(ServerMessages.COMMAND_AUTH);
+//                            out.write(ServerMessages.COMMANDS_SEPARATOR);
+                            String result;
                             if (server.usernameIsFree(username)) {
                                 user = new User(username);
-                                out.write(ServerMessages.SUCCESS_AUTH);
+                                //out.write(ServerMessages.SUCCESS_AUTH);
+                                result = ServerMessages.SUCCESS_AUTH;
                             } else {
-                                out.write(ServerMessages.OCCUPIED_USERNAME);
+                                result = ServerMessages.OCCUPIED_USERNAME;
+                                //out.write(ServerMessages.OCCUPIED_USERNAME);
                             }
-                            out.write("\n");
+                            out.write(StringConverter.createCommand(ServerMessages.COMMAND_AUTH, new String[]{result}));
                             out.flush();
                             break;
                         case ServerMessages.COMMAND_REQ_LOBBIES:
