@@ -12,7 +12,8 @@ public interface ServerMessages {
     String COMMAND_REQ_LOBBIES = "REQUEST_LOBBIES";
     String COMMAND_LOBBIES = "LOBBIES";
     String COMMANDS_SEPARATOR = "//";
-    String ARGUMENTS_SEPARATOR = "\t";
+    String ARGUMENTS_SEPARATOR = ";";
+    String ITEMS_SEPARATOR = "\t";
     String COMMAND_CREATE_LOBBY = "CREATE_LOBBY";
     String SUCCESS_CREATE_LOBBY = "SUCCESS_LOBBY";
 }

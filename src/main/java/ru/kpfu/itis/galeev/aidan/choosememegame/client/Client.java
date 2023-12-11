@@ -35,7 +35,7 @@ public class Client {
 
     private void sendInfoAboutUser() {
         try {
-            out.write(StringConverter.createCommand(ServerMessages.COMMAND_USER, new String[]{user.getUsername()}));
+            out.write(StringConverter.createCommand(ServerMessages.COMMAND_USER, new String[][]{new String[]{user.getUsername()}}));
             //out.write("USER" + ServerMessages.COMMANDS_SEPARATOR + user.getUsername() + "\n");
             out.flush();
             System.out.println("INFO SENDED");
@@ -53,9 +53,9 @@ public class Client {
     public String getAuthResult() {
         try {
 //            String[] line = in.readLine().split(ServerMessages.COMMANDS_SEPARATOR);
-            Map.Entry<String, String[]> messageByServer = StringConverter.getCommand(in.readLine());
+            Map.Entry<String, String[][]> messageByServer = StringConverter.getCommand(in.readLine());
             if (messageByServer.getKey().equals(ServerMessages.COMMAND_AUTH)) {
-                String result = messageByServer.getValue()[0];
+                String result = messageByServer.getValue()[0][0];
                 if (result.equals(ServerMessages.SUCCESS_AUTH)) {
                     return ServerMessages.SUCCESS_AUTH;
                 } else if (result.equals(ServerMessages.OCCUPIED_USERNAME)) {

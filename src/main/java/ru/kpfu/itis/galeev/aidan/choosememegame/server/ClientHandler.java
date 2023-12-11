@@ -37,12 +37,12 @@ public class ClientHandler implements Runnable {
                 if ((line = in.readLine()) != null) {
                     System.out.println(line);
                     String[] lineValues = line.split(ServerMessages.COMMANDS_SEPARATOR);
-                    Map.Entry<String, String[]> messageByClient = StringConverter.getCommand(line);
+                    Map.Entry<String, String[][]> messageByClient = StringConverter.getCommand(line);
                     //String command = lineValues[0];
                     String command = messageByClient.getKey();
                     switch (command) {
                         case ServerMessages.COMMAND_USER:
-                            String username = messageByClient.getValue()[0];
+                            String username = messageByClient.getValue()[0][0];
 //                            out.write(ServerMessages.COMMAND_AUTH);
 //                            out.write(ServerMessages.COMMANDS_SEPARATOR);
                             String result;
@@ -54,7 +54,7 @@ public class ClientHandler implements Runnable {
                                 result = ServerMessages.OCCUPIED_USERNAME;
                                 //out.write(ServerMessages.OCCUPIED_USERNAME);
                             }
-                            out.write(StringConverter.createCommand(ServerMessages.COMMAND_AUTH, new String[]{result}));
+                            out.write(StringConverter.createCommand(ServerMessages.COMMAND_AUTH, new String[][]{new String[]{result}}));
                             out.flush();
                             break;
                         case ServerMessages.COMMAND_REQ_LOBBIES:
