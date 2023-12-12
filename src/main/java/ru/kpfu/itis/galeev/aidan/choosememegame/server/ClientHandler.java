@@ -40,6 +40,7 @@ public class ClientHandler implements Runnable {
                     String[] lineValues = line.split(ServerMessages.COMMANDS_SEPARATOR);
                     Map.Entry<String, String[][]> messageByClient = StringConverter.getCommand(line);
                     String command = messageByClient.getKey();
+                    String[][] arguments = messageByClient.getValue();
                     switch (command) {
                         case ServerMessages.COMMAND_USER:
                             String username = messageByClient.getValue()[0][0];
@@ -172,6 +173,9 @@ public class ClientHandler implements Runnable {
                                     new String[][]{new String[]{"Success"}}
                                     ));
                             break;
+                        case ServerMessages.COMMAND_EXIT_USER:
+
+
                         default:
                             throw new UnsupportedOperationException("Unsupported command: " + command);
                     }
@@ -193,21 +197,18 @@ public class ClientHandler implements Runnable {
 
     public void sendInfoAboutUsersInLobby(User user, boolean entered) {
         try {
-            out.write(ServerMessages.COMMAND_LOBBY_USERS + ServerMessages.COMMANDS_SEPARATOR);
+            String[][] userInfo = new String[][]{new String[]{user.getUsername(), user.getPathToAvatar()}};
             if (entered) {
-                out.write(ServerMessages.ARG_ENTERED);
-                out.write("=true;");
-                out.write(ServerMessages.ARG_USERNAME);
-                out.write("=" + user.getUsername() + ";");
-                out.write(ServerMessages.ARG_AVATAR_PATH);
-                out.write("=" + user.getPathToAvatar());
+                ServerMessages.sendMessage(out, StringConverter.createCommand(
+                        ServerMessages.COMMAND_USER_ENTERED,
+                        userInfo
+                ));
             } else {
-                out.write("=false;");
-                out.write(ServerMessages.ARG_USERNAME);
-                out.write("=" + user.getUsername() + ";");
-
+                ServerMessages.sendMessage(out, StringConverter.createCommand(
+                        ServerMessages.COMMAND_USER_LEAVED,
+                        userInfo
+                ));
             }
-            out.write("\n");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -226,5 +227,8 @@ public class ClientHandler implements Runnable {
         return Objects.hash(user);
     }
 
-
+    @Override
+    public String toString() {
+        return user.toString();
+    }
 }

@@ -49,9 +49,10 @@ public class Server {
 
     public void notifyChangeInLobby(boolean entered, String lobbyCreator, User user) {
         Lobby lobby = lobbies.get(lobbyCreator);
-
         for (ClientHandler client : lobby.getUsersInLobby()) {
-            client.sendInfoAboutUsersInLobby(user, entered);
+            if (!client.getUser().equals(user)) {
+                client.sendInfoAboutUsersInLobby(user, entered);
+            }
         }
     }
 

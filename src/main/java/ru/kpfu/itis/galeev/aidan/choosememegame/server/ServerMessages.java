@@ -9,9 +9,6 @@ public interface ServerMessages {
     String OCCUPIED_USERNAME = "occupied";
     String COMMAND_AUTH = "AUTH";
     String COMMAND_LOBBY_USERS = "LOBBY_USER";
-    String ARG_ENTERED = "is_entered";
-    String ARG_USERNAME = "username";
-    String ARG_AVATAR_PATH = "avatar_path";
     String COMMAND_REQ_LOBBIES = "REQUEST_LOBBIES";
     String COMMAND_LOBBIES = "LOBBIES";
     String COMMANDS_SEPARATOR = "//";
@@ -27,6 +24,9 @@ public interface ServerMessages {
     String COMMAND_LOBBY_CONNECT = "CONNECT_LOBBY";
     String SUCESS_CONNECT = "SUCESS_CONNECT";
     String FAILURE_CONNECT = "FAILURE_CONNECT";
+    String COMMAND_USER_ENTERED = "USER_ENTERED";
+    String COMMAND_USER_LEAVED = "USER_LEAVE";
+    String COMMAND_EXIT_USER = "USER_EXIT_FROM_LOBBY";
 
     public static void sendMessage(BufferedWriter out, String message) throws IOException {
         out.write(message);

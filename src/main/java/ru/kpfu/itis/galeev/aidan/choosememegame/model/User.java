@@ -44,4 +44,9 @@ public class User {
     public int hashCode() {
         return Objects.hash(username);
     }
+
+    @Override
+    public String toString() {
+        return username;
+    }
 }

@@ -1,5 +1,8 @@
 package ru.kpfu.itis.galeev.aidan.choosememegame.client;
 
+import javafx.beans.value.ObservableBooleanValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import ru.kpfu.itis.galeev.aidan.choosememegame.config.Config;
 import ru.kpfu.itis.galeev.aidan.choosememegame.exceptions.FullLobbyException;
 import ru.kpfu.itis.galeev.aidan.choosememegame.exceptions.LobbyDoesntExistException;
@@ -22,7 +25,6 @@ public class Client {
     private BufferedReader in;
     private BufferedWriter out;
     private User user;
-
     public User getUser() {
         return user;
     }
@@ -171,6 +173,37 @@ public class Client {
                 return answerByServer.getKey();
             }
             return answerByServer.getValue()[0][0];
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void followToLobbyUpdates(ObservableList<User> usersInLobby) {
+        try {
+            while (true) {
+                Map.Entry<String, String[][]> messageByServer = StringConverter.getCommand(in.readLine());
+                String command = messageByServer.getKey();
+                String[][] arguments = messageByServer.getValue();
+                switch (command) {
+                    case ServerMessages.COMMAND_USER_ENTERED -> {
+                        User enteredUser = new User(arguments[0][0], arguments[0][1]);
+                        usersInLobby.add(enteredUser);
+                    } case ServerMessages.COMMAND_USER_LEAVED -> {
+
+                    }
+                }
+            }
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public void leaveLobby(String lobbyCreator) {
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_EXIT_USER,
+                    new String[][]{new String[]{lobbyCreator, user.getUsername()}}
+                    ));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

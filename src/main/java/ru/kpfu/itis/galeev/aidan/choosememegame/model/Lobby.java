@@ -33,11 +33,15 @@ public class Lobby {
             @Override
             public void onChanged(Change<? extends ClientHandler> change) {
                 while(change.next()) {
-//                    if (change.wasAdded()) {
-//                        if (server != null) {
-//                            server.notifyChangeInLobby(true, creator.getUsername(), change.getAddedSubList().get(0).getUser());
-//                        }
-//                    }
+                    System.out.println("LOBBY CHANGE");
+                    if (change.wasAdded()) {
+                        System.out.println("added user");
+                        System.out.println(change.getAddedSubList());
+                        server.notifyChangeInLobby(true, creator.getUsername(), change.getAddedSubList().get(0).getUser());
+                    } else if (change.wasRemoved()) {
+                        System.out.println("removed user");
+//                        server.notifyChangeInLobby(false, creator.getUsername(), change.getAddedSubList().get(0).getUser());
+                    }
                     participantsCountWrapper[0] = usersInLobby.size();
                 }
             }

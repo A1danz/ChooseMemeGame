@@ -1,6 +1,12 @@
 package ru.kpfu.itis.galeev.aidan.choosememegame.controllers;
 
 
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -60,12 +66,20 @@ public class LobbySceneController {
 
     @FXML
     private Label labelRoomName;
+    private ObservableList<User> usersInLobby = FXCollections.observableArrayList();
+    private User lobbyCreator;
     @FXML
     public void initialize() {
         try {
             LobbySimple lobbySimple = MainApplication.getClient().getLobby(DataHolder.connectingLobbyCreator);
 
             initLobbyInformation(lobbySimple);
+            initExitBtn();
+
+            Thread updatesThread = new Thread(() -> {
+                followToUpdates();
+            });
+            updatesThread.start();
         } catch (LobbyDoesntExistException | FullLobbyException | LobbyWrongInfo exception) {
             swapToMenuScene(exception.getMessage());
         } catch (Exception ex) {
@@ -93,7 +107,7 @@ public class LobbySceneController {
 
     private void initLobbyInformation(LobbySimple lobby) {
         User creator = lobby.getCreator();
-
+        lobbyCreator = creator;
         labelRoomName.setText(lobby.getName());
         labelCreatorName.setText(creator.getUsername());
         imageUserAvatar.setImage(new Image(String.valueOf(MainApplication.class.getResource("img/avatars/" + creator.getPathToAvatar()))));
@@ -105,35 +119,12 @@ public class LobbySceneController {
         for (int i = 0; i < participants.size(); i++) {
             User participant = participants.get(i);
             VBox playerVBox = (VBox) participantsPane.getChildren().get(i);
-            playerVBox.getChildren().clear();
-            if (participant.equals(MainApplication.getClient().getUser())) {
-                playerVBox.getStyleClass().clear();
-                playerVBox.getStyleClass().add("user-card");
-            }
+            usersInLobby.add(participant);
 
-            ImageView imageView = new ImageView();
-            imageView.setFitHeight(80.0);
-            imageView.setFitWidth(80.0);
-            imageView.setPickOnBounds(true);
-            imageView.setPreserveRatio(true);
-            imageView.setImage(new Image(String.valueOf(MainApplication.class.getResource("img/avatars/" + participant.getPathToAvatar()))));
-
-            Label label = new Label(participant.getUsername());
-            label.setAlignment(Pos.CENTER);
-            label.setMaxWidth(130.0);
-            label.setPrefWidth(459.0);
-            label.getStyleClass().add(participant.equals(creator) ? "creator-name" : "player-name");
-
-
-            label.setTextAlignment(TextAlignment.CENTER);
-
-            VBox.setMargin(label, new Insets(10.0, 0, 0, 0));
-            playerVBox.getChildren().addAll(imageView, label);
+            putUserIntoBox(playerVBox, participant);
         }
 
-//        for(int i = participants.size() - 1; i < lobby.getLobbyCapacity(); i++) {
-//
-//        }
+
         for (int i = lobby.getLobbyCapacity(); i < participantsPane.getChildren().size(); i++) {
             ImageView imageView = new ImageView();
             imageView.setFitHeight(116.0);
@@ -145,6 +136,61 @@ public class LobbySceneController {
             ((VBox) participantsPane.getChildren().get(i)).getChildren().clear();
             ((VBox) participantsPane.getChildren().get(i)).getChildren().add(imageView);
         }
+
+        usersInLobby.addListener(new ListChangeListener<User>() {
+            @Override
+            public void onChanged(Change<? extends User> change) {
+                while (change.next()) {
+                    if (change.wasAdded()) {
+                        Platform.runLater(() -> putUserIntoBox(
+                                (VBox) participantsPane.getChildren().get(usersInLobby.size() - 1),
+                                usersInLobby.get(usersInLobby.size() - 1)
+                        ));
+                    }
+                }
+            }
+        });
+    }
+
+    public void followToUpdates() {
+        MainApplication.getClient().followToLobbyUpdates(usersInLobby);
+    }
+
+    private void putUserIntoBox(VBox playerVBox, User participant) {
+        playerVBox.getChildren().clear();
+        if (participant.equals(MainApplication.getClient().getUser())) {
+            playerVBox.getStyleClass().clear();
+            playerVBox.getStyleClass().add("user-card");
+        }
+
+        ImageView imageView = new ImageView();
+        imageView.setFitHeight(80.0);
+        imageView.setFitWidth(80.0);
+        imageView.setPickOnBounds(true);
+        imageView.setPreserveRatio(true);
+        imageView.setImage(new Image(String.valueOf(MainApplication.class.getResource("img/avatars/" + participant.getPathToAvatar()))));
+
+        Label label = new Label(participant.getUsername());
+        label.setAlignment(Pos.CENTER);
+        label.setMaxWidth(130.0);
+        label.setPrefWidth(459.0);
+        label.getStyleClass().add(participant.equals(lobbyCreator) ? "creator-name" : "player-name");
+
+
+        label.setTextAlignment(TextAlignment.CENTER);
+
+        VBox.setMargin(label, new Insets(10.0, 0, 0, 0));
+        playerVBox.getChildren().addAll(imageView, label);
+    }
+
+    public void initExitBtn() {
+        btnExit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                MainApplication.getClient().leaveLobby(lobbyCreator.getUsername());
+                swapToMenuScene("Вы успешно покинули лобби!");
+            }
+        });
     }
 
 }
