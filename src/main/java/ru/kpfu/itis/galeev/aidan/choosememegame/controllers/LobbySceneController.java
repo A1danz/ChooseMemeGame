@@ -32,8 +32,6 @@ public class LobbySceneController {
 
     @FXML
     private Label questionsCount;
-
-
     @FXML
     public void initialize() {
         labelCreatorName.setText(DataHolder.connectingLobby);

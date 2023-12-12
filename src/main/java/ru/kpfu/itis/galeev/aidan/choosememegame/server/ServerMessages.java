@@ -1,5 +1,8 @@
 package ru.kpfu.itis.galeev.aidan.choosememegame.server;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+
 public interface ServerMessages {
     String SUCCESS_AUTH = "SUCCESS";
     String COMMAND_USER = "USER";
@@ -16,4 +19,10 @@ public interface ServerMessages {
     String ITEMS_SEPARATOR = "\t";
     String COMMAND_CREATE_LOBBY = "CREATE_LOBBY";
     String SUCCESS_CREATE_LOBBY = "SUCCESS_LOBBY";
+    String FAILURE_CREATE_LOBBY = "FAILURE_LOBBY";
+
+    public static void sendMessage(BufferedWriter out, String message) throws IOException {
+        out.write(message);
+        out.flush();
+    }
 }

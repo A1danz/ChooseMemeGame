@@ -28,6 +28,7 @@ import ru.kpfu.itis.galeev.aidan.choosememegame.config.Config;
 import ru.kpfu.itis.galeev.aidan.choosememegame.model.GameTheme;
 import ru.kpfu.itis.galeev.aidan.choosememegame.model.Lobby;
 import ru.kpfu.itis.galeev.aidan.choosememegame.model.User;
+import ru.kpfu.itis.galeev.aidan.choosememegame.server.ServerMessages;
 import ru.kpfu.itis.galeev.aidan.choosememegame.utils.DataHolder;
 
 import java.io.IOException;
@@ -217,7 +218,12 @@ public class MenuSceneController {
                 showLoading(true);
                 roomsBox.getChildren().clear();
                 new Thread(() -> {
-                    uploadRooms();
+                    try {
+                        Thread.sleep(200);
+                        uploadRooms();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }).start();
             }
         });
@@ -253,7 +259,7 @@ public class MenuSceneController {
                     inputRoomName.getText(),
                     Integer.parseInt(inputRoomCapacity.getText()),
                     NAME_THEMES.get(comboBoxTheme.getValue()));
-            if (resultOfCreatingLobby.equals("Лобби успешно создано")) {
+            if (resultOfCreatingLobby.equals(ServerMessages.SUCCESS_CREATE_LOBBY)) {
                 try {
                     swapToLobbyScene(MainApplication.getClient().getUser().getUsername());
                 } catch (IOException ex) {

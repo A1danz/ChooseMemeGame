@@ -27,13 +27,19 @@ public class StringConverter {
             sb.deleteCharAt(sb.length() - 1);
             sb.append(ServerMessages.ARGUMENTS_SEPARATOR);
         }
-        sb.deleteCharAt(sb.length() - 1);
+        if (arguments.length != 0) {
+            sb.deleteCharAt(sb.length() - 1);
+        } else {
+            sb.append(" ");
+        }
         sb.append("\n");
 
+        System.out.print("SENDED COMMAND: " + sb);
         return sb.toString();
     }
 
     public static Map.Entry<String, String[][]> getCommand(String givenString) {
+        System.out.println("HANDLED COMMAND: " + givenString);
         String[] command = givenString.split(ServerMessages.COMMANDS_SEPARATOR);
         if (command.length == 2) {
             String[] arguments = command[1].split(ServerMessages.ARGUMENTS_SEPARATOR);

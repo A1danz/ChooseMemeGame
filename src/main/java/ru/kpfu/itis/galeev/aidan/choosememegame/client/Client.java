@@ -74,25 +74,38 @@ public class Client {
     public List<Lobby> getLobbies() {
         try {
             ArrayList<Lobby> lobbies = new ArrayList<>();
-            out.write(ServerMessages.COMMAND_REQ_LOBBIES + ServerMessages.COMMANDS_SEPARATOR +"\n");
-            out.flush();
+//            out.write(ServerMessages.COMMAND_REQ_LOBBIES + ServerMessages.COMMANDS_SEPARATOR +"\n");
+            ServerMessages.sendMessage(out, StringConverter.createCommand(ServerMessages.COMMAND_REQ_LOBBIES, new String[][]{}));
             String line = in.readLine();
+            Map.Entry<String, String[][]> messageByServer = StringConverter.getCommand(line);
             String[] strLobbies = line.split(ServerMessages.COMMANDS_SEPARATOR)[1].split(";");
             System.out.println("LOBBIES GETTED");
             System.out.println(line);
-            for (String strLobby : strLobbies) {
-                String[] lobbyFields = strLobby.split(",");
-                if (lobbyFields.length == 0) break;
-                // creator(username, path),lobby_capacity,theme, participantsCount, lobby_name
+
+            for (String[] lobby : messageByServer.getValue()) {
                 lobbies.add(new Lobby(
-                        new User(lobbyFields[0], lobbyFields[1]),
+                        new User(lobby[0], lobby[1]),
                         null,
-                        Integer.parseInt(lobbyFields[2]),
-                        lobbyFields[3],
-                        Integer.parseInt(lobbyFields[4]),
-                        lobbyFields[5])
-                );
+                        Integer.parseInt(lobby[2]),
+                        lobby[3],
+                        Integer.parseInt(lobby[4]),
+                        lobby[5]
+                ));
             }
+
+//            for (String strLobby : strLobbies) {
+//                String[] lobbyFields = strLobby.split(",");
+//                if (lobbyFields.length == 0) break;
+//                // creator(username, path),lobby_capacity,theme, participantsCount, lobby_name
+//                lobbies.add(new Lobby(
+//                        new User(lobbyFields[0], lobbyFields[1]),
+//                        null,
+//                        Integer.parseInt(lobbyFields[2]),
+//                        lobbyFields[3],
+//                        Integer.parseInt(lobbyFields[4]),
+//                        lobbyFields[5])
+//                );
+//            }
             return lobbies;
 
         } catch (IOException e) {
@@ -102,19 +115,23 @@ public class Client {
 
     public String createLobby(String name, int capacity, String theme) {
         // name, capacity, theme
-        StringBuilder sb = new StringBuilder();
-        sb.append(ServerMessages.COMMAND_CREATE_LOBBY).append(ServerMessages.COMMANDS_SEPARATOR);
-        sb.append(name).append(",").append(capacity).append(",").append(theme);
-        sb.append("\n");
+//        sb.append(ServerMessages.COMMAND_CREATE_LOBBY).append(ServerMessages.COMMANDS_SEPARATOR);
+//        sb.append(name).append(",").append(capacity).append(",").append(theme);
+//        sb.append("\n");
 
         try {
-            out.write(sb.toString());
-            out.flush();
+//            out.write(sb.toString());
+//            out.flush();
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_CREATE_LOBBY,
+                    new String[][]{new String[]{name, String.valueOf(capacity), theme}}
+                    ));
             String result = in.readLine();
-            if (result.equals(ServerMessages.SUCCESS_CREATE_LOBBY)) {
-                return "Лобби успешно создано";
+            Map.Entry<String, String[][]> messageByServer = StringConverter.getCommand(result);
+            if (messageByServer.getKey().equals(ServerMessages.FAILURE_CREATE_LOBBY)) {
+                return messageByServer.getValue()[0][0];
             }
-            return result;
+            return ServerMessages.SUCCESS_CREATE_LOBBY;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

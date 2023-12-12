@@ -6,6 +6,8 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import javafx.collections.FXCollections;
 import ru.kpfu.itis.galeev.aidan.choosememegame.server.ClientHandler;
 import ru.kpfu.itis.galeev.aidan.choosememegame.server.Server;
@@ -79,5 +81,9 @@ public class Lobby {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<ClientHandler> getParticipants() {
+        return usersInLobby;
     }
 }

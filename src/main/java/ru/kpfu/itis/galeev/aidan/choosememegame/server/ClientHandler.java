@@ -8,6 +8,7 @@ import java.io.*;
 import java.net.SecureCacheResponse;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -38,57 +39,56 @@ public class ClientHandler implements Runnable {
                     System.out.println(line);
                     String[] lineValues = line.split(ServerMessages.COMMANDS_SEPARATOR);
                     Map.Entry<String, String[][]> messageByClient = StringConverter.getCommand(line);
-                    //String command = lineValues[0];
                     String command = messageByClient.getKey();
                     switch (command) {
                         case ServerMessages.COMMAND_USER:
                             String username = messageByClient.getValue()[0][0];
-//                            out.write(ServerMessages.COMMAND_AUTH);
-//                            out.write(ServerMessages.COMMANDS_SEPARATOR);
                             String result;
+
                             if (server.usernameIsFree(username)) {
                                 user = new User(username);
                                 //out.write(ServerMessages.SUCCESS_AUTH);
                                 result = ServerMessages.SUCCESS_AUTH;
                             } else {
                                 result = ServerMessages.OCCUPIED_USERNAME;
-                                //out.write(ServerMessages.OCCUPIED_USERNAME);
                             }
+
                             out.write(StringConverter.createCommand(ServerMessages.COMMAND_AUTH, new String[][]{new String[]{result}}));
                             out.flush();
                             break;
                         case ServerMessages.COMMAND_REQ_LOBBIES:
                             System.out.println("LOBBIES REQUESTD");
                             List<Lobby> lobbies = server.getLobbies();
-                            stringBuilder.append(ServerMessages.COMMAND_LOBBIES);
-                            stringBuilder.append(ServerMessages.COMMANDS_SEPARATOR);
+                            ArrayList<String[]> lobbiesForMessage = new ArrayList<>();
+
                             for (Lobby lobby : lobbies) {
                                 if (lobby.getParticipantsCount() != lobby.getLobbyCapacity()) {
                                     User creator = lobby.getCreator();
                                     // creator,lobby_capacity,theme, participantsCount, lobby_name
-                                    stringBuilder.append(
-                                            creator.getUsername()).append(",")
-                                            .append(creator.getPathToAvatar()).append(",")
-                                            .append(lobby.getLobbyCapacity()).append(",")
-                                            .append(lobby.getTheme()).append(",")
-                                            .append(lobby.getParticipantsCount()).append(",")
-                                            .append(lobby.getName()).append(",")
-                                            .append(";");
+                                    lobbiesForMessage.add(new String[]{
+                                            creator.getUsername(),
+                                            creator.getPathToAvatar(),
+                                            String.valueOf(lobby.getLobbyCapacity()),
+                                            lobby.getTheme(),
+                                            String.valueOf(lobby.getParticipantsCount()),
+                                            lobby.getName()
+                                    });
                                 }
                             }
-                            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-                            stringBuilder.append("\n");
-                            out.write(stringBuilder.toString());
-                            out.flush();
-                            System.out.println("LOBBIES SENDED-" + stringBuilder.toString());
-                            stringBuilder.delete(0, stringBuilder.length());
+
+                            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                                    ServerMessages.COMMAND_LOBBIES,
+                                    lobbiesForMessage.toArray(new String[lobbiesForMessage.size()][])
+                                    ));
                             break;
                         case ServerMessages.COMMAND_CREATE_LOBBY:
                             // name, capacity, theme
-                            String[] lobbyOptions = lineValues[1].split(",");
+                            String[] lobbyOptions = messageByClient.getValue()[0];
                             if (server.lobbies.containsKey(user.getUsername())) {
-                                out.write("У вас уже есть созданное лобби. Попробуйте позже" + "\n");
-                                out.flush();
+                                ServerMessages.sendMessage(out, StringConverter.createCommand(
+                                        ServerMessages.FAILURE_CREATE_LOBBY,
+                                        new String[][]{new String[]{"У вас уже есть созданное лобби. Попробуйте позже"}}
+                                ));
                             } else {
                                 try {
                                     server.lobbies.put(user.getUsername(), new Lobby(
@@ -99,12 +99,16 @@ public class ClientHandler implements Runnable {
                                             1,
                                             lobbyOptions[0]
                                     ));
-                                    out.write(ServerMessages.SUCCESS_CREATE_LOBBY + "\n");
-                                    out.flush();
+                                    ServerMessages.sendMessage(out, StringConverter.createCommand(
+                                            ServerMessages.SUCCESS_CREATE_LOBBY,
+                                            new String[][]{new String[]{" "}}
+                                    ));
                                 } catch (Exception ex) {
                                     System.out.println(ex);
-                                    out.write("Не удалось создать лобби. Попробуйте позже" + "\n");
-                                    out.flush();
+                                    ServerMessages.sendMessage(out, StringConverter.createCommand(
+                                            ServerMessages.FAILURE_CREATE_LOBBY,
+                                            new String[][]{new String[]{"Не удалось создать лобби. Попробуйте позже"}}
+                                    ));
                                 }
                             }
                             break;
