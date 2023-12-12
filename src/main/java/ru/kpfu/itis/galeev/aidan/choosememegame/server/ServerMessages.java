@@ -20,6 +20,10 @@ public interface ServerMessages {
     String COMMAND_CREATE_LOBBY = "CREATE_LOBBY";
     String SUCCESS_CREATE_LOBBY = "SUCCESS_LOBBY";
     String FAILURE_CREATE_LOBBY = "FAILURE_LOBBY";
+    String COMMAND_REQ_LOBBY_INFO = "REQUEST_LOBBY_INFO";
+    String COMMAND_LOBBY_DOESNT_EXIST = "LOBBY_DNT_EXIST";
+    String COMMAND_LOBBY_FULL = "LOBBY_FULL";
+    String COMMAND_LOBBY_INFO = "LOBBY_INFO";
 
     public static void sendMessage(BufferedWriter out, String message) throws IOException {
         out.write(message);

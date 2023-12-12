@@ -236,6 +236,17 @@ AnchorPane {
 .player-name {
     -fx-background-color: white;
     -fx-background-radius: 5px;
+    -fx-text-fill: #7679ee;
+    -fx-font-family: Rubik;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 3px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 0)
+}
+
+.creator-name {
+    -fx-background-color: white;
+    -fx-background-radius: 5px;
     -fx-text-fill: #efd400;
     -fx-font-family: Rubik;
     -fx-font-size: 12px;

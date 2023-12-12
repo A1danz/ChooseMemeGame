@@ -1,7 +1,11 @@
 package ru.kpfu.itis.galeev.aidan.choosememegame.client;
 
 import ru.kpfu.itis.galeev.aidan.choosememegame.config.Config;
+import ru.kpfu.itis.galeev.aidan.choosememegame.exceptions.FullLobbyException;
+import ru.kpfu.itis.galeev.aidan.choosememegame.exceptions.LobbyDoesntExistException;
+import ru.kpfu.itis.galeev.aidan.choosememegame.exceptions.LobbyWrongInfo;
 import ru.kpfu.itis.galeev.aidan.choosememegame.model.Lobby;
+import ru.kpfu.itis.galeev.aidan.choosememegame.model.LobbySimple;
 import ru.kpfu.itis.galeev.aidan.choosememegame.model.User;
 import ru.kpfu.itis.galeev.aidan.choosememegame.server.ServerMessages;
 import ru.kpfu.itis.galeev.aidan.choosememegame.utils.StringConverter;
@@ -93,19 +97,6 @@ public class Client {
                 ));
             }
 
-//            for (String strLobby : strLobbies) {
-//                String[] lobbyFields = strLobby.split(",");
-//                if (lobbyFields.length == 0) break;
-//                // creator(username, path),lobby_capacity,theme, participantsCount, lobby_name
-//                lobbies.add(new Lobby(
-//                        new User(lobbyFields[0], lobbyFields[1]),
-//                        null,
-//                        Integer.parseInt(lobbyFields[2]),
-//                        lobbyFields[3],
-//                        Integer.parseInt(lobbyFields[4]),
-//                        lobbyFields[5])
-//                );
-//            }
             return lobbies;
 
         } catch (IOException e) {
@@ -115,13 +106,8 @@ public class Client {
 
     public String createLobby(String name, int capacity, String theme) {
         // name, capacity, theme
-//        sb.append(ServerMessages.COMMAND_CREATE_LOBBY).append(ServerMessages.COMMANDS_SEPARATOR);
-//        sb.append(name).append(",").append(capacity).append(",").append(theme);
-//        sb.append("\n");
 
         try {
-//            out.write(sb.toString());
-//            out.flush();
             ServerMessages.sendMessage(out, StringConverter.createCommand(
                     ServerMessages.COMMAND_CREATE_LOBBY,
                     new String[][]{new String[]{name, String.valueOf(capacity), theme}}
@@ -134,6 +120,41 @@ public class Client {
             return ServerMessages.SUCCESS_CREATE_LOBBY;
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public LobbySimple getLobby(String creatorUsername) {
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_REQ_LOBBY_INFO,
+                    new String[][]{new String[]{creatorUsername}}
+            ));
+            Map.Entry<String, String[][]> messageByServer = StringConverter.getCommand(in.readLine());
+            // lobby(name(0), participantsCount(1), capacity(2), theme(3), creator(username(4), avatar(5)));participants(username, avatar)
+            if (messageByServer.getKey().equals(ServerMessages.COMMAND_LOBBY_INFO)) {
+                List<User> participants = new ArrayList<>();
+                String[][] arguments = messageByServer.getValue();
+                for (int i = 1; i < arguments.length; i++) {
+                    participants.add(new User(arguments[i][0], arguments[i][1]));
+                }
+                String[] lobbySimpleInfo = arguments[0];
+                return new LobbySimple(
+                        new User(lobbySimpleInfo[4], lobbySimpleInfo[5]),
+                        Integer.parseInt(lobbySimpleInfo[2]),
+                        lobbySimpleInfo[3],
+                        participants.size(),
+                        lobbySimpleInfo[0],
+                        participants
+                );
+            } else if (messageByServer.getKey().equals(ServerMessages.COMMAND_LOBBY_DOESNT_EXIST)) {
+                throw new LobbyDoesntExistException("Лобби \"" + creatorUsername + "\" не существует.");
+            } else if (messageByServer.getKey().equals(ServerMessages.COMMAND_LOBBY_FULL)) {
+                throw new FullLobbyException("Лобби \"" + creatorUsername + "\" заполнено");
+            } else {
+                throw new LobbyWrongInfo("Не удалось получить информацию о лобби.");
+            }
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
         }
     }
 }

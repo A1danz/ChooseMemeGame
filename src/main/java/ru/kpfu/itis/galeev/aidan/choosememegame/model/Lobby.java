@@ -33,9 +33,11 @@ public class Lobby {
             @Override
             public void onChanged(Change<? extends ClientHandler> change) {
                 while(change.next()) {
-                    if (change.wasAdded()) {
-                        server.notifyChangeInLobby(true, creator.getUsername(), change.getAddedSubList().get(0).getUser());
-                    }
+//                    if (change.wasAdded()) {
+//                        if (server != null) {
+//                            server.notifyChangeInLobby(true, creator.getUsername(), change.getAddedSubList().get(0).getUser());
+//                        }
+//                    }
                     participantsCountWrapper[0] = usersInLobby.size();
                 }
             }
@@ -85,5 +87,13 @@ public class Lobby {
 
     public List<ClientHandler> getParticipants() {
         return usersInLobby;
+    }
+
+    public boolean isFull() {
+        return lobbyCapacity == usersInLobby.size();
+    }
+
+    public void addUser(ClientHandler user) {
+        usersInLobby.add(user);
     }
 }

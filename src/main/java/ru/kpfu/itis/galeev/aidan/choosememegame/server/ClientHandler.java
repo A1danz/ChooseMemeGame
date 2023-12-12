@@ -99,6 +99,7 @@ public class ClientHandler implements Runnable {
                                             1,
                                             lobbyOptions[0]
                                     ));
+                                    server.getLobby(user.getUsername()).addUser(this);
                                     ServerMessages.sendMessage(out, StringConverter.createCommand(
                                             ServerMessages.SUCCESS_CREATE_LOBBY,
                                             new String[][]{new String[]{" "}}
@@ -108,6 +109,50 @@ public class ClientHandler implements Runnable {
                                     ServerMessages.sendMessage(out, StringConverter.createCommand(
                                             ServerMessages.FAILURE_CREATE_LOBBY,
                                             new String[][]{new String[]{"Не удалось создать лобби. Попробуйте позже"}}
+                                    ));
+                                }
+                            }
+                            break;
+                        case ServerMessages.COMMAND_REQ_LOBBY_INFO:
+                            String creatorUsername = messageByClient.getValue()[0][0];
+                            Lobby lobby = server.getLobby(creatorUsername);
+                            if (lobby == null) {
+                                ServerMessages.sendMessage(out, StringConverter.createCommand(
+                                        ServerMessages.COMMAND_LOBBY_DOESNT_EXIST,
+                                        new String[][]{new String[]{"Лобби не существует"}}
+                                        ));
+                            } else {
+                                if (lobby.isFull()) {
+                                    ServerMessages.sendMessage(out, StringConverter.createCommand(
+                                            ServerMessages.COMMAND_LOBBY_FULL,
+                                            new String[][]{new String[]{"К сожалению, лобби заполнено"}}
+                                    ));
+                                } else {
+                                    // lobby(name(0), participantsCount(1), capacity(2), theme(3), creator(username(4), avatar(5)));participants(username, avatar)
+                                    String[] lobbySimpleInfo = new String[]{
+                                            lobby.getName(),
+                                            String.valueOf(lobby.getParticipantsCount()),
+                                            String.valueOf(lobby.getLobbyCapacity()),
+                                            lobby.getTheme(),
+                                            lobby.getCreator().getUsername(),
+                                            lobby.getCreator().getPathToAvatar()
+                                    };
+                                    String[][] participants = new String[lobby.getParticipantsCount()][2];
+                                    List<ClientHandler> lobbyParticipants = lobby.getParticipants();
+                                    for (int i = 0; i < lobby.getParticipantsCount(); i++) {
+                                        User user = lobbyParticipants.get(i).getUser();
+                                        participants[i][0] = user.getUsername();
+                                        participants[i][1] = user.getPathToAvatar();
+                                    }
+
+                                    String[][] lobbyInfo = new String[1 + participants.length][];
+                                    lobbyInfo[0] = lobbySimpleInfo;
+                                    for (int i = 0; i < participants.length; i++) {
+                                        lobbyInfo[1 + i] = participants[i];
+                                    }
+                                    ServerMessages.sendMessage(out, StringConverter.createCommand(
+                                            ServerMessages.COMMAND_LOBBY_INFO,
+                                            lobbyInfo
                                     ));
                                 }
                             }

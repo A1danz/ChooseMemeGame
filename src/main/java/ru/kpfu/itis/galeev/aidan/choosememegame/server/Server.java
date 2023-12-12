@@ -76,6 +76,10 @@ public class Server {
         return lobbies.values().stream().toList();
     }
 
+    public Lobby getLobby(String creatorUsername) {
+        return lobbies.get(creatorUsername);
+    }
+
     public void disconnect(ClientHandler disconnectedClient) {
         System.out.println("USER DISCONNECTED: " + disconnectedClient.getUser().getUsername());
         clients.remove(disconnectedClient);

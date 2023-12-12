@@ -1,5 +1,5 @@
 package ru.kpfu.itis.galeev.aidan.choosememegame.utils;
 
 public class DataHolder {
-    public static String connectingLobby = "";
+    public static String connectingLobbyCreator = "";
 }

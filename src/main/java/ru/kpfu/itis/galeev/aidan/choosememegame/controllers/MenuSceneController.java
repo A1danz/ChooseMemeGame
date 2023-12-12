@@ -275,7 +275,7 @@ public class MenuSceneController {
     }
 
     private void swapToLobbyScene(String lobbyCreator) throws IOException {
-        DataHolder.connectingLobby = lobbyCreator;
+        DataHolder.connectingLobbyCreator = lobbyCreator;
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource(Config.LOBBY_SCENE));
         Parent root = loader.load();
 
