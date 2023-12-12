@@ -60,7 +60,7 @@ public class MenuSceneController {
     private ComboBox<String> comboBoxTheme;
 
     @FXML
-    private TextField inputRoomId;
+    private TextField inputCreatorUsername;
 
     @FXML
     private TextField inputRoomName;
@@ -111,6 +111,7 @@ public class MenuSceneController {
             initUserData(client.getUser());
             initGameThemes();
             initRefreshBtn();
+            initConnectBtn();
 
             showLoading(true);
             new Thread(() -> {
@@ -173,6 +174,13 @@ public class MenuSceneController {
                     Button button = new Button("Подключиться");
                     button.getStyleClass().add("enter-btn");
                     button.setMnemonicParsing(false);
+                    button.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent actionEvent) {
+                            String creatorUsername = lobby.getCreator().getUsername();
+                            connectToLobby(creatorUsername);
+                        }
+                    });
 
                     vbox.getChildren().addAll(vbox2, button);
 
@@ -282,5 +290,41 @@ public class MenuSceneController {
         Scene scene = new Scene(root);
         Stage stage = (Stage) inputRoomName.getScene().getWindow();
         stage.setScene(scene);
+    }
+
+    private void initConnectBtn() {
+        btnRoomEnterById.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                String creatorUsername = inputCreatorUsername.getText();
+                connectToLobby(creatorUsername);
+            }
+        });
+    }
+
+    private void connectToLobby(String creatorUsername) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Подключение к лобби");
+
+        if (creatorUsername.matches(StartSceneController.USERNAME_PATTERN)) {
+            String resultOfCreating = MainApplication.getClient().connectToLobby(creatorUsername);
+            if (resultOfCreating.equals(ServerMessages.SUCESS_CONNECT)) {
+                try {
+                    DataHolder.connectingLobbyCreator = creatorUsername;
+                    swapToLobbyScene(creatorUsername);
+                } catch (IOException ex) {
+                    System.out.println(ex);
+                    alert.setContentText("Не удалось подключиться к лобби :(");
+                    alert.showAndWait();
+                }
+            } else {
+                alert.setContentText(resultOfCreating);
+                alert.showAndWait();
+            }
+        } else {
+            alert.setContentText("Введенный username не сответствует формату");
+            alert.showAndWait();
+        }
     }
 }

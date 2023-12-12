@@ -24,6 +24,9 @@ public interface ServerMessages {
     String COMMAND_LOBBY_DOESNT_EXIST = "LOBBY_DNT_EXIST";
     String COMMAND_LOBBY_FULL = "LOBBY_FULL";
     String COMMAND_LOBBY_INFO = "LOBBY_INFO";
+    String COMMAND_LOBBY_CONNECT = "CONNECT_LOBBY";
+    String SUCESS_CONNECT = "SUCESS_CONNECT";
+    String FAILURE_CONNECT = "FAILURE_CONNECT";
 
     public static void sendMessage(BufferedWriter out, String message) throws IOException {
         out.write(message);

@@ -29,8 +29,6 @@ public class StringConverter {
         }
         if (arguments.length != 0) {
             sb.deleteCharAt(sb.length() - 1);
-        } else {
-            sb.append(" ");
         }
         sb.append("\n");
 
@@ -41,8 +39,8 @@ public class StringConverter {
     public static Map.Entry<String, String[][]> getCommand(String givenString) {
         System.out.println("HANDLED COMMAND: " + givenString);
         String[] command = givenString.split(ServerMessages.COMMANDS_SEPARATOR);
-        if (command.length == 2) {
-            String[] arguments = command[1].split(ServerMessages.ARGUMENTS_SEPARATOR);
+        if (command.length == 2 || command.length == 1) {
+            String[] arguments = command.length == 2 ? command[1].split(ServerMessages.ARGUMENTS_SEPARATOR) : new String[]{};
             String[][] result = new String[arguments.length][];
             for (int i = 0; i < arguments.length; i++) {
                 result[i] = arguments[i].split(ServerMessages.ITEMS_SEPARATOR);

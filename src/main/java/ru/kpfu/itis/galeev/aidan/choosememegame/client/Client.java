@@ -14,6 +14,7 @@ import java.io.*;
 import java.net.SecureCacheResponse;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -82,9 +83,9 @@ public class Client {
             ServerMessages.sendMessage(out, StringConverter.createCommand(ServerMessages.COMMAND_REQ_LOBBIES, new String[][]{}));
             String line = in.readLine();
             Map.Entry<String, String[][]> messageByServer = StringConverter.getCommand(line);
-            String[] strLobbies = line.split(ServerMessages.COMMANDS_SEPARATOR)[1].split(";");
             System.out.println("LOBBIES GETTED");
             System.out.println(line);
+
 
             for (String[] lobby : messageByServer.getValue()) {
                 lobbies.add(new Lobby(
@@ -155,6 +156,23 @@ public class Client {
             }
         } catch (IOException ex) {
             throw new RuntimeException(ex);
+        }
+    }
+
+    public String connectToLobby(String creatorUsername) {
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_LOBBY_CONNECT,
+                    new String[][]{new String[]{creatorUsername}}));
+
+            Map.Entry<String, String[][]> answerByServer = StringConverter.getCommand(in.readLine());
+
+            if (answerByServer.getKey().equals(ServerMessages.SUCESS_CONNECT)) {
+                return answerByServer.getKey();
+            }
+            return answerByServer.getValue()[0][0];
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

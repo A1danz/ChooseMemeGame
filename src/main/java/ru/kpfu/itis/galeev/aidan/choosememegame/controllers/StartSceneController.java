@@ -22,7 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StartSceneController {
-    private static final String USERNAME_PATTERN = "^[a-zA-Zа-яА-Я0-9_]{2,12}$";
+    public static final String USERNAME_PATTERN = "^[a-zA-Zа-яА-Я0-9_]{2,12}$";
     private static final Pattern username_pattern = Pattern.compile(USERNAME_PATTERN);
 
     @FXML

@@ -233,6 +233,17 @@ AnchorPane {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 2, 0.1, 0, 0)
 }
 
+.user-card {
+    -fx-background-image: url(img/background.png);
+    -fx-background-radius: 5px;
+    -fx-text-fill: white;
+    -fx-font-family: Rubik;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 3px;
+    -fx-effect: dropshadow(gaussian, #7679ee, 2, 0.8, 0, 0)
+}
+
 .player-name {
     -fx-background-color: white;
     -fx-background-radius: 5px;

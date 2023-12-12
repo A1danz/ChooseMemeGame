@@ -20,23 +20,6 @@ public class Server {
     public Server() {
         try {
             serverSocket = new ServerSocket(Config.PORT);
-            lobbies.put("andrey", new Lobby(
-                    new User("andrey"),
-                    this,
-                    10,
-                    "standart",
-                    2,
-                    "andrey's lobby"
-            ));
-
-            lobbies.put("Aidanich", new Lobby(
-                    new User("Aidanich"),
-                    this,
-                    10,
-                    "hasbik",
-                    8,
-                    "aidanich's lobby"
-            ));
             while(true) {
                 Socket client = serverSocket.accept();
                 System.out.println("CLIENT IS REGISTERED IN SERVER");

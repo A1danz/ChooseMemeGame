@@ -106,6 +106,10 @@ public class LobbySceneController {
             User participant = participants.get(i);
             VBox playerVBox = (VBox) participantsPane.getChildren().get(i);
             playerVBox.getChildren().clear();
+            if (participant.equals(MainApplication.getClient().getUser())) {
+                playerVBox.getStyleClass().clear();
+                playerVBox.getStyleClass().add("user-card");
+            }
 
             ImageView imageView = new ImageView();
             imageView.setFitHeight(80.0);
