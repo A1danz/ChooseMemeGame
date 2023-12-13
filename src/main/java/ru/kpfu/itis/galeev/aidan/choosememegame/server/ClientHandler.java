@@ -42,7 +42,7 @@ public class ClientHandler implements Runnable {
                     String command = messageByClient.getKey();
                     String[][] arguments = messageByClient.getValue();
                     switch (command) {
-                        case ServerMessages.COMMAND_USER:
+                        case ServerMessages.COMMAND_USER -> {
                             String username = messageByClient.getValue()[0][0];
                             String result;
 
@@ -56,8 +56,8 @@ public class ClientHandler implements Runnable {
 
                             out.write(StringConverter.createCommand(ServerMessages.COMMAND_AUTH, new String[][]{new String[]{result}}));
                             out.flush();
-                            break;
-                        case ServerMessages.COMMAND_REQ_LOBBIES:
+                        }
+                        case ServerMessages.COMMAND_REQ_LOBBIES -> {
                             System.out.println("LOBBIES REQUESTD");
                             List<Lobby> lobbies = server.getLobbies();
                             ArrayList<String[]> lobbiesForMessage = new ArrayList<>();
@@ -81,8 +81,8 @@ public class ClientHandler implements Runnable {
                                     ServerMessages.COMMAND_LOBBIES,
                                     lobbiesForMessage.toArray(new String[lobbiesForMessage.size()][])
                                     ));
-                            break;
-                        case ServerMessages.COMMAND_CREATE_LOBBY:
+                        }
+                        case ServerMessages.COMMAND_CREATE_LOBBY -> {
                             // name, capacity, theme
                             String[] lobbyOptions = messageByClient.getValue()[0];
                             if (server.lobbies.containsKey(user.getUsername())) {
@@ -113,8 +113,8 @@ public class ClientHandler implements Runnable {
                                     ));
                                 }
                             }
-                            break;
-                        case ServerMessages.COMMAND_REQ_LOBBY_INFO:
+                        }
+                        case ServerMessages.COMMAND_REQ_LOBBY_INFO -> {
                             String creatorUsername = messageByClient.getValue()[0][0];
                             Lobby lobby = server.getLobby(creatorUsername);
                             if (lobby == null) {
@@ -150,10 +150,10 @@ public class ClientHandler implements Runnable {
                                         lobbyInfo
                                 ));
                             }
-                            break;
-                        case ServerMessages.COMMAND_LOBBY_CONNECT:
-                            creatorUsername = messageByClient.getValue()[0][0];
-                            lobby = server.getLobby(creatorUsername);
+                        }
+                        case ServerMessages.COMMAND_LOBBY_CONNECT -> {
+                            String creatorUsername = messageByClient.getValue()[0][0];
+                            Lobby lobby = server.getLobby(creatorUsername);
                             if (lobby == null) {
                                 ServerMessages.sendMessage(out, StringConverter.createCommand(
                                         ServerMessages.FAILURE_CONNECT,
@@ -172,12 +172,20 @@ public class ClientHandler implements Runnable {
                                     ServerMessages.SUCESS_CONNECT,
                                     new String[][]{new String[]{"Success"}}
                                     ));
-                            break;
-                        case ServerMessages.COMMAND_EXIT_USER:
+                        }
+                        case ServerMessages.COMMAND_EXIT_USER -> {
+                            String creatorUsername = arguments[0][0];
+
+                            Lobby lobby = server.lobbies.get(creatorUsername);
+                            if (lobby != null) {
+                                lobby.removeUser(this);
+                            }
+                        }
 
 
-                        default:
+                        default -> {
                             throw new UnsupportedOperationException("Unsupported command: " + command);
+                        }
                     }
                 }
             }

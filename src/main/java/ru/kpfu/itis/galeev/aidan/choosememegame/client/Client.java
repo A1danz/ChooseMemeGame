@@ -189,8 +189,9 @@ public class Client {
                         User enteredUser = new User(arguments[0][0], arguments[0][1]);
                         usersInLobby.add(enteredUser);
                     } case ServerMessages.COMMAND_USER_LEAVED -> {
-
-                    }
+                        User leavedUser = new User(arguments[0][0], arguments[0][1]);
+                        usersInLobby.remove(leavedUser);
+                    }default -> throw new UnsupportedOperationException("Unsupported command: " + command);
                 }
             }
         } catch (IOException ex) {

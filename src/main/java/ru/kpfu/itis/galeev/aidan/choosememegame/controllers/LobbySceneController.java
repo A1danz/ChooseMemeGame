@@ -146,6 +146,18 @@ public class LobbySceneController {
                                 (VBox) participantsPane.getChildren().get(usersInLobby.size() - 1),
                                 usersInLobby.get(usersInLobby.size() - 1)
                         ));
+                    } else if (change.wasRemoved()) {
+                        Platform.runLater(() -> {
+                            for (int i = 0; i < usersInLobby.size(); i++) {
+                                User user = usersInLobby.get(i);
+                                putUserIntoBox(
+                                        (VBox) participantsPane.getChildren().get(i),
+                                        user
+                                );
+                            }
+
+                            ((VBox) participantsPane.getChildren().get(usersInLobby.size())).getChildren().clear();
+                        });
                     }
                 }
             }
@@ -192,5 +204,7 @@ public class LobbySceneController {
             }
         });
     }
+
+
 
 }

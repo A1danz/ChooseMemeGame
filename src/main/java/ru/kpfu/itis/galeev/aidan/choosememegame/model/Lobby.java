@@ -40,7 +40,7 @@ public class Lobby {
                         server.notifyChangeInLobby(true, creator.getUsername(), change.getAddedSubList().get(0).getUser());
                     } else if (change.wasRemoved()) {
                         System.out.println("removed user");
-//                        server.notifyChangeInLobby(false, creator.getUsername(), change.getAddedSubList().get(0).getUser());
+                        server.notifyChangeInLobby(false, creator.getUsername(), change.getRemoved().get(0).getUser());
                     }
                     participantsCountWrapper[0] = usersInLobby.size();
                 }
@@ -99,5 +99,9 @@ public class Lobby {
 
     public void addUser(ClientHandler user) {
         usersInLobby.add(user);
+    }
+
+    public void removeUser(ClientHandler user) {
+        usersInLobby.remove(user);
     }
 }
