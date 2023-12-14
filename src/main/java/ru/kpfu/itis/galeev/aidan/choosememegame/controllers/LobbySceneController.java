@@ -88,7 +88,7 @@ public class LobbySceneController {
     public void initialize() {
         try {
             LobbySimple lobbySimple = MainApplication.getClient().getLobby(DataHolder.connectingLobbyCreator);
-
+            System.out.println(lobbySimple);
             initLobbyInformation(lobbySimple);
             initExitBtn();
             initTimer();
@@ -129,7 +129,8 @@ public class LobbySceneController {
         labelCreatorName.setText(creator.getUsername());
         imageUserAvatar.setImage(new Image(String.valueOf(MainApplication.class.getResource("img/avatars/" + creator.getPathToAvatar()))));
         labelStatus.setText("Ожидание");
-        labelTheme.setText(lobby.getTheme());
+        System.out.println(lobby.getTheme());
+        labelTheme.setText(Config.GAME_THEMES.get(lobby.getTheme()).getName());
         labelParticipantsCount.setText(lobby.getParticipantsCount() + "/" + lobby.getLobbyCapacity());
 
         List<User> participants = lobby.getUsersInLobby();

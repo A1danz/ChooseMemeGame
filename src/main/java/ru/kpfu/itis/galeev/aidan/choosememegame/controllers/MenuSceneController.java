@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import ru.kpfu.itis.galeev.aidan.choosememegame.MainApplication;
 import ru.kpfu.itis.galeev.aidan.choosememegame.client.Client;
 import ru.kpfu.itis.galeev.aidan.choosememegame.config.Config;
+import ru.kpfu.itis.galeev.aidan.choosememegame.model.GameData;
 import ru.kpfu.itis.galeev.aidan.choosememegame.model.GameTheme;
 import ru.kpfu.itis.galeev.aidan.choosememegame.model.Lobby;
 import ru.kpfu.itis.galeev.aidan.choosememegame.model.User;
@@ -214,8 +215,8 @@ public class MenuSceneController {
     }
 
     private void initGameThemes() {
-        for (Map.Entry<String, String> entry : Config.GAME_THEMES.entrySet()) {
-            comboBoxTheme.getItems().add(entry.getKey());
+        for (Map.Entry<String, GameData> entry : Config.GAME_THEMES.entrySet()) {
+            comboBoxTheme.getItems().add(entry.getValue().getName());
         }
     }
 

@@ -20,4 +20,8 @@ public class GameData {
     public List<Situation> getSituations() {
         return situations;
     }
+
+    public String getName() {
+        return dataName;
+    }
 }
