@@ -58,7 +58,6 @@ public class ClientHandler implements Runnable {
                             out.flush();
                         }
                         case ServerMessages.COMMAND_REQ_LOBBIES -> {
-                            System.out.println("LOBBIES REQUESTD");
                             List<Lobby> lobbies = server.getLobbies();
                             ArrayList<String[]> lobbiesForMessage = new ArrayList<>();
 

@@ -1,6 +1,7 @@
 package ru.kpfu.itis.galeev.aidan.choosememegame.server;
 
 import ru.kpfu.itis.galeev.aidan.choosememegame.config.Config;
+import ru.kpfu.itis.galeev.aidan.choosememegame.model.Game;
 import ru.kpfu.itis.galeev.aidan.choosememegame.model.Lobby;
 import ru.kpfu.itis.galeev.aidan.choosememegame.model.User;
 
@@ -16,6 +17,7 @@ public class Server {
     ServerSocket serverSocket;
     ArrayList<ClientHandler> clients = new ArrayList<>();
     HashMap<String, Lobby> lobbies = new HashMap<>();
+    HashMap<String, Game> games = new HashMap<>();
 
     public Server() {
         try {
@@ -80,6 +82,7 @@ public class Server {
 
     public void notifyStartGame(User creator) {
         Lobby lobby = lobbies.get(creator.getUsername());
+        games.put(lobby.getCreator().getUsername(), new Game(lobby));
         if (lobby != null) {
             for (ClientHandler participant : lobby.getUsersInLobby()) {
                 participant.notifyStartGame();
