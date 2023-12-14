@@ -1,21 +1,605 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="anchor-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.kpfu.itis.galeev.aidan.choosememegame.controllers.MenuSceneController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="anchor-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.kpfu.itis.galeev.aidan.choosememegame.controllers.GameSceneController">
    <children>
-      <VBox layoutX="400.0" layoutY="183.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="30.0" layoutY="120.0" prefHeight="476.0" prefWidth="842.0">
+         <children>
+            <AnchorPane maxHeight="375.0" maxWidth="842.0" minHeight="375.0" minWidth="842.0" prefHeight="375.0" prefWidth="842.0" styleClass="game-field">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <children>
+                  <ImageView fitHeight="375.0" fitWidth="842.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <image>
+                        <Image url="@img/game_field.png" />
+                     </image>
+                  </ImageView>
+                  <HBox fx:id="participantsBox" alignment="CENTER" layoutX="2.0" prefHeight="87.0" prefWidth="842.0" spacing="5.0" AnchorPane.topAnchor="5.0">
+                     <children>
+                        <VBox alignment="TOP_CENTER" prefHeight="110.0" prefWidth="86.0">
+                           <children>
+                              <VBox alignment="TOP_CENTER" prefHeight="49.0" prefWidth="122.0">
+                                 <children>
+                                    <Circle fill="WHITE" radius="26.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </Circle>
+                                    <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/rabbit.png" />
+                                       </image>
+                                       <VBox.margin>
+                                          <Insets right="-0.25" top="-49.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </VBox>
+                              <Label alignment="CENTER" prefWidth="134.0" styleClass="label-game-participant" text="twirl" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets top="-10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="label-game-participant-score" text="500">
+                                 <VBox.margin>
+                                    <Insets top="-5.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Circle fill="#f6b801" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                                 <VBox.margin>
+                                    <Insets top="-3.0" />
+                                 </VBox.margin>
+                              </Circle>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" prefHeight="110.0" prefWidth="86.0">
+                           <children>
+                              <VBox alignment="TOP_CENTER" prefHeight="49.0" prefWidth="122.0">
+                                 <children>
+                                    <Circle fill="WHITE" radius="26.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </Circle>
+                                    <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/rabbit.png" />
+                                       </image>
+                                       <VBox.margin>
+                                          <Insets right="-0.25" top="-49.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </VBox>
+                              <Label alignment="CENTER" prefHeight="26.0" prefWidth="134.0" styleClass="label-game-participant" text="123456789012" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets top="-10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="label-game-participant-score" text="500">
+                                 <VBox.margin>
+                                    <Insets top="-5.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Circle fill="#f6b801" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                                 <VBox.margin>
+                                    <Insets top="-3.0" />
+                                 </VBox.margin>
+                              </Circle>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" prefHeight="110.0" prefWidth="86.0">
+                           <children>
+                              <VBox alignment="TOP_CENTER" prefHeight="49.0" prefWidth="122.0">
+                                 <children>
+                                    <Circle fill="WHITE" radius="26.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </Circle>
+                                    <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/rabbit.png" />
+                                       </image>
+                                       <VBox.margin>
+                                          <Insets right="-0.25" top="-49.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </VBox>
+                              <Label alignment="CENTER" prefHeight="26.0" prefWidth="134.0" styleClass="label-game-participant" text="123456789012" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets top="-10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="label-game-participant-score" text="500">
+                                 <VBox.margin>
+                                    <Insets top="-5.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Circle fill="#f6b801" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                                 <VBox.margin>
+                                    <Insets top="-3.0" />
+                                 </VBox.margin>
+                              </Circle>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" prefHeight="110.0" prefWidth="86.0">
+                           <children>
+                              <VBox alignment="TOP_CENTER" prefHeight="49.0" prefWidth="122.0">
+                                 <children>
+                                    <Circle fill="WHITE" radius="26.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </Circle>
+                                    <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/rabbit.png" />
+                                       </image>
+                                       <VBox.margin>
+                                          <Insets right="-0.25" top="-49.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </VBox>
+                              <Label alignment="CENTER" prefHeight="26.0" prefWidth="134.0" styleClass="label-game-participant" text="123456789012" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets top="-10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="label-game-participant-score" text="500">
+                                 <VBox.margin>
+                                    <Insets top="-5.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Circle fill="#f6b801" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                                 <VBox.margin>
+                                    <Insets top="-3.0" />
+                                 </VBox.margin>
+                              </Circle>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" prefHeight="110.0" prefWidth="86.0">
+                           <children>
+                              <VBox alignment="TOP_CENTER" prefHeight="49.0" prefWidth="122.0">
+                                 <children>
+                                    <Circle fill="WHITE" radius="26.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </Circle>
+                                    <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/rabbit.png" />
+                                       </image>
+                                       <VBox.margin>
+                                          <Insets right="-0.25" top="-49.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </VBox>
+                              <Label alignment="CENTER" prefHeight="26.0" prefWidth="134.0" styleClass="label-game-participant" text="123456789012" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets top="-10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="label-game-participant-score" text="500">
+                                 <VBox.margin>
+                                    <Insets top="-5.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Circle fill="#f6b801" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                                 <VBox.margin>
+                                    <Insets top="-3.0" />
+                                 </VBox.margin>
+                              </Circle>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" prefHeight="110.0" prefWidth="86.0">
+                           <children>
+                              <VBox alignment="TOP_CENTER" prefHeight="49.0" prefWidth="122.0">
+                                 <children>
+                                    <Circle fill="WHITE" radius="26.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </Circle>
+                                    <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/rabbit.png" />
+                                       </image>
+                                       <VBox.margin>
+                                          <Insets right="-0.25" top="-49.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </VBox>
+                              <Label alignment="CENTER" prefHeight="26.0" prefWidth="134.0" styleClass="label-game-participant" text="123456789012" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets top="-10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="label-game-participant-score" text="500">
+                                 <VBox.margin>
+                                    <Insets top="-5.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Circle fill="#f6b801" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                                 <VBox.margin>
+                                    <Insets top="-3.0" />
+                                 </VBox.margin>
+                              </Circle>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" prefHeight="110.0" prefWidth="86.0">
+                           <children>
+                              <VBox alignment="TOP_CENTER" prefHeight="49.0" prefWidth="122.0">
+                                 <children>
+                                    <Circle fill="WHITE" radius="26.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </Circle>
+                                    <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/rabbit.png" />
+                                       </image>
+                                       <VBox.margin>
+                                          <Insets right="-0.25" top="-49.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </VBox>
+                              <Label alignment="CENTER" prefHeight="26.0" prefWidth="134.0" styleClass="label-game-participant" text="123456789012" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets top="-10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="label-game-participant-score" text="500">
+                                 <VBox.margin>
+                                    <Insets top="-5.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Circle fill="#f6b801" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                                 <VBox.margin>
+                                    <Insets top="-3.0" />
+                                 </VBox.margin>
+                              </Circle>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" prefHeight="110.0" prefWidth="86.0">
+                           <children>
+                              <VBox alignment="TOP_CENTER" prefHeight="49.0" prefWidth="122.0">
+                                 <children>
+                                    <Circle fill="WHITE" radius="26.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </Circle>
+                                    <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/rabbit.png" />
+                                       </image>
+                                       <VBox.margin>
+                                          <Insets right="-0.25" top="-49.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </VBox>
+                              <Label alignment="CENTER" prefHeight="26.0" prefWidth="134.0" styleClass="label-game-participant" text="123456789012" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets top="-10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="label-game-participant-score" text="500">
+                                 <VBox.margin>
+                                    <Insets top="-5.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Circle fill="#f6b801" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                                 <VBox.margin>
+                                    <Insets top="-3.0" />
+                                 </VBox.margin>
+                              </Circle>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" prefHeight="110.0" prefWidth="86.0">
+                           <children>
+                              <VBox alignment="TOP_CENTER" prefHeight="49.0" prefWidth="122.0">
+                                 <children>
+                                    <Circle fill="WHITE" radius="26.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </Circle>
+                                    <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/rabbit.png" />
+                                       </image>
+                                       <VBox.margin>
+                                          <Insets right="-0.25" top="-49.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </VBox>
+                              <Label alignment="CENTER" prefHeight="26.0" prefWidth="134.0" styleClass="label-game-participant" text="123456789012" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets top="-10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label styleClass="label-game-participant-score" text="500">
+                                 <VBox.margin>
+                                    <Insets top="-5.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Circle fill="#f6b801" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                                 <VBox.margin>
+                                    <Insets top="-3.0" />
+                                 </VBox.margin>
+                              </Circle>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <AnchorPane fx:id="bigSituationPane" prefHeight="200.0" prefWidth="200.0" styleClass="situation-card" AnchorPane.bottomAnchor="85.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="120.0">
+                     <children>
+                        <Label fx:id="labelBigSituation" alignment="CENTER" styleClass="label-big-situation" text="Когда зашла мама и ты вспомнил, что забыл достать курицу из морозильника" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="smallSituationPane" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" styleClass="situation-card" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="320.0">
+                     <children>
+                        <Label fx:id="labelSmallSituation" alignment="CENTER" styleClass="label-small-situation" text="Когда ты хотел выполнить один простой кулинарный рецепт, а он оказывается настолько сложным, что ты просто выбрасываешь все в мусорку." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+                  <ImageView fitHeight="60.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="150.0">
+                     <image>
+                        <Image url="@img/cards_stack.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="labelCardsCount" alignment="CENTER" layoutY="151.2" prefHeight="45.0" prefWidth="66.0" styleClass="label-small-situation" text="143" textAlignment="CENTER" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="150.0" />
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="2.0" AnchorPane.leftAnchor="90.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="100.0">
+                     <children>
+                        <HBox fx:id="firstMemesBox" alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="6.0">
+                           <children>
+                              <VBox alignment="TOP_CENTER">
+                                 <children>
+                                    <ImageView fitHeight="100.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@memes/default/1.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <Label styleClass="label-card-owner" text="Label">
+                                       <VBox.margin>
+                                          <Insets top="-5.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER">
+                                 <children>
+                                    <ImageView fitHeight="100.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@memes/default/1.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <Label styleClass="label-card-owner" text="Label">
+                                       <VBox.margin>
+                                          <Insets top="-5.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER">
+                                 <children>
+                                    <ImageView fitHeight="100.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@memes/default/1.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <Label styleClass="label-card-owner" text="Label">
+                                       <VBox.margin>
+                                          <Insets top="-5.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER">
+                                 <children>
+                                    <ImageView fitHeight="100.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@memes/default/1.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <Label styleClass="label-card-owner" text="Label">
+                                       <VBox.margin>
+                                          <Insets top="-5.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER">
+                                 <children>
+                                    <ImageView fitHeight="100.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@memes/default/1.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <Label styleClass="label-card-owner" text="Label">
+                                       <VBox.margin>
+                                          <Insets top="-5.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="secondMemesBox" alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                           <children>
+                              <VBox alignment="TOP_CENTER">
+                                 <children>
+                                    <ImageView fitHeight="100.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@memes/default/1.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <Label styleClass="label-card-owner" text="Label">
+                                       <VBox.margin>
+                                          <Insets top="-5.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER">
+                                 <children>
+                                    <ImageView fitHeight="100.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@memes/default/45.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <Label styleClass="label-card-owner" text="Label">
+                                       <VBox.margin>
+                                          <Insets top="-5.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER">
+                                 <children>
+                                    <ImageView fitHeight="100.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@memes/default/1.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <Label styleClass="label-card-owner" text="Label">
+                                       <VBox.margin>
+                                          <Insets top="-5.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+            <HBox alignment="CENTER_LEFT" prefHeight="95.0" prefWidth="200.0" spacing="10.0" styleClass="user-menu">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="74.0" prefWidth="86.0">
+                     <children>
+                        <VBox alignment="TOP_CENTER" prefHeight="49.0" prefWidth="122.0">
+                           <children>
+                              <Circle fill="#7679ee" radius="26.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Circle>
+                              <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@img/rabbit.png" />
+                                 </image>
+                                 <VBox.margin>
+                                    <Insets right="-0.25" top="-49.0" />
+                                 </VBox.margin>
+                              </ImageView>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </VBox>
+                        <Label fx:id="labelUsername" alignment="CENTER" prefWidth="134.0" styleClass="label-game-username" text="twirl" textAlignment="CENTER">
+                           <VBox.margin>
+                              <Insets top="-10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="labelScore" styleClass="label-game-user-score" text="500">
+                           <VBox.margin>
+                              <Insets top="-5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Circle fill="#f6b801" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                           <VBox.margin>
+                              <Insets top="-3.0" />
+                           </VBox.margin>
+                        </Circle>
+                     </children>
+                  </VBox>
+                  <HBox fx:id="userMemesBox" alignment="CENTER" minWidth="582.0" prefHeight="100.0" prefWidth="200.0" spacing="3.0">
+                     <children>
+                        <ImageView fitHeight="70.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@memes/default/5.jpg" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="70.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@memes/default/1.jpg" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="70.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@memes/default/5.jpg" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="70.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@memes/default/3.jpg" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="70.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@memes/default/5.jpg" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+                  <Label fx:id="labelHelpText" alignment="CENTER" layoutX="704.0" layoutY="15.0" prefHeight="85.0" prefWidth="143.0" styleClass="label-help-text" text="Чтобы выбрать мем - просто нажмите на картинку" textAlignment="CENTER" wrapText="true" />
+               </children>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox layoutX="400.0" layoutY="183.0" prefHeight="102.0" prefWidth="900.0" AnchorPane.bottomAnchor="498.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="300.0">
                <children>
@@ -54,121 +638,6 @@
                   <Insets left="30.0" />
                </VBox.margin>
             </Line>
-            <HBox prefHeight="450.0" prefWidth="200.0" spacing="10.0">
-               <children>
-                  <VBox alignment="TOP_CENTER" maxHeight="450.0" maxWidth="200.0" prefHeight="450.0" prefWidth="200.0" styleClass="room-connect-box">
-                     <children>
-                        <ImageView fx:id="imageUserAvatar" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" styleClass="avatar">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                           <image>
-                              <Image url="@img/avatars/default/1.png" />
-                           </image>
-                        </ImageView>
-                        <Label alignment="CENTER" styleClass="info-label" text="Комната Айдана Галеева" textAlignment="CENTER" wrapText="true" />
-                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <VBox alignment="TOP_CENTER" spacing="5.0">
-                                 <children>
-                                    <HBox alignment="TOP_CENTER">
-                                       <children>
-                                          <Label prefWidth="140.0" styleClass="info-header" text="Кол-во участинков" />
-                                          <Label alignment="CENTER" prefWidth="45.0" styleClass="info-content" text="6/10" textAlignment="CENTER">
-                                             <HBox.margin>
-                                                <Insets left="-1.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="TOP_CENTER" minWidth="100.0">
-                                       <children>
-                                          <Label styleClass="info-header" text="Тема" />
-                                          <Label alignment="CENTER" prefWidth="137.0" styleClass="info-content" text="стандартная">
-                                             <HBox.margin>
-                                                <Insets left="-1.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="TOP_CENTER" minWidth="100.0">
-                                       <children>
-                                          <Label styleClass="info-header" text="Создатель" />
-                                          <Label alignment="CENTER" prefWidth="103.0" styleClass="info-content" text="12">
-                                             <HBox.margin>
-                                                <Insets left="-1.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="TOP_CENTER" minWidth="100.0">
-                                       <children>
-                                          <Label styleClass="info-header" text="Статус" />
-                                          <Label alignment="CENTER" prefWidth="125.0" styleClass="info-content" text="ожидание">
-                                             <HBox.margin>
-                                                <Insets left="-1.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                              <Button mnemonicParsing="false" prefWidth="188.0" styleClass="btn-exit" text="Поикнуть комнату">
-                                 <VBox.margin>
-                                    <Insets top="20.0" />
-                                 </VBox.margin>
-                              </Button>
-                           </children>
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                        </VBox>
-                     </children>
-                     <padding>
-                        <Insets left="5.0" right="5.0" top="10.0" />
-                     </padding>
-                  </VBox>
-                  <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="900.0" prefHeight="450.0" prefWidth="640.0" spacing="10.0" styleClass="room-connect-box">
-                     <padding>
-                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                     </padding>
-                     <children>
-                        <Label maxWidth="1.7976931348623157E308" styleClass="menu-rooms-label" text="До начала: 00:00" />
-                        <GridPane hgap="10.0" vgap="10.0">
-                          <columnConstraints>
-                             <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
-                             <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
-                             <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
-
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints maxHeight="120.0" minHeight="120.0" prefHeight="120.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="120.0" minHeight="120.0" prefHeight="120.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <VBox alignment="TOP_CENTER" prefHeight="120.0" prefWidth="100.0" styleClass="player-card">
-                                 <children>
-                                    <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@img/MEME.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label alignment="CENTER" maxWidth="130.0" prefWidth="459.0" styleClass="player-name" text="123456789012" textAlignment="CENTER">
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                           </children>
-                        </GridPane>
-                     </children>
-                  </VBox>
-               </children>
-               <VBox.margin>
-                  <Insets left="25.0" right="25.0" top="25.0" />
-               </VBox.margin>
-            </HBox>
          </children>
       </VBox>
    </children>
