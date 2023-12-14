@@ -96,6 +96,14 @@ public class Lobby {
         this.name = name;
     }
 
+    public Server getServer() {
+        return server;
+    }
+
+    public void setServer(Server server) {
+        this.server = server;
+    }
+
     public List<ClientHandler> getParticipants() {
         return usersInLobby;
     }
