@@ -18,4 +18,6 @@ public class GameUser {
         this.points = points;
         this.mustThrowCard = mustThrowCard;
     }
+
+
 }

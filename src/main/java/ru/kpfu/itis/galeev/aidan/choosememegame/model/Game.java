@@ -4,12 +4,11 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import ru.kpfu.itis.galeev.aidan.choosememegame.config.Config;
 import ru.kpfu.itis.galeev.aidan.choosememegame.server.ClientHandler;
 import ru.kpfu.itis.galeev.aidan.choosememegame.server.Server;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class Game {
     private Server server;
@@ -29,10 +28,27 @@ public class Game {
     public Game(Lobby lobby) {
         this.server = lobby.getServer();
         this.creator = lobby.getCreator();
+
+        List<Situation> shuffledSituations = new ArrayList<>();
+        Collections.copy(Config.GAME_THEMES.get(lobby.getTheme()).getSituations(), shuffledSituations);
+        Collections.shuffle(shuffledSituations);
+        this.situations = new Stack<>();
+        situations.addAll(shuffledSituations);
+
+        List<MemeCard> shuffledMemeCards = new ArrayList<>();
+        Collections.copy(Config.GAME_THEMES.get(lobby.getTheme()).getMemeImgs(), shuffledMemeCards);
+        Collections.shuffle(shuffledMemeCards);
+        this.memeCards = new Stack<>();
+        memeCards.addAll(shuffledMemeCards);
+
         for (ClientHandler participant : lobby.getUsersInLobby()) {
+            LinkedList<MemeCard> userCards = new LinkedList<>();
+            for (int i = 0; i < Config.PLAYER_CARDS_COUNT; i++) {
+                userCards.add(memeCards.pop());
+            }
             usersInGame.add(new GameUser(
                     participant,
-                    null,
+                    userCards,
                     new SimpleIntegerProperty(0),
                     new SimpleBooleanProperty(false)
             ));
@@ -51,7 +67,6 @@ public class Game {
     public User getCreator() {
         return creator;
     }
-
 
     public void setCreator(User creator) {
         this.creator = creator;
