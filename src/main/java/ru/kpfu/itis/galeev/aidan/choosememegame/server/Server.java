@@ -68,4 +68,31 @@ public class Server {
         System.out.println("USER DISCONNECTED: " + disconnectedClient.getUser().getUsername());
         clients.remove(disconnectedClient);
     }
+
+    public void notifyTimerUpdate(int time, User creator) {
+        Lobby lobby = lobbies.get(creator.getUsername());
+        if (lobby != null) {
+            for (ClientHandler participant : lobby.getUsersInLobby()) {
+                participant.updateLobbyTimer(time);
+            }
+        }
+    }
+
+    public void notifyStartGame(User creator) {
+        Lobby lobby = lobbies.get(creator.getUsername());
+        if (lobby != null) {
+            for (ClientHandler participant : lobby.getUsersInLobby()) {
+                participant.notifyStartGame();
+            }
+        }
+    }
+
+    public void notifyNeedMorePlayersForStart(User creator, int participantsCount, int playerForStartCount) {
+        Lobby lobby = lobbies.get(creator.getUsername());
+        if (lobby != null) {
+            for (ClientHandler participant : lobby.getUsersInLobby()) {
+                participant.notifyNeedMorePlayers(participantsCount, playerForStartCount);
+            }
+        }
+    }
 }

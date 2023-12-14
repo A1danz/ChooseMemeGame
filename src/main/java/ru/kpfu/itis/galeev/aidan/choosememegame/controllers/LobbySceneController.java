@@ -2,6 +2,12 @@ package ru.kpfu.itis.galeev.aidan.choosememegame.controllers;
 
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableIntegerValue;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -66,7 +72,17 @@ public class LobbySceneController {
 
     @FXML
     private Label labelRoomName;
+
+    @FXML
+    private Label labelMinutes;
+
+    @FXML
+    private Label labelSeconds;
+
     private ObservableList<User> usersInLobby = FXCollections.observableArrayList();
+    private SimpleIntegerProperty timerInSeconds = new SimpleIntegerProperty(0);
+    private SimpleBooleanProperty gameStarted = new SimpleBooleanProperty(false);
+    private SimpleStringProperty alertString = new SimpleStringProperty("");
     private User lobbyCreator;
     @FXML
     public void initialize() {
@@ -75,10 +91,11 @@ public class LobbySceneController {
 
             initLobbyInformation(lobbySimple);
             initExitBtn();
+            initTimer();
+            initStartGame();
+            initAlert();
 
-            Thread updatesThread = new Thread(() -> {
-                followToUpdates();
-            });
+            Thread updatesThread = new Thread(this::followToUpdates);
             updatesThread.start();
         } catch (LobbyDoesntExistException | FullLobbyException | LobbyWrongInfo exception) {
             swapToMenuScene(exception.getMessage());
@@ -165,7 +182,7 @@ public class LobbySceneController {
     }
 
     public void followToUpdates() {
-        MainApplication.getClient().followToLobbyUpdates(usersInLobby);
+        MainApplication.getClient().followToLobbyUpdates(usersInLobby, timerInSeconds, gameStarted, alertString);
     }
 
     private void putUserIntoBox(VBox playerVBox, User participant) {
@@ -204,6 +221,54 @@ public class LobbySceneController {
             }
         });
     }
+
+    private void initTimer() {
+        timerInSeconds.addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                int currentTime = t1.intValue();
+                int minutes = currentTime / 60;
+                int seconds = currentTime % 60;
+                Platform.runLater(() -> {
+                    labelMinutes.setText("0" + minutes);
+                    labelSeconds.setText((seconds / 10 == 0) ? "0" + seconds : String.valueOf(seconds));
+                });
+            }
+        });
+    }
+
+    private void initStartGame() {
+        gameStarted.addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
+                if (t1) {
+                    swapToGameScene();
+                }
+            }
+        });
+    }
+
+    private void initAlert() {
+        alertString.addListener(new ChangeListener<>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                Platform.runLater(() -> {
+                    if (t1.isEmpty()) return;
+                    alertString.setValue("");
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Информация");
+                    alert.setHeaderText(null);
+                    alert.setContentText(t1);
+                    alert.showAndWait();
+                });
+            }
+        });
+    }
+
+    private void swapToGameScene() {
+
+    }
+
 
 
 

@@ -27,6 +27,9 @@ public interface ServerMessages {
     String COMMAND_USER_ENTERED = "USER_ENTERED";
     String COMMAND_USER_LEAVED = "USER_LEAVE";
     String COMMAND_EXIT_USER = "USER_EXIT_FROM_LOBBY";
+    String COMMAND_LOBBY_TIMER = "UPDATE_LOBBY_TIMER";
+    String COMMAND_START_GAME = "START_GAME";
+    String COMMAND_NEED_PLAYERS = "NEED_PLAYERS";
 
     public static void sendMessage(BufferedWriter out, String message) throws IOException {
         out.write(message);

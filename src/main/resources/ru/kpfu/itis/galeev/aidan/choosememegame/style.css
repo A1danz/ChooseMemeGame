@@ -272,3 +272,89 @@ AnchorPane {
     -fx-font-weight: bold;
     -fx-text-fill: #7679ee;
 }
+
+.game-field {
+    -fx-background-color: transaparent;
+    -fx-background-radius: 100px;
+}
+
+.user-menu {
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+}
+
+.label-game-participant {
+    -fx-background-color: white;
+    -fx-padding: 4px 12px;
+    -fx-background-radius: 20px;
+    -fx-font-family: Rubik;
+    -fx-font-weight: bold;
+    -fx-text-fill: #7679ee;
+    -fx-font-size: 14px;
+}
+
+.label-game-participant-score {
+    -fx-background-color: white;
+    -fx-padding: 0px 4px;
+    -fx-background-radius: 20px;
+    -fx-font-family: Rubik;
+    -fx-font-weight: bold;
+    -fx-text-fill: #473f91;
+    -fx-font-size: 14px;
+}
+
+.situation-card {
+    -fx-background-image: url(img/background.png);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0.2, 0, 0);
+}
+
+.label-big-situation {
+    -fx-font-family: Rubik;
+    -fx-font-weight: bold;
+    -fx-text-fill: #473f91;
+    -fx-font-size: 24px;
+}
+
+.label-small-situation {
+    -fx-font-family: Rubik;
+    -fx-font-weight: bold;
+    -fx-text-fill: #473f91;
+    -fx-font-size: 16px;
+}
+
+.label-card-owner {
+    -fx-background-color: white;
+    -fx-padding: 0px 4px;
+    -fx-background-radius: 20px;
+    -fx-font-family: Rubik;
+    -fx-font-weight: bold;
+    -fx-text-fill: #473f91;
+    -fx-font-size: 12px;
+}
+
+.label-game-username {
+    -fx-background-color: #7679ee;
+    -fx-padding: 4px 12px;
+    -fx-background-radius: 20px;
+    -fx-font-family: Rubik;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+.label-game-user-score {
+    -fx-background-color: #7679ee;
+    -fx-padding: 0px 4px;
+    -fx-background-radius: 20px;
+    -fx-font-family: Rubik;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+.label-help-text {
+    -fx-font-family: Rubik;
+    -fx-font-weight: bold;
+    -fx-text-fill: #7679ee;
+    -fx-font-size: 12px;
+}

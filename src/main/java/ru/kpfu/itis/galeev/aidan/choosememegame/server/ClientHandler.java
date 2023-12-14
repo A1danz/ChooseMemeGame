@@ -222,6 +222,38 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    public void updateLobbyTimer(int time) {
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_LOBBY_TIMER,
+                    new String[][]{new String[]{String.valueOf(time)}}
+            ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void notifyStartGame() {
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_START_GAME,
+                    new String[][]{new String[]{"start"}}
+            ));
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public void notifyNeedMorePlayers(int participantsCount, int playersForStartCount) {
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_NEED_PLAYERS,
+                    new String[][]{new String[]{"Для старта необходимо: " + playersForStartCount}}));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

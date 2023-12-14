@@ -1,6 +1,10 @@
 package ru.kpfu.itis.galeev.aidan.choosememegame.client;
 
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableBooleanValue;
+import javafx.beans.value.ObservableIntegerValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import ru.kpfu.itis.galeev.aidan.choosememegame.config.Config;
@@ -178,7 +182,8 @@ public class Client {
         }
     }
 
-    public void followToLobbyUpdates(ObservableList<User> usersInLobby) {
+    public void followToLobbyUpdates(ObservableList<User> usersInLobby, SimpleIntegerProperty timerInSeconds,
+                                     SimpleBooleanProperty gameStarted, SimpleStringProperty alert) {
         try {
             while (true) {
                 Map.Entry<String, String[][]> messageByServer = StringConverter.getCommand(in.readLine());
@@ -191,7 +196,14 @@ public class Client {
                     } case ServerMessages.COMMAND_USER_LEAVED -> {
                         User leavedUser = new User(arguments[0][0], arguments[0][1]);
                         usersInLobby.remove(leavedUser);
-                    }default -> throw new UnsupportedOperationException("Unsupported command: " + command);
+                    } case ServerMessages.COMMAND_LOBBY_TIMER -> {
+                        timerInSeconds.set(Integer.parseInt(arguments[0][0]));
+                    } case ServerMessages.COMMAND_START_GAME -> {
+                        gameStarted.set(true);
+                    } case ServerMessages.COMMAND_NEED_PLAYERS -> {
+                        alert.set(arguments[0][0]);
+                    }
+                    default -> throw new UnsupportedOperationException("Unsupported command: " + command);
                 }
             }
         } catch (IOException ex) {

@@ -19,7 +19,11 @@ public class Lobby {
     private ObservableList<ClientHandler> usersInLobby;
     private final int lobbyCapacity;
     private String theme;
+    private Server server;
     final int[] participantsCountWrapper = new int[]{0};
+    private int timer = timeBeforeStart;
+    private final static int minPlayersForStart = 2;
+    private final static int timeBeforeStart = 6;
 
 
     public Lobby(User creator, Server server, int lobbyCapacity, String theme, int participantsCount, String name) {
@@ -29,6 +33,9 @@ public class Lobby {
         usersInLobby = FXCollections.observableArrayList();
         this.participantsCountWrapper[0] = participantsCount;
         this.name = name;
+        this.server = server;
+        Thread timerThread = new Thread(this::startTimer);
+        timerThread.start();
         usersInLobby.addListener(new ListChangeListener<ClientHandler>() {
             @Override
             public void onChanged(Change<? extends ClientHandler> change) {
@@ -103,5 +110,24 @@ public class Lobby {
 
     public void removeUser(ClientHandler user) {
         usersInLobby.remove(user);
+    }
+
+    private void startTimer() {
+        try {
+            while (timer > 0) {
+                Thread.sleep(1000);
+                timer -= 1;
+                server.notifyTimerUpdate(timer, creator);
+            }
+            if (getParticipantsCount() >= minPlayersForStart) {
+                server.notifyStartGame(creator);
+            } else {
+                timer = timeBeforeStart;
+                server.notifyNeedMorePlayersForStart(creator, getParticipantsCount(), minPlayersForStart);
+                startTimer();
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
