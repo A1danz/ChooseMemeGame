@@ -19,5 +19,9 @@ public class GameUser {
         this.mustThrowCard = mustThrowCard;
     }
 
+    public User getUser() {
+        return clientHandler.getUser();
+    }
+
 
 }

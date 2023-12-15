@@ -1,7 +1,6 @@
 package ru.kpfu.itis.galeev.aidan.choosememegame.server;
 
-import ru.kpfu.itis.galeev.aidan.choosememegame.model.Lobby;
-import ru.kpfu.itis.galeev.aidan.choosememegame.model.User;
+import ru.kpfu.itis.galeev.aidan.choosememegame.model.*;
 import ru.kpfu.itis.galeev.aidan.choosememegame.utils.StringConverter;
 
 import java.io.*;
@@ -179,9 +178,39 @@ public class ClientHandler implements Runnable {
                             if (lobby != null) {
                                 lobby.removeUser(this);
                             }
+                            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                                    ServerMessages.COMMAND_EXIT_USER,
+                                    new String[][]{new String[]{"exit"}}
+                                    ));
                         }
-
-
+                        case ServerMessages.COMMAND_GET_GAME -> {
+                            // creator, memeCardsCount, situationCardsCount, usersInGameList
+                            String gameOwner = arguments[0][0];
+                            Game game = server.games.get(gameOwner);
+                            ArrayList<GameUserSimple> gameUserSimpleList = new ArrayList<>();
+                            game.getUsersInGame().forEach((participant) -> {
+                                gameUserSimpleList.add(new GameUserSimple(participant.getUser()));
+                            });
+                            GameSimple gameSimple = new GameSimple(
+                                    game.getCreator(),
+                                    gameUserSimpleList,
+                                    game.getMemeCards().size(),
+                                    game.getSituations().size(),
+                                    null
+                            );
+                            String[][] result = new String[3 + gameUserSimpleList.size()][];
+                            result[0] = new String[]{gameSimple.getCreator().getUsername(), gameSimple.getCreator().getPathToAvatar()}; // creator
+                            result[1] = new String[]{String.valueOf(gameSimple.getMemeCardsCount())}; // memecards
+                            result[2] = new String[]{String.valueOf(gameSimple.getSituationsCount())}; // situations
+                            for (int i = 0; i < gameUserSimpleList.size(); i++) {
+                                User user = gameUserSimpleList.get(i).getUser();
+                                result[i + 3] = new String[]{user.getUsername(), user.getPathToAvatar()};
+                            } // usersInGameList
+                            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                                    ServerMessages.COMMAND_GAME_INFO,
+                                    result
+                                    ));
+                        }
                         default -> {
                             throw new UnsupportedOperationException("Unsupported command: " + command);
                         }

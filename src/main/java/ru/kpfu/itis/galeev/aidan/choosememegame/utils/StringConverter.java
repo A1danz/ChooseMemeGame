@@ -2,10 +2,7 @@ package ru.kpfu.itis.galeev.aidan.choosememegame.utils;
 
 import ru.kpfu.itis.galeev.aidan.choosememegame.server.ServerMessages;
 
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class StringConverter {
     public static String escapeMessage(String message) {

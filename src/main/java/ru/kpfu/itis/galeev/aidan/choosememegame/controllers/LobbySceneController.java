@@ -95,9 +95,8 @@ public class LobbySceneController {
             initTimer();
             initStartGame();
             initAlert();
+            followToUpdates();
 
-            Thread updatesThread = new Thread(this::followToUpdates);
-            updatesThread.start();
         } catch (LobbyDoesntExistException | FullLobbyException | LobbyWrongInfo exception) {
             swapToMenuScene(exception.getMessage());
         } catch (Exception ex) {

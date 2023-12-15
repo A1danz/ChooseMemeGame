@@ -25,11 +25,13 @@ public interface ServerMessages {
     String SUCESS_CONNECT = "SUCESS_CONNECT";
     String FAILURE_CONNECT = "FAILURE_CONNECT";
     String COMMAND_USER_ENTERED = "USER_ENTERED";
-    String COMMAND_USER_LEAVED = "USER_LEAVE";
-    String COMMAND_EXIT_USER = "USER_EXIT_FROM_LOBBY";
+    String COMMAND_USER_LEAVED = "USER_LEAVE"; // means that participant leave from lobby
+    String COMMAND_EXIT_USER = "USER_EXIT_FROM_LOBBY"; // means that user(client) exit from lobby
     String COMMAND_LOBBY_TIMER = "UPDATE_LOBBY_TIMER";
     String COMMAND_START_GAME = "START_GAME";
     String COMMAND_NEED_PLAYERS = "NEED_PLAYERS";
+    String COMMAND_GET_GAME = "GET_GAME";
+    String COMMAND_GAME_INFO = "GAME_INFO";
 
     public static void sendMessage(BufferedWriter out, String message) throws IOException {
         out.write(message);

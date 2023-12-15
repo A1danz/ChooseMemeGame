@@ -86,5 +86,11 @@ public class Game {
         this.situations = situations;
     }
 
+    public Stack<MemeCard> getMemeCards() {
+        return memeCards;
+    }
 
+    public void setMemeCards(Stack<MemeCard> memeCards) {
+        this.memeCards = memeCards;
+    }
 }

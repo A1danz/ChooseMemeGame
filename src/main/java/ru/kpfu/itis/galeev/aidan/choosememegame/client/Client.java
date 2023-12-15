@@ -11,9 +11,7 @@ import ru.kpfu.itis.galeev.aidan.choosememegame.config.Config;
 import ru.kpfu.itis.galeev.aidan.choosememegame.exceptions.FullLobbyException;
 import ru.kpfu.itis.galeev.aidan.choosememegame.exceptions.LobbyDoesntExistException;
 import ru.kpfu.itis.galeev.aidan.choosememegame.exceptions.LobbyWrongInfo;
-import ru.kpfu.itis.galeev.aidan.choosememegame.model.Lobby;
-import ru.kpfu.itis.galeev.aidan.choosememegame.model.LobbySimple;
-import ru.kpfu.itis.galeev.aidan.choosememegame.model.User;
+import ru.kpfu.itis.galeev.aidan.choosememegame.model.*;
 import ru.kpfu.itis.galeev.aidan.choosememegame.server.ServerMessages;
 import ru.kpfu.itis.galeev.aidan.choosememegame.utils.StringConverter;
 
@@ -32,6 +30,8 @@ public class Client {
     public User getUser() {
         return user;
     }
+    private Thread updatesInLobbyThread;
+    private boolean isFollowed = false;
 
     public Client() {
         try {
@@ -182,34 +182,50 @@ public class Client {
 
     public void followToLobbyUpdates(ObservableList<User> usersInLobby, SimpleIntegerProperty timerInSeconds,
                                      SimpleBooleanProperty gameStarted, SimpleStringProperty alert) {
-        try {
-            while (true) {
-                Map.Entry<String, String[][]> messageByServer = StringConverter.getCommand(in.readLine());
-                String command = messageByServer.getKey();
-                String[][] arguments = messageByServer.getValue();
-                switch (command) {
-                    case ServerMessages.COMMAND_USER_ENTERED -> {
-                        User enteredUser = new User(arguments[0][0], arguments[0][1]);
-                        usersInLobby.add(enteredUser);
-                    } case ServerMessages.COMMAND_USER_LEAVED -> {
-                        User leavedUser = new User(arguments[0][0], arguments[0][1]);
-                        usersInLobby.remove(leavedUser);
-                    } case ServerMessages.COMMAND_LOBBY_TIMER -> {
-                        timerInSeconds.set(Integer.parseInt(arguments[0][0]));
-                    } case ServerMessages.COMMAND_START_GAME -> {
-                        gameStarted.set(true);
-                    } case ServerMessages.COMMAND_NEED_PLAYERS -> {
-                        alert.set(arguments[0][0]);
+        isFollowed = true;
+        updatesInLobbyThread = new Thread(() -> {
+            try {
+                while (isFollowed) {
+                    Map.Entry<String, String[][]> messageByServer = StringConverter.getCommand(in.readLine());
+                    String command = messageByServer.getKey();
+                    String[][] arguments = messageByServer.getValue();
+                    switch (command) {
+                        case ServerMessages.COMMAND_USER_ENTERED -> {
+                            User enteredUser = new User(arguments[0][0], arguments[0][1]);
+                            usersInLobby.add(enteredUser);
+                        }
+                        case ServerMessages.COMMAND_USER_LEAVED -> {
+                            User leavedUser = new User(arguments[0][0], arguments[0][1]);
+                            usersInLobby.remove(leavedUser);
+                        }
+                        case ServerMessages.COMMAND_LOBBY_TIMER -> {
+                            timerInSeconds.set(Integer.parseInt(arguments[0][0]));
+                        }
+                        case ServerMessages.COMMAND_START_GAME -> {
+                            gameStarted.set(true);
+                            isFollowed = false;
+                        }
+                        case ServerMessages.COMMAND_NEED_PLAYERS -> {
+                            alert.set(arguments[0][0]);
+                        }
+                        case ServerMessages.COMMAND_EXIT_USER -> {
+                            isFollowed = false;
+                        }
+                        default -> {
+                            if(isFollowed) throw new UnsupportedOperationException("Unsupported command: " + command);
+                            else break;
+                        }
                     }
-                    default -> throw new UnsupportedOperationException("Unsupported command: " + command);
                 }
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
+        });
+        updatesInLobbyThread.start();
     }
 
     public void leaveLobby(String lobbyCreator) {
+        unfollowLobbyUpdates();
         try {
             ServerMessages.sendMessage(out, StringConverter.createCommand(
                     ServerMessages.COMMAND_EXIT_USER,
@@ -218,5 +234,46 @@ public class Client {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public GameSimple getSimpleGame(String gameCreator) {
+        unfollowLobbyUpdates();
+        System.out.println(updatesInLobbyThread.isAlive());
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_GET_GAME,
+                    new String[][]{new String[]{gameCreator}}));
+            Map.Entry<String, String[][]> messageByServer = StringConverter.getCommand(in.readLine());
+            if (messageByServer.getKey().equals(ServerMessages.COMMAND_GAME_INFO)) {
+                // creator, memeCardsCount, situationCardsCount, usersInGameList
+                String[][] arguments = messageByServer.getValue();
+                User creator = new User(arguments[0][0], arguments[0][1]);
+                int memeCardsCount = Integer.parseInt(arguments[1][0]);
+                int situationCardsCount = Integer.parseInt(arguments[2][0]);
+                ArrayList<GameUserSimple> gameUserSimplesList = new ArrayList<>();
+                for (int i = 3; i < arguments.length; i++) {
+                    gameUserSimplesList.add(new GameUserSimple(new User(arguments[i][0], arguments[i][1])));
+                }
+                GameSimple gameSimple = new GameSimple(
+                        creator,
+                        gameUserSimplesList,
+                        memeCardsCount,
+                        situationCardsCount,
+                        getUser()
+                );
+                System.out.println(gameSimple);
+                return gameSimple;
+            } else {
+                throw new UnsupportedOperationException("[getSimpleGame()] Не ожидаемая команда: " + messageByServer.getKey());
+            }
+        } catch (IOException ex) {
+            System.out.println(ex);
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public void unfollowLobbyUpdates() {
+        isFollowed = false;
+        System.out.println(updatesInLobbyThread.isAlive());
     }
 }
