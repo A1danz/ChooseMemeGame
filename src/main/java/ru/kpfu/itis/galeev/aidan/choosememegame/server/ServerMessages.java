@@ -21,6 +21,7 @@ public interface ServerMessages {
     String COMMAND_LOBBY_DOESNT_EXIST = "LOBBY_DNT_EXIST";
     String COMMAND_LOBBY_FULL = "LOBBY_FULL";
     String COMMAND_LOBBY_INFO = "LOBBY_INFO";
+    String COMMAND_LOBBY_INFO_RECEIVED = "LOBBY_RECEIVED";
     String COMMAND_LOBBY_CONNECT = "CONNECT_LOBBY";
     String SUCESS_CONNECT = "SUCESS_CONNECT";
     String FAILURE_CONNECT = "FAILURE_CONNECT";
@@ -35,6 +36,8 @@ public interface ServerMessages {
     String COMMAND_GET_CARDS = "GET_CARDS";
     String COMMAND_ALL_READY = "ALL_READY";
     String COMMAND_READY_FOR_GAME = "READY_FOR_GAME";
+    String COMMAND_GAME_START_TIMER = "GAME_START_TIMER";
+
 
     public static void sendMessage(BufferedWriter out, String message) throws IOException {
         out.write(message);

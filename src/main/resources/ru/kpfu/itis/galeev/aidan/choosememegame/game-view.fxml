@@ -657,5 +657,6 @@
             <Image url="@img/waiting_players.png" />
          </image>
       </ImageView>
+      <Label fx:id="labelStartTimer" layoutY="291.0" styleClass="label-timer" text="9" AnchorPane.leftAnchor="420.0" AnchorPane.topAnchor="275.0" />
    </children>
 </AnchorPane>

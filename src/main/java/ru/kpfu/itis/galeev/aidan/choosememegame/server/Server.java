@@ -103,4 +103,11 @@ public class Server {
             participant.getClientHandler().notifyAllReady();
         });
     }
+
+    public void notifyStartGameTimer(String gameOwner, int seconds) {
+        Game game = games.get(gameOwner);
+        game.getUsersInGame().forEach((participant) -> {
+            participant.getClientHandler().notifyStartGameTimer(seconds);
+        });
+    }
 }

@@ -17,6 +17,7 @@ public class ClientHandler implements Runnable {
     private BufferedWriter out;
     private User user;
     private Server server;
+    public boolean lobbyIsLoaded = false; // not to receive notifications about timer updates
 
     public ClientHandler(Socket client, Server server) {
         try {
@@ -80,6 +81,9 @@ public class ClientHandler implements Runnable {
                                     ServerMessages.COMMAND_LOBBIES,
                                     lobbiesForMessage.toArray(new String[lobbiesForMessage.size()][])
                                     ));
+                        }
+                        case ServerMessages.COMMAND_LOBBY_INFO_RECEIVED -> {
+                            lobbyIsLoaded = true;
                         }
                         case ServerMessages.COMMAND_CREATE_LOBBY -> {
                             // name, capacity, theme
@@ -174,6 +178,7 @@ public class ClientHandler implements Runnable {
                         }
                         case ServerMessages.COMMAND_EXIT_USER -> {
                             String creatorUsername = arguments[0][0];
+                            lobbyIsLoaded = false;
 
                             Lobby lobby = server.lobbies.get(creatorUsername);
                             if (lobby != null) {
@@ -279,6 +284,7 @@ public class ClientHandler implements Runnable {
 
     public void updateLobbyTimer(int time) {
         try {
+            if (!lobbyIsLoaded) return;
             ServerMessages.sendMessage(out, StringConverter.createCommand(
                     ServerMessages.COMMAND_LOBBY_TIMER,
                     new String[][]{new String[]{String.valueOf(time)}}
@@ -317,6 +323,17 @@ public class ClientHandler implements Runnable {
             ));
         } catch (IOException ex) {
             throw new RuntimeException(ex);
+        }
+    }
+
+    public void notifyStartGameTimer(int seconds) {
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_GAME_START_TIMER,
+                    new String[][]{new String[]{String.valueOf(seconds)}}
+            ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

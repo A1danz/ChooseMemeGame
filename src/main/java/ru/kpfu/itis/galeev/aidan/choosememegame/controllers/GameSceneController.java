@@ -1,6 +1,8 @@
 package ru.kpfu.itis.galeev.aidan.choosememegame.controllers;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -75,7 +77,11 @@ public class GameSceneController {
 
     @FXML
     private ImageView imageWaitingPlayers;
+
+    @FXML
+    private Label labelStartTimer;
     private SimpleBooleanProperty gameStarted = new SimpleBooleanProperty(false);
+    private SimpleIntegerProperty startTimer = new SimpleIntegerProperty(10);
 
     @FXML
     public void initialize() {
@@ -88,13 +94,11 @@ public class GameSceneController {
             initUserCard(gameUser);
             initCardsCount(gameSimple.getMemeCardsCount());
             initGameParticipants(gameSimple.getUsersInGame());
-
-            initStartGameActions();
-            client.followToGameUpdates(gameStarted);
-
             List<MemeCard> cards = client.getCards(gameOwner);
             initUserCards(cards);
 
+            client.followToGameUpdates(gameStarted, startTimer);
+            initStartGameActions();
             initInstruction();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -105,7 +109,23 @@ public class GameSceneController {
     private void initStartGameActions() {
         gameStarted.addListener((observableValue, previous, now) -> {
             if (now) {
-                imageWaitingPlayers.setVisible(false);
+                Platform.runLater(() -> {
+                    imageWaitingPlayers.setVisible(false);
+                    labelStartTimer.setVisible(true);
+                    labelStartTimer.setText(startTimer.getValue().toString());
+                });
+                startTimer.addListener(new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                        Platform.runLater(() -> {
+                            if (t1.intValue() > 0) {
+                                labelStartTimer.setText(String.valueOf(t1.intValue()));
+                            } else {
+                                labelStartTimer.setText("GAME STARTED!");
+                            }
+                        });
+                    }
+                });
             }
         });
     }
@@ -134,12 +154,12 @@ public class GameSceneController {
             innerVBox.setPrefWidth(122.0);
             VBox.setMargin(innerVBox, new Insets(0, 0, 0, 0));
 
-            Circle circle = new Circle();
-            circle.setFill(Color.WHITE);
-            circle.setRadius(26.0);
-            circle.setStroke(Color.BLACK);
-            circle.setStrokeType(StrokeType.INSIDE);
-            circle.setStrokeWidth(0.0);
+            Circle circleBehindAvatar = new Circle();
+            circleBehindAvatar.setFill(Color.WHITE);
+            circleBehindAvatar.setRadius(26.0);
+            circleBehindAvatar.setStroke(Color.BLACK);
+            circleBehindAvatar.setStrokeType(StrokeType.INSIDE);
+            circleBehindAvatar.setStrokeWidth(0.0);
 
             ImageView imageView = new ImageView();
             imageView.setFitHeight(45.0);
@@ -166,16 +186,17 @@ public class GameSceneController {
             label2.setText(String.valueOf(participant.getPoints()));
             VBox.setMargin(label2, new Insets(-5, 0, 0, 0));
 
-            Circle innerCircle = new Circle();
-            innerCircle.setFill(Color.web("#f6b801"));
-            innerCircle.setRadius(5.0);
-            innerCircle.setStroke(Color.BLACK);
-            innerCircle.setStrokeType(StrokeType.INSIDE);
-            innerCircle.setStrokeWidth(0.0);
-            VBox.setMargin(innerCircle, new Insets(-3, 0, 0, 0));
+            Circle mustThrowCircle = new Circle();
+            mustThrowCircle.setFill(Color.web("#f6b801"));
+            mustThrowCircle.setRadius(5.0);
+            mustThrowCircle.setStroke(Color.BLACK);
+            mustThrowCircle.setStrokeType(StrokeType.INSIDE);
+            mustThrowCircle.setStrokeWidth(0.0);
+            mustThrowCircle.setVisible(false);
+            VBox.setMargin(mustThrowCircle, new Insets(-3, 0, 0, 0));
 
-            vbox.getChildren().addAll(innerVBox, label1, label2, innerCircle);
-            innerVBox.getChildren().addAll(circle, imageView);
+            vbox.getChildren().addAll(innerVBox, label1, label2, mustThrowCircle);
+            innerVBox.getChildren().addAll(circleBehindAvatar, imageView);
 
             participantsBox.getChildren().add(vbox);
         });

@@ -37,6 +37,7 @@ public class Game {
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                 if (t1.intValue() == usersInGame.size()) {
                     server.notifyAllReady(creator.getUsername());
+                    startTimer(creator.getUsername());
                 }
             }
         });
@@ -108,5 +109,20 @@ public class Game {
     }
     public void increaseReadyPlayersCount() {
         readyCounter.set(readyCounter.get() + 1);
+    }
+
+    private void startTimer(String gameOwner) {
+        new Thread(() -> {
+            int t = 10;
+            while (t > 0) {
+                try {
+                    Thread.sleep(1000);
+                    t--;
+                    server.notifyStartGameTimer(gameOwner, t);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
     }
 }

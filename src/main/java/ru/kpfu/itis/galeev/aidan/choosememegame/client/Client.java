@@ -143,6 +143,12 @@ public class Client {
                     participants.add(new User(arguments[i][0], arguments[i][1]));
                 }
                 String[] lobbySimpleInfo = arguments[0];
+
+                ServerMessages.sendMessage(out, StringConverter.createCommand(
+                        ServerMessages.COMMAND_LOBBY_INFO_RECEIVED,
+                        new String[][]{new String[]{"received"}}
+                ));
+
                 return new LobbySimple(
                         new User(lobbySimpleInfo[4], lobbySimpleInfo[5]),
                         Integer.parseInt(lobbySimpleInfo[2]),
@@ -299,7 +305,7 @@ public class Client {
         }
     }
 
-    public void followToGameUpdates(SimpleBooleanProperty gameStarted) {
+    public void followToGameUpdates(SimpleBooleanProperty gameStarted, SimpleIntegerProperty gameStartTimer) {
         Thread gameUpdatesThread = new Thread(() -> {
             try {
                 boolean run = true;
@@ -310,6 +316,9 @@ public class Client {
                     switch (command) {
                         case ServerMessages.COMMAND_ALL_READY -> {
                             gameStarted.setValue(true);
+                        }
+                        case ServerMessages.COMMAND_GAME_START_TIMER -> {
+                            gameStartTimer.set(Integer.parseInt(arguments[0][0]));
                         }
                         default -> {
                             throw new UnsupportedOperationException("Unsupported command: " + command);
