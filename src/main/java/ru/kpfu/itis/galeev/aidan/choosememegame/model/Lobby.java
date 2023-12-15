@@ -36,7 +36,7 @@ public class Lobby {
         this.name = name;
         this.server = server;
         Thread timerThread = new Thread(this::startTimer);
-        timerThread.start();
+        if (server != null) timerThread.start();
         usersInLobby.addListener(new ListChangeListener<ClientHandler>() {
             @Override
             public void onChanged(Change<? extends ClientHandler> change) {

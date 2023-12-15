@@ -16,6 +16,7 @@ public class GameSimple {
     private SimpleIntegerProperty situationsCount = new SimpleIntegerProperty();
     private SimpleStringProperty situation = new SimpleStringProperty();
     private ObservableList<MemeCard> userCards = FXCollections.observableArrayList();
+    private SimpleBooleanProperty gameStarted = new SimpleBooleanProperty();
 
     public GameSimple(User creator, List<GameUserSimple> usersInGame, int memeCardsCount, int situationsCount, User clientUser) {
         this.creator = creator;
@@ -29,6 +30,7 @@ public class GameSimple {
         this.memeCardsCount.set(memeCardsCount);
         this.situationsCount.set(situationsCount);
         this.situation.set("");
+        gameStarted.set(false);
     }
 
     public User getCreator() {

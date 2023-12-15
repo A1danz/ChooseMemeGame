@@ -10,7 +10,7 @@ public class GameUserSimple {
     private SimpleIntegerProperty points = new SimpleIntegerProperty();
     private SimpleBooleanProperty mustThrowCard = new SimpleBooleanProperty();
     private SimpleStringProperty throwableCard = new SimpleStringProperty();
-    private SimpleIntegerProperty cardPoints = new SimpleIntegerProperty();
+    private SimpleIntegerProperty cardVotes = new SimpleIntegerProperty();
     private SimpleIntegerProperty cardsCount = new SimpleIntegerProperty();
 
     public GameUserSimple(User user) {
@@ -18,7 +18,7 @@ public class GameUserSimple {
         points.set(0);
         mustThrowCard.set(false);
         throwableCard.set("");
-        cardPoints.set(0);
+        cardVotes.set(0);
         cardsCount.set(Config.PLAYER_CARDS_COUNT);
     }
 
@@ -50,12 +50,8 @@ public class GameUserSimple {
         return throwableCard;
     }
 
-    public int getCardPoints() {
-        return cardPoints.get();
-    }
-
-    public SimpleIntegerProperty cardPointsProperty() {
-        return cardPoints;
+    public int getCardVotes() {
+        return cardVotes.get();
     }
 
     public int getCardsCount() {
@@ -64,5 +60,17 @@ public class GameUserSimple {
 
     public SimpleIntegerProperty cardsCountProperty() {
         return cardsCount;
+    }
+
+    @Override
+    public String toString() {
+        return "GameUserSimple{" +
+                "user=" + user +
+                ", points=" + points +
+                ", mustThrowCard=" + mustThrowCard +
+                ", throwableCard=" + throwableCard +
+                ", cardPoints=" + cardVotes +
+                ", cardsCount=" + cardsCount +
+                '}';
     }
 }

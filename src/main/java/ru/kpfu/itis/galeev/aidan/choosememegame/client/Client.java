@@ -91,6 +91,7 @@ public class Client {
             System.out.println(line);
 
 
+            // user_username, user_avatar, null, lobby_capacity, theme participants_count, room_name
             for (String[] lobby : messageByServer.getValue()) {
                 lobbies.add(new Lobby(
                         new User(lobby[0], lobby[1]),
@@ -103,7 +104,6 @@ public class Client {
             }
 
             return lobbies;
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -156,6 +156,7 @@ public class Client {
             } else if (messageByServer.getKey().equals(ServerMessages.COMMAND_LOBBY_FULL)) {
                 throw new FullLobbyException("Лобби \"" + creatorUsername + "\" заполнено");
             } else {
+                System.out.println("Unsupported - " + messageByServer.getKey());
                 throw new LobbyWrongInfo("Не удалось получить информацию о лобби.");
             }
         } catch (IOException ex) {
@@ -176,6 +177,8 @@ public class Client {
             }
             return answerByServer.getValue()[0][0];
         } catch (IOException e) {
+            System.out.println("throw exc");
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
@@ -275,5 +278,64 @@ public class Client {
     public void unfollowLobbyUpdates() {
         isFollowed = false;
         System.out.println(updatesInLobbyThread.isAlive());
+    }
+
+    public List<MemeCard> getCards(String gameOwner) {
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                            ServerMessages.COMMAND_GET_CARDS,
+                            new String[][]{new String[]{gameOwner, user.getUsername()}}
+                    )
+            );
+            Map.Entry<String, String[][]> messageByServer = StringConverter.getCommand(in.readLine());
+            ArrayList<MemeCard> cards = new ArrayList<>();
+            for (String s : messageByServer.getValue()[0]) {
+                cards.add(new MemeCard(s));
+            }
+
+            return cards;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void followToGameUpdates(SimpleBooleanProperty gameStarted) {
+        Thread gameUpdatesThread = new Thread(() -> {
+            try {
+                boolean run = true;
+                while (run) {
+                    Map.Entry<String, String[][]> messageByServer = StringConverter.getCommand(in.readLine());
+                    String command = messageByServer.getKey();
+                    String[][] arguments = messageByServer.getValue();
+                    switch (command) {
+                        case ServerMessages.COMMAND_ALL_READY -> {
+                            gameStarted.setValue(true);
+                        }
+                        default -> {
+                            throw new UnsupportedOperationException("Unsupported command: " + command);
+                        }
+                    }
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                System.out.println(ex);
+                throw new RuntimeException(ex);
+            }
+        });
+        gameUpdatesThread.start();
+    }
+
+    public void readyForGame(String gameOwner) {
+        try {
+            ServerMessages.sendMessage(
+                    out,
+                    StringConverter.createCommand(
+                            ServerMessages.COMMAND_READY_FOR_GAME,
+                            new String[][]{new String[]{gameOwner}}
+                    )
+            );
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

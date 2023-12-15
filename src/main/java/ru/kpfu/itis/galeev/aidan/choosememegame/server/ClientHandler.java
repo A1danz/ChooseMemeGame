@@ -64,6 +64,7 @@ public class ClientHandler implements Runnable {
                                 if (lobby.getParticipantsCount() != lobby.getLobbyCapacity()) {
                                     User creator = lobby.getCreator();
                                     // creator,lobby_capacity,theme, participantsCount, lobby_name
+                                    // user_username, user_avatar, null, lobby_capacity, theme participants_count, room_name
                                     lobbiesForMessage.add(new String[]{
                                             creator.getUsername(),
                                             creator.getPathToAvatar(),
@@ -165,11 +166,11 @@ public class ClientHandler implements Runnable {
                                 ));
                                 break;
                             }
-                            lobby.addUser(this);
                             ServerMessages.sendMessage(out, StringConverter.createCommand(
                                     ServerMessages.SUCESS_CONNECT,
                                     new String[][]{new String[]{"Success"}}
                                     ));
+                            lobby.addUser(this);
                         }
                         case ServerMessages.COMMAND_EXIT_USER -> {
                             String creatorUsername = arguments[0][0];
@@ -210,6 +211,32 @@ public class ClientHandler implements Runnable {
                                     ServerMessages.COMMAND_GAME_INFO,
                                     result
                                     ));
+                        }
+                        case ServerMessages.COMMAND_GET_CARDS -> {
+                            String gameOwner = arguments[0][0];
+                            String cardsOwner = arguments[0][1];
+                            Game game = server.games.get(gameOwner);
+                            List<MemeCard> cards = new ArrayList<>();
+                            for (GameUser participant : game.getUsersInGame()) {
+                                if (participant.getUser().getUsername().equals(cardsOwner)) {
+                                    cards.addAll(participant.getCards());
+                                    break;
+                                }
+                            }
+
+                            String[][] result = new String[1][cards.size()];
+                            for (int i = 0; i < cards.size(); i++) {
+                                result[0][i] = cards.get(i).getPathToCard();
+                            }
+                            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                                    ServerMessages.COMMAND_GET_CARDS,
+                                    result
+                            ));
+                        }
+                        case ServerMessages.COMMAND_READY_FOR_GAME -> {
+                            String gameOwner = arguments[0][0];
+                            Game game = server.games.get(gameOwner);
+                            game.increaseReadyPlayersCount();
                         }
                         default -> {
                             throw new UnsupportedOperationException("Unsupported command: " + command);
@@ -279,6 +306,17 @@ public class ClientHandler implements Runnable {
                     new String[][]{new String[]{"Для старта необходимо: " + playersForStartCount}}));
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void notifyAllReady() {
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_ALL_READY,
+                    new String[][]{new String[]{"all_ready"}}
+            ));
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
         }
     }
 

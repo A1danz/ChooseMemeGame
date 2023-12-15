@@ -11,7 +11,7 @@ public class MemeCard {
         this.pathToCard = pathToCard;
     }
 
-    public String getPathToCard(String memesThemeName) {
+    public String getPathToCard() {
         return pathToCard;
     }
 

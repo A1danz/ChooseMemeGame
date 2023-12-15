@@ -23,5 +23,11 @@ public class GameUser {
         return clientHandler.getUser();
     }
 
+    public LinkedList<MemeCard> getCards() {
+        return cards;
+    }
 
+    public ClientHandler getClientHandler() {
+        return clientHandler;
+    }
 }

@@ -319,7 +319,7 @@ AnchorPane {
     -fx-font-family: Rubik;
     -fx-font-weight: bold;
     -fx-text-fill: #473f91;
-    -fx-font-size: 16px;
+    -fx-font-size: 14px;
 }
 
 .label-card-owner {
@@ -357,4 +357,14 @@ AnchorPane {
     -fx-font-weight: bold;
     -fx-text-fill: #7679ee;
     -fx-font-size: 12px;
+}
+
+.ok-btn {
+    -fx-font-size: 20px;
+    -fx-font-family: Rubik;
+    -fx-background-color: #7679ee;
+    -fx-background-radius: 46;
+    -fx-text-fill: white;
+    -fx-padding: 10px 70px;
+    -fx-font-weight: bold;
 }

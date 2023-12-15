@@ -1,9 +1,7 @@
 package ru.kpfu.itis.galeev.aidan.choosememegame.server;
 
 import ru.kpfu.itis.galeev.aidan.choosememegame.config.Config;
-import ru.kpfu.itis.galeev.aidan.choosememegame.model.Game;
-import ru.kpfu.itis.galeev.aidan.choosememegame.model.Lobby;
-import ru.kpfu.itis.galeev.aidan.choosememegame.model.User;
+import ru.kpfu.itis.galeev.aidan.choosememegame.model.*;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -97,5 +95,12 @@ public class Server {
                 participant.notifyNeedMorePlayers(participantsCount, playerForStartCount);
             }
         }
+    }
+
+    public void notifyAllReady(String gameOwner) {
+        Game game = games.get(gameOwner);
+        game.getUsersInGame().forEach((participant) -> {
+            participant.getClientHandler().notifyAllReady();
+        });
     }
 }

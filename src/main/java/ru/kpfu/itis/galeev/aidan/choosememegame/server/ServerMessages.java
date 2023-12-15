@@ -32,6 +32,9 @@ public interface ServerMessages {
     String COMMAND_NEED_PLAYERS = "NEED_PLAYERS";
     String COMMAND_GET_GAME = "GET_GAME";
     String COMMAND_GAME_INFO = "GAME_INFO";
+    String COMMAND_GET_CARDS = "GET_CARDS";
+    String COMMAND_ALL_READY = "ALL_READY";
+    String COMMAND_READY_FOR_GAME = "READY_FOR_GAME";
 
     public static void sendMessage(BufferedWriter out, String message) throws IOException {
         out.write(message);
