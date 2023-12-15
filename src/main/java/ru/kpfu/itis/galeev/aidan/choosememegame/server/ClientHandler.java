@@ -337,6 +337,40 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    public void notifyUserThrowCard(String cardOwner, ThrownCard thrownCard) {
+        // cardOwner, img
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_USER_THROW_CARD,
+                    new String[][]{new String[]{cardOwner, thrownCard.getMemeCard().getPathToCard()}}
+            ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void notifyNewSituationCard(Situation situation) {
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_NEW_SITUATION_CARD,
+                    new String[][]{new String[]{situation.getSituationText()}}
+            ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void notifyDropBigSituation() {
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_DROP_BIG_SITUATION,
+                    new String[][]{new String[]{"drop_big_situation"}}
+            ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -3,8 +3,10 @@ package ru.kpfu.itis.galeev.aidan.choosememegame.controllers;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleMapProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,19 +14,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.TextAlignment;
 import ru.kpfu.itis.galeev.aidan.choosememegame.MainApplication;
 import ru.kpfu.itis.galeev.aidan.choosememegame.client.Client;
-import ru.kpfu.itis.galeev.aidan.choosememegame.model.GameSimple;
-import ru.kpfu.itis.galeev.aidan.choosememegame.model.GameUserSimple;
-import ru.kpfu.itis.galeev.aidan.choosememegame.model.MemeCard;
-import ru.kpfu.itis.galeev.aidan.choosememegame.model.User;
+import ru.kpfu.itis.galeev.aidan.choosememegame.model.*;
 import ru.kpfu.itis.galeev.aidan.choosememegame.utils.DataHolder;
 
 import java.util.List;
@@ -32,9 +29,6 @@ import java.util.List;
 public class GameSceneController {
     @FXML
     private AnchorPane bigSituationPane;
-
-    @FXML
-    private HBox firstMemesBox;
 
     @FXML
     private Label labelBigSituation;
@@ -58,7 +52,7 @@ public class GameSceneController {
     private HBox participantsBox;
 
     @FXML
-    private HBox secondMemesBox;
+    private GridPane thrownCardsPane;
 
     @FXML
     private AnchorPane smallSituationPane;
@@ -80,24 +74,32 @@ public class GameSceneController {
 
     @FXML
     private Label labelStartTimer;
+
+    private GameSimple game;
     private SimpleBooleanProperty gameStarted = new SimpleBooleanProperty(false);
     private SimpleIntegerProperty startTimer = new SimpleIntegerProperty(10);
+    private SimpleMapProperty<String, ThrownCard> usersThrownCards = new SimpleMapProperty<>();
 
     @FXML
     public void initialize() {
         try {
             String gameOwner = DataHolder.gameOwner;
             Client client = MainApplication.getClient();
-            GameSimple gameSimple = client.getSimpleGame(gameOwner);
-            GameUserSimple gameUser = gameSimple.getUser();
+            game = client.getSimpleGame(gameOwner);
+            GameUserSimple gameUser = game.getUser();
 
             initUserCard(gameUser);
-            initCardsCount(gameSimple.getMemeCardsCount());
-            initGameParticipants(gameSimple.getUsersInGame());
+            initCardsCount(game.getMemeCardsCount());
+            initGameParticipants(game.getUsersInGame());
             List<MemeCard> cards = client.getCards(gameOwner);
             initUserCards(cards);
+            initThrownCardsPane();
 
-            client.followToGameUpdates(gameStarted, startTimer);
+            // game updates
+            initUserThrownCard();
+            initUpdatingSituation();
+
+            client.followToGameUpdates(gameStarted, startTimer, usersThrownCards, game);
             initStartGameActions();
             initInstruction();
         } catch (Exception ex) {
@@ -121,7 +123,7 @@ public class GameSceneController {
                             if (t1.intValue() > 0) {
                                 labelStartTimer.setText(String.valueOf(t1.intValue()));
                             } else {
-                                labelStartTimer.setText("GAME STARTED!");
+                                labelStartTimer.setVisible(false);
                             }
                         });
                     }
@@ -226,6 +228,94 @@ public class GameSceneController {
             btnInstruction.setVisible(false);
             imageWaitingPlayers.setVisible(true);
             MainApplication.getClient().readyForGame(DataHolder.gameOwner);
+        });
+    }
+
+    private void initUserThrownCard() {
+        usersThrownCards.addListener(new MapChangeListener<String, ThrownCard>() {
+            @Override
+            public void onChanged(Change<? extends String, ? extends ThrownCard> change) {
+                if (change.wasAdded()) {
+                    String cardOwner = change.getKey();
+                    ThrownCard thrownCard = change.getValueAdded();
+
+                    // generating box
+                    VBox vBox = new VBox();
+                    vBox.setAlignment(Pos.TOP_CENTER);
+
+                    ImageView imageView = new ImageView(new Image(String.valueOf(
+                            MainApplication.class.getResource(thrownCard.getMemeCard().getPathToCard())
+                    )));
+                    imageView.setFitHeight(100);
+                    imageView.setFitWidth(122);
+                    imageView.setPickOnBounds(true);
+                    imageView.setPreserveRatio(true);
+
+                    Label label = new Label(cardOwner);
+                    label.getStyleClass().add("label-card-owner");
+                    VBox.setMargin(label, new Insets(-5, 0, 0, 0));
+
+                    vBox.getChildren().addAll(imageView, label);
+
+                    List<GameUserSimple> users = game.getUsersInGame();
+
+                    for (int i = 0; i < users.size(); i++) {
+                        if (users.get(i).getUser().getUsername().equals(cardOwner)) {
+                            thrownCardsPane.getChildren().set(i, vBox);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    private void initThrownCardsPane() {
+        thrownCardsPane.getChildren().clear();
+        thrownCardsPane.getColumnConstraints().clear();
+        thrownCardsPane.getRowConstraints().clear();
+        int rowCount = game.getUsersInGame().size() > 5 ? 2 : 1;
+        int columnCount = Math.min(game.getUsersInGame().size(), 5);
+        for (int i = 0; i < columnCount; i++) {
+            // <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            ColumnConstraints colConst = new ColumnConstraints();
+            colConst.setPrefWidth(100.0);
+            colConst.setMinWidth(10.0);
+            colConst.setHgrow(Priority.SOMETIMES);
+            thrownCardsPane.getColumnConstraints().add(colConst);
+        }
+        for (int i = 0; i < rowCount; i++) {
+            // <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            RowConstraints rowConstraints = new RowConstraints();
+            rowConstraints.setMinHeight(10.0);
+            rowConstraints.setPrefHeight(30.0);
+            rowConstraints.setVgrow(Priority.SOMETIMES);
+            thrownCardsPane.getRowConstraints().add(rowConstraints);
+        }
+    }
+
+    public void initUpdatingSituation() {
+        game.getSituation().addListener((observableValue, old, newValue) -> Platform.runLater(() -> {
+            System.out.println(old + " - old; " + newValue + " - new");
+            if (!newValue.isEmpty()) {
+                setBigSituation(true, newValue);
+            } else {
+                setBigSituation(false, newValue);
+                setSmallSituation(true, old);
+            }
+        }));
+    }
+
+    private void setBigSituation(boolean visible, String situationText) {
+        Platform.runLater(() -> {
+            bigSituationPane.setVisible(visible);
+            labelBigSituation.setText(situationText);
+        });
+    }
+
+    private void setSmallSituation(boolean visible, String situationText) {
+        Platform.runLater(() -> {
+            smallSituationPane.setVisible(visible);
+            labelSmallSituation.setText(situationText);
         });
     }
 }

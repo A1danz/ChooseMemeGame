@@ -2,10 +2,10 @@ package ru.kpfu.itis.galeev.aidan.choosememegame.model;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleMapProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.collections.*;
 import ru.kpfu.itis.galeev.aidan.choosememegame.config.Config;
 import ru.kpfu.itis.galeev.aidan.choosememegame.server.ClientHandler;
 import ru.kpfu.itis.galeev.aidan.choosememegame.server.Server;
@@ -19,7 +19,7 @@ public class Game {
     private Stack<Situation> situations;
     private Stack<MemeCard> memeCards;
     private SimpleIntegerProperty readyCounter = new SimpleIntegerProperty(0);
-
+    private ObservableMap<String, ThrownCard> observableThrownCardsMap = new SimpleMapProperty<>();
     public Game(Server server, User creator, ObservableList<GameUser> usersInGame, List<Situation> situations, List<MemeCard> memeCards) {
         this.server = server;
         this.creator = creator;
@@ -123,6 +123,41 @@ public class Game {
                     throw new RuntimeException(e);
                 }
             }
+            startGameThread();
         }).start();
+    }
+
+    private void startGameThread() {
+        boolean run = true;
+        observableThrownCardsMap.addListener(new MapChangeListener<String, ThrownCard>() {
+            @Override
+            public void onChanged(Change<? extends String, ? extends ThrownCard> change) {
+                if (change.wasAdded()) {
+                    server.notifyUserThrowCard(creator.getUsername(), change.getKey(), change.getValueAdded());
+                }
+            }
+        });
+        try {
+            while (true) {
+                server.notifyNewSituationCard(creator.getUsername(), situations.pop());
+                int throwSituationCardViewDelay = 8;
+                while (throwSituationCardViewDelay > 0) {
+                    Thread.sleep(1000);
+                    throwSituationCardViewDelay--;
+                }
+                server.notifyDropBigSituation(creator.getUsername());
+                while (observableThrownCardsMap.keySet().size() != usersInGame.size()) {
+                    Thread.sleep(100);
+                }
+
+
+            }
+        } catch (InterruptedException ex) {
+            System.out.println("interrupted");
+        }
+    }
+
+    private void userThrowsCard(String username, MemeCard card) {
+
     }
 }

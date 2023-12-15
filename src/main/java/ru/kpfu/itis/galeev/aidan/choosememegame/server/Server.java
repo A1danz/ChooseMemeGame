@@ -110,4 +110,32 @@ public class Server {
             participant.getClientHandler().notifyStartGameTimer(seconds);
         });
     }
+
+    public void notifyUserThrowCard(String gameOwner, String cardOwner, ThrownCard thrownCard) {
+        Game game = games.get(gameOwner);
+        if (game != null) {
+            game.getUsersInGame().forEach((participant) -> {
+                participant.getClientHandler().notifyUserThrowCard(cardOwner, thrownCard);
+            });
+        }
+    }
+
+    public void notifyNewSituationCard(String gameOwner, Situation situation) {
+        Game game = games.get(gameOwner);
+        if (game != null) {
+            game.getUsersInGame().forEach((participant) -> {
+                participant.getClientHandler().notifyNewSituationCard(situation);
+            });
+        }
+    }
+
+    public void notifyDropBigSituation(String gameOwner) {
+        Game game = games.get(gameOwner);
+        if (game != null) {
+            game.getUsersInGame().forEach((participant) -> {
+                participant.getClientHandler().notifyDropBigSituation();
+            });
+        }
+    }
+
 }

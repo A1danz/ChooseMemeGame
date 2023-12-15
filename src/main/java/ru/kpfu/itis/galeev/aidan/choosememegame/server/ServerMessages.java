@@ -37,6 +37,9 @@ public interface ServerMessages {
     String COMMAND_ALL_READY = "ALL_READY";
     String COMMAND_READY_FOR_GAME = "READY_FOR_GAME";
     String COMMAND_GAME_START_TIMER = "GAME_START_TIMER";
+    String COMMAND_USER_THROW_CARD = "USER_THROW_CARD";
+    String COMMAND_NEW_SITUATION_CARD = "NEW_SITUATION_CARD";
+    String COMMAND_DROP_BIG_SITUATION = "DROP_BIG_SITUATION";
 
 
     public static void sendMessage(BufferedWriter out, String message) throws IOException {

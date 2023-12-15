@@ -2,6 +2,7 @@ package ru.kpfu.itis.galeev.aidan.choosememegame.client;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleMapProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableBooleanValue;
 import javafx.beans.value.ObservableIntegerValue;
@@ -305,7 +306,9 @@ public class Client {
         }
     }
 
-    public void followToGameUpdates(SimpleBooleanProperty gameStarted, SimpleIntegerProperty gameStartTimer) {
+    public void followToGameUpdates(SimpleBooleanProperty gameStarted, SimpleIntegerProperty gameStartTimer,
+                                    SimpleMapProperty<String, ThrownCard> usersThrownCards, GameSimple game
+                                    ) {
         Thread gameUpdatesThread = new Thread(() -> {
             try {
                 boolean run = true;
@@ -319,6 +322,19 @@ public class Client {
                         }
                         case ServerMessages.COMMAND_GAME_START_TIMER -> {
                             gameStartTimer.set(Integer.parseInt(arguments[0][0]));
+                        }
+                        case ServerMessages.COMMAND_USER_THROW_CARD -> {
+                            // cardOwner, img
+                            String cardOwner = arguments[0][0];
+                            String pathToCard = arguments[0][1];
+                            usersThrownCards.put(cardOwner, new ThrownCard(new MemeCard(pathToCard)));
+                        }
+                        case ServerMessages.COMMAND_NEW_SITUATION_CARD -> {
+                            String situationText = arguments[0][0];
+                            game.setSituationText(situationText);
+                        }
+                        case ServerMessages.COMMAND_DROP_BIG_SITUATION -> {
+                            game.setSituationText("");
                         }
                         default -> {
                             throw new UnsupportedOperationException("Unsupported command: " + command);
