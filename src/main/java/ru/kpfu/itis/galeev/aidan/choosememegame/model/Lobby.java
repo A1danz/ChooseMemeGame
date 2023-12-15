@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.collections.FXCollections;
+import ru.kpfu.itis.galeev.aidan.choosememegame.config.Config;
 import ru.kpfu.itis.galeev.aidan.choosememegame.server.ClientHandler;
 import ru.kpfu.itis.galeev.aidan.choosememegame.server.Server;
 
@@ -23,7 +24,7 @@ public class Lobby {
     final int[] participantsCountWrapper = new int[]{0};
     private int timer = timeBeforeStart;
     private final static int minPlayersForStart = 2;
-    private final static int timeBeforeStart = 6;
+    private final static int timeBeforeStart = Config.TIME_BEFORE_START;
 
 
     public Lobby(User creator, Server server, int lobbyCapacity, String theme, int participantsCount, String name) {

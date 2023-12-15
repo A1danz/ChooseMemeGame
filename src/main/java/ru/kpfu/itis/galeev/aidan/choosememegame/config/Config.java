@@ -14,10 +14,13 @@ public interface Config {
     String START_SCENE = "start-page-view.fxml";
     String MENU_SCENE = "menu-view.fxml";
     String LOBBY_SCENE = "waiting-lobby.fxml";
+    String GAME_SCENE = "game-view.fxml";
     int SCENE_WIDTH = 900;
     int SCENE_HEIGHT = 600;
+    Map<String, String> MATCH_THEMES = new HashMap<>();
     Map<String, GameData> GAME_THEMES = initGameThemes();
     int PLAYER_CARDS_COUNT = 6;
+    int TIME_BEFORE_START = 12;
 
     private static Map<String, GameData> initGameThemes() {
         HashMap<String, GameData> gameThemes = new HashMap<>();
@@ -44,7 +47,10 @@ public interface Config {
             throw new RuntimeException();
         }
 
-        gameThemes.put("default", new GameData(defaultMemeCardsPaths, defaultSituations, "Стандартная"));
+        String serverThemeName = "default";
+        String clientThemeName = "Стандартная";
+        gameThemes.put(serverThemeName, new GameData(defaultMemeCardsPaths, defaultSituations, clientThemeName));
+        MATCH_THEMES.put(clientThemeName, serverThemeName);
         return gameThemes;
     }
 }

@@ -29,14 +29,12 @@ public class Game {
         this.server = lobby.getServer();
         this.creator = lobby.getCreator();
 
-        List<Situation> shuffledSituations = new ArrayList<>();
-        Collections.copy(Config.GAME_THEMES.get(lobby.getTheme()).getSituations(), shuffledSituations);
+        List<Situation> shuffledSituations = new ArrayList<>(Config.GAME_THEMES.get(lobby.getTheme()).getSituations());
         Collections.shuffle(shuffledSituations);
         this.situations = new Stack<>();
         situations.addAll(shuffledSituations);
 
-        List<MemeCard> shuffledMemeCards = new ArrayList<>();
-        Collections.copy(Config.GAME_THEMES.get(lobby.getTheme()).getMemeImgs(), shuffledMemeCards);
+        List<MemeCard> shuffledMemeCards = new ArrayList<>(Config.GAME_THEMES.get(lobby.getTheme()).getMemeImgs());
         Collections.shuffle(shuffledMemeCards);
         this.memeCards = new Stack<>();
         memeCards.addAll(shuffledMemeCards);

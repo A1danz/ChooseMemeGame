@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import ru.kpfu.itis.galeev.aidan.choosememegame.MainApplication;
+import ru.kpfu.itis.galeev.aidan.choosememegame.model.GameSimple;
 
 public class GameSceneController {
     @FXML
@@ -44,6 +46,6 @@ public class GameSceneController {
 
     @FXML
     public void initialize() {
-        
+        GameSimple gameSimple = MainApplication.getClient().getSimpleGame();
     }
 }

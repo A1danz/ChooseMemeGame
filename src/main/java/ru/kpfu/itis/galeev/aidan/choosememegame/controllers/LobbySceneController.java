@@ -18,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -243,7 +244,20 @@ public class LobbySceneController {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
                 if (t1) {
-                    swapToGameScene();
+                    DataHolder.gameOwner = DataHolder.connectingLobbyCreator;
+                    Platform.runLater(() -> {
+                        try {
+                            swapToGameScene();
+                        } catch (IOException ex) {
+                            System.out.println(ex);
+                            gameStarted.set(false);
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Информация");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Ой-ой... Не получилось выполнить переход в игру.");
+                            alert.showAndWait();
+                        }
+                    });
                 }
             }
         });
@@ -266,8 +280,13 @@ public class LobbySceneController {
         });
     }
 
-    private void swapToGameScene() {
+    private void swapToGameScene() throws IOException {
+        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource(Config.GAME_SCENE));
+        Parent root = loader.load();
 
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) labelRoomName.getScene().getWindow();
+        stage.setScene(scene);
     }
 
 
