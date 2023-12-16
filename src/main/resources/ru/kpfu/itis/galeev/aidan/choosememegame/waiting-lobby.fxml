@@ -34,13 +34,10 @@
                   </Label>
                   <HBox alignment="CENTER" prefHeight="100.0">
                      <children>
-                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@img/settings.png" />
+                              <Image url="@img/logo.png" />
                            </image>
-                           <HBox.margin>
-                              <Insets left="5.0" />
-                           </HBox.margin>
                         </ImageView>
                      </children>
                      <HBox.margin>
@@ -207,7 +204,7 @@
                         <HBox alignment="CENTER" prefWidth="200.0" spacing="50.0">
                            <children>
                               <Label fx:id="cardsCount" styleClass="start-page-title" text="Карточек: 145" />
-                              <Label fx:id="questionsCount" styleClass="start-page-title" text="Вопросов: 75" />
+                              <Label fx:id="situationsCount" styleClass="start-page-title" text="Ситуаций: 75" />
                            </children>
                         </HBox>
                         <Label styleClass="game-loading-label" text="Пожалуйста, ожидайте, игра скоро начнется..." />

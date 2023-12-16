@@ -383,9 +383,12 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <AnchorPane fx:id="bigSituationPane" prefHeight="200.0" prefWidth="200.0" styleClass="situation-card" visible="false" AnchorPane.bottomAnchor="85.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="120.0">
+                  <AnchorPane fx:id="bigSituationPane" prefHeight="200.0" prefWidth="200.0" styleClass="situation-card" AnchorPane.bottomAnchor="85.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="120.0">
                      <children>
-                        <Label fx:id="labelBigSituation" alignment="CENTER" styleClass="label-big-situation" text="Когда зашла мама и ты вспомнил, что забыл достать курицу из морозильника" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label fx:id="labelBigSituation" alignment="CENTER" styleClass="label-big-situation" text="Когда зашла мама и ты вспомнил, что забыл достать курицу из морозильника" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <padding>
+                              <Insets left="5.0" right="5.0" />
+                           </padding></Label>
                      </children>
                   </AnchorPane>
                   <AnchorPane fx:id="smallSituationPane" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" styleClass="situation-card" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="320.0">
@@ -715,7 +718,7 @@
                               <Insets top="-5.0" />
                            </VBox.margin>
                         </Label>
-                        <Circle fill="#f6b801" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                        <Circle fill="#f6b801" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" visible="false">
                            <VBox.margin>
                               <Insets top="-3.0" />
                            </VBox.margin>
@@ -783,13 +786,10 @@
                   </Label>
                   <HBox alignment="CENTER" prefHeight="100.0">
                      <children>
-                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@img/settings.png" />
+                              <Image url="@img/logo.png" />
                            </image>
-                           <HBox.margin>
-                              <Insets left="5.0" />
-                           </HBox.margin>
                         </ImageView>
                      </children>
                      <HBox.margin>
