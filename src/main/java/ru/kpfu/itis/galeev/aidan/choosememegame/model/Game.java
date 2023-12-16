@@ -24,6 +24,7 @@ public class Game {
     private Map<String, ThrownCard> innerMap = new HashMap<>();
     private ObservableMap<String, ThrownCard> observableThrownCardsMap = FXCollections.observableMap(innerMap);
     private int votesCount = 0;
+    private int userHasNoMoreCards = 0;
     public Game(Server server, User creator, ObservableList<GameUser> usersInGame, List<Situation> situations, List<MemeCard> memeCards) {
         this.server = server;
         this.creator = creator;
@@ -176,7 +177,11 @@ public class Game {
                 try {
                     prepareForNewRound();
                 } catch (NoMoreCardsException ex) {
-                    // todo
+                    GameUser winner = getWinner();
+                    server.notifyGameEnded(creator.getUsername(), winner.getUser(), winner.getPoints());
+                    server.removeGame(creator.getUsername());
+                    break;
+
                 }
 
 
@@ -186,6 +191,9 @@ public class Game {
         }
     }
 
+    public GameUser getWinner() {
+        return usersInGame.stream().max((o1, o2) -> (o2.getPoints() - o1.getPoints())).get();
+    }
     public void userThrowCard(String username, MemeCard card) {
         observableThrownCardsMap.put(username, new ThrownCard(card));
     }
@@ -224,7 +232,12 @@ public class Game {
                 MemeCard card = memeCards.pop();
                 user.getClientHandler().addCard(card.getPathToCard());
             } catch (EmptyStackException ex) {
-                throw new NoMoreCardsException("no more cards in stack");
+                if (userHasNoMoreCards == 5) {
+                    throw new NoMoreCardsException("no more cards in stack");
+                }
+                userHasNoMoreCards++;
+                break;
+
             }
         }
         updateMemeCardsCount(memeCards.size());

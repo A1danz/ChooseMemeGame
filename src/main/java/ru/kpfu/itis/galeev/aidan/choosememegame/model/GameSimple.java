@@ -7,7 +7,10 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.AbstractMap;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GameSimple {
     private User creator;
@@ -21,6 +24,7 @@ public class GameSimple {
     private SimpleStringProperty addedCard = new SimpleStringProperty("");
     private SimpleBooleanProperty newRoundBegin = new SimpleBooleanProperty(false);
     private SimpleIntegerProperty timerUpdates = new SimpleIntegerProperty(0);
+    private ObservableList<Map.Entry<User, Integer>> winner = FXCollections.observableArrayList();
 
     public GameSimple(User creator, List<GameUserSimple> usersInGame, int memeCardsCount, int situationsCount, User clientUser) {
         this.creator = creator;
@@ -122,6 +126,14 @@ public class GameSimple {
 
     public void setTimerUpdates(int timerUpdates) {
         this.timerUpdates.set(timerUpdates);
+    }
+
+    public ObservableList<Map.Entry<User, Integer>> getWinner() {
+        return winner;
+    }
+
+    public void addWinner(User user, int points) {
+        winner.add(new AbstractMap.SimpleEntry<>(user, points));
     }
 
     @Override

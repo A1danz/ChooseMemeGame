@@ -6,15 +6,15 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleMapProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.MapChangeListener;
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
+import javafx.collections.*;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -26,14 +26,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 import ru.kpfu.itis.galeev.aidan.choosememegame.MainApplication;
 import ru.kpfu.itis.galeev.aidan.choosememegame.client.Client;
 import ru.kpfu.itis.galeev.aidan.choosememegame.config.Config;
 import ru.kpfu.itis.galeev.aidan.choosememegame.model.*;
 import ru.kpfu.itis.galeev.aidan.choosememegame.utils.DataHolder;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class GameSceneController {
@@ -88,6 +91,21 @@ public class GameSceneController {
     @FXML
     private Label labelActionTimer;
 
+    @FXML
+    private AnchorPane endGamePane;
+
+    @FXML
+    private Label labelWinnerName;
+
+    @FXML
+    private Label labelWinnerPoints;
+
+    @FXML
+    private Button btnExitFromGame;
+
+    @FXML
+    private ImageView imageWinnerAvatar;
+
     private GameSimple game;
     private SimpleBooleanProperty gameStarted = new SimpleBooleanProperty(false);
     private SimpleIntegerProperty startTimer = new SimpleIntegerProperty(10);
@@ -120,6 +138,7 @@ public class GameSceneController {
             initStartVotingProcess();
             initNewRoundBegin();
             initTimerUpdates();
+            initGameEnded();
 
             client.followToGameUpdates(gameStarted, startTimer, usersThrownCards, game);
             initStartGameActions();
@@ -128,6 +147,41 @@ public class GameSceneController {
             ex.printStackTrace();
             System.out.println(ex);
         }
+    }
+
+    public void initGameEnded() {
+        game.getWinner().addListener((ListChangeListener<Map.Entry<User, Integer>>) change -> {
+            while (change.next()) {
+                if (change.wasAdded()) {
+                    Platform.runLater(() -> {
+                        Map.Entry<User, Integer> winner = change.getAddedSubList().get(0);
+                        labelWinnerName.setText(winner.getKey().getUsername());
+                        labelWinnerPoints.setText(String.valueOf(winner.getValue()));
+                        imageWinnerAvatar.setImage(new Image(String.valueOf(
+                                MainApplication.class.getResource("img/avatars/" + winner.getKey().getPathToAvatar()
+                                )))
+                        );
+                        btnExitFromGame.setOnAction(actionEvent -> {
+                            try {
+                                swapToMenuScene();
+                            } catch (IOException ex) {
+                                System.out.println(ex);
+                            }
+                        });
+
+                        endGamePane.setVisible(true);
+                    });
+                }
+            }
+        });
+    }
+
+    private void swapToMenuScene() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource(Config.MENU_SCENE));
+        Scene scene = new Scene(fxmlLoader.load(), Config.SCENE_WIDTH, Config.SCENE_HEIGHT);
+
+        Stage primaryStage = (Stage) btnExitFromGame.getScene().getWindow();
+        primaryStage.setScene(scene);
     }
 
     private void initStartGameActions() {
@@ -427,7 +481,7 @@ public class GameSceneController {
 
     private void startThrowTimer() {
         new Thread(() -> {
-            int secondsForThrowCard = Config.SECONDS_FOR_VOTE;
+            int secondsForThrowCard = Config.SECONDS_FOR_THROW_CARD;
             try {
                 while (secondsForThrowCard > -1) {
 

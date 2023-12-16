@@ -467,6 +467,17 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    public void notifyGameEnded(User winner, int points) {
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_GAME_ENDED,
+                    new String[][]{new String[]{winner.getUsername(), winner.getPathToAvatar(), String.valueOf(points)}}
+            ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

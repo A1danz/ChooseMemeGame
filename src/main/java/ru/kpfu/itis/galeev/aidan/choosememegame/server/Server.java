@@ -183,4 +183,17 @@ public class Server {
         }
     }
 
+    public void notifyGameEnded(String gameOwner, User user, int points) {
+        Game game = games.get(gameOwner);
+        if (game != null) {
+            game.getUsersInGame().forEach((participant) -> {
+                participant.getClientHandler().notifyGameEnded(user, points);
+            });
+        }
+    }
+
+    public void removeGame(String gameOwner) {
+        games.remove(gameOwner);
+    }
+
 }

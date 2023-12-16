@@ -372,6 +372,14 @@ public class Client {
                             int seconds = Integer.parseInt(arguments[0][0]);
                             game.timerUpdatesProperty().set(seconds);
                         }
+                        case ServerMessages.COMMAND_GAME_ENDED -> {
+                            String username = arguments[0][0];
+                            String avatarPath = arguments[0][1];
+                            int points = Integer.parseInt(arguments[0][2]);
+
+                            run = false;
+                            game.addWinner(new User(username, avatarPath), points);
+                        }
                         default -> {
                             throw new UnsupportedOperationException("Unsupported command: " + command);
                         }

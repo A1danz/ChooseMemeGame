@@ -22,9 +22,9 @@ public interface Config {
     int PLAYER_CARDS_COUNT = 6;
     int TIME_BEFORE_START = 12;
     int WIN_POINTS = 100;
-    int SECONDS_FOR_THROW_CARD = 8;
-    int SECONDS_FOR_VOTE = 10;
-    int SECONDS_BEFORE_NEW_ROUND = 5;
+    int SECONDS_FOR_THROW_CARD = 4;
+    int SECONDS_FOR_VOTE = 4;
+    int SECONDS_BEFORE_NEW_ROUND = 2;
 
     private static Map<String, GameData> initGameThemes() {
         HashMap<String, GameData> gameThemes = new HashMap<>();
@@ -33,8 +33,13 @@ public interface Config {
         // default memes theme
         ArrayList<MemeCard> defaultMemeCardsPaths = new ArrayList<>();
         File defaultMemes = new File(allMemes.getPath() + "/default");
+        int count = 0;
         if (defaultMemes.listFiles() != null) {
             for (File file : defaultMemes.listFiles()) {
+                count++;
+                if (count > 14) {
+                    break;
+                }
                 defaultMemeCardsPaths.add(new MemeCard("memes/default/" + file.getName()));
             }
         }
