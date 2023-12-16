@@ -456,6 +456,17 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    public void notifySituationTimer(int seconds) {
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_TIMER_SITUATION_INTRODUCTION,
+                    new String[][]{new String[]{String.valueOf(seconds)}}
+            ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

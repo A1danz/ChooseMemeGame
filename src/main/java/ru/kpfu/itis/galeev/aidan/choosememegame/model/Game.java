@@ -153,7 +153,8 @@ public class Game {
             while (true) {
                 server.notifyNewSituationCard(creator.getUsername(), situations.pop());
                 int throwSituationCardViewDelay = 8;
-                while (throwSituationCardViewDelay > 0) {
+                while (throwSituationCardViewDelay > -1) {
+                    server.notifySituationTimer(creator.getUsername(), throwSituationCardViewDelay);
                     Thread.sleep(1000);
                     throwSituationCardViewDelay--;
                 }
@@ -166,7 +167,6 @@ public class Game {
                     Thread.sleep(100);
                 }
                 determineWinners();
-                Thread.sleep(10000);
                 try {
                     prepareForNewRound();
                 } catch (NoMoreCardsException ex) {

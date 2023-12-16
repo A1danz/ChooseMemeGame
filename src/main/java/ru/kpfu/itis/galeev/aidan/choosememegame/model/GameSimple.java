@@ -20,6 +20,7 @@ public class GameSimple {
     private SimpleBooleanProperty votingStarted = new SimpleBooleanProperty(false);
     private SimpleStringProperty addedCard = new SimpleStringProperty("");
     private SimpleBooleanProperty newRoundBegin = new SimpleBooleanProperty(false);
+    private SimpleIntegerProperty timerUpdates = new SimpleIntegerProperty(0);
 
     public GameSimple(User creator, List<GameUserSimple> usersInGame, int memeCardsCount, int situationsCount, User clientUser) {
         this.creator = creator;
@@ -111,7 +112,17 @@ public class GameSimple {
         this.newRoundBegin.set(newRoundBegin);
     }
 
+    public int getTimerUpdates() {
+        return timerUpdates.get();
+    }
 
+    public SimpleIntegerProperty timerUpdatesProperty() {
+        return timerUpdates;
+    }
+
+    public void setTimerUpdates(int timerUpdates) {
+        this.timerUpdates.set(timerUpdates);
+    }
 
     @Override
     public String toString() {

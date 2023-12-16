@@ -388,7 +388,7 @@
                         <Label fx:id="labelBigSituation" alignment="CENTER" styleClass="label-big-situation" text="Когда зашла мама и ты вспомнил, что забыл достать курицу из морозильника" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="smallSituationPane" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" styleClass="situation-card" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="320.0">
+                  <AnchorPane fx:id="smallSituationPane" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" styleClass="situation-card" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="320.0">
                      <children>
                         <Label fx:id="labelSmallSituation" alignment="CENTER" styleClass="label-small-situation" text="Когда ты хотел выполнить один простой кулинарный рецепт, а он оказывается настолько сложным, что ты просто выбрасываешь все в мусорку." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
@@ -403,9 +403,13 @@
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <VBox alignment="TOP_CENTER">
@@ -415,7 +419,7 @@
                                     <Image url="@memes/default/21.jpg" />
                                  </image>
                               </ImageView>
-                              <Label styleClass="label-card-owner" text="Label">
+                              <Label styleClass="label-card-owner" text="123456789012 | 9">
                                  <VBox.margin>
                                     <Insets top="-5.0" />
                                  </VBox.margin>
@@ -424,9 +428,121 @@
                         </VBox>
                         <VBox alignment="TOP_CENTER" GridPane.columnIndex="1">
                            <children>
+                              <ImageView fitHeight="200.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@memes/default/1.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label styleClass="label-card-owner" text="Label">
+                                 <VBox.margin>
+                                    <Insets top="-5.0" />
+                                 </VBox.margin>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" GridPane.columnIndex="2">
+                           <children>
+                              <ImageView fitHeight="100.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@memes/default/1.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label styleClass="label-card-owner" text="Label">
+                                 <VBox.margin>
+                                    <Insets top="-5.0" />
+                                 </VBox.margin>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" GridPane.columnIndex="3">
+                           <children>
                               <ImageView fitHeight="100.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@memes/default/108.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label styleClass="label-card-owner" text="Label">
+                                 <VBox.margin>
+                                    <Insets top="-5.0" />
+                                 </VBox.margin>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" GridPane.columnIndex="4">
+                           <children>
+                              <ImageView fitHeight="100.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@memes/default/39.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label styleClass="label-card-owner" text="Label">
+                                 <VBox.margin>
+                                    <Insets top="-5.0" />
+                                 </VBox.margin>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="BOTTOM_CENTER" GridPane.rowIndex="1">
+                           <children>
+                              <ImageView fitHeight="100.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@memes/default/100.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label styleClass="label-card-owner" text="Label">
+                                 <VBox.margin>
+                                    <Insets top="-5.0" />
+                                 </VBox.margin>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="BOTTOM_CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <ImageView fitHeight="100.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@memes/default/102.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label styleClass="label-card-owner" text="Label">
+                                 <VBox.margin>
+                                    <Insets top="-5.0" />
+                                 </VBox.margin>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="BOTTOM_CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <children>
+                              <ImageView fitHeight="100.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@memes/default/45.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label styleClass="label-card-owner" text="Label">
+                                 <VBox.margin>
+                                    <Insets top="-5.0" />
+                                 </VBox.margin>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="BOTTOM_CENTER" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                           <children>
+                              <ImageView fitHeight="100.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@memes/default/89.png" />
+                                 </image>
+                              </ImageView>
+                              <Label styleClass="label-card-owner" text="Label">
+                                 <VBox.margin>
+                                    <Insets top="-5.0" />
+                                 </VBox.margin>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="BOTTOM_CENTER" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                           <children>
+                              <ImageView fitHeight="100.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@memes/default/2.jpg" />
                                  </image>
                               </ImageView>
                               <Label styleClass="label-card-owner" text="Label">
@@ -562,6 +678,7 @@
                         </HBox>
                      </children>
                   </VBox>
+                  <Label fx:id="labelActionTimer" alignment="CENTER" layoutX="16.0" layoutY="208.0" styleClass="label-small-timer" text="00:00" textAlignment="CENTER" />
                </children>
             </AnchorPane>
             <HBox alignment="CENTER_LEFT" prefHeight="95.0" prefWidth="200.0" spacing="10.0" styleClass="user-menu">
@@ -700,5 +817,52 @@
          </image>
       </ImageView>
       <Label fx:id="labelStartTimer" layoutY="291.0" styleClass="label-timer" text="9" visible="false" AnchorPane.leftAnchor="420.0" AnchorPane.topAnchor="275.0" />
+      <AnchorPane fx:id="endGamePane" prefHeight="200.0" prefWidth="200.0" styleClass="end-game-pane" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox alignment="CENTER" layoutX="358.0" layoutY="200.0" prefHeight="200.0" prefWidth="183.0" styleClass="winner-box">
+               <children>
+                  <Label styleClass="info-label" text="Winner:" />
+                  <VBox alignment="TOP_CENTER" prefHeight="88.0" prefWidth="86.0">
+                     <children>
+                        <VBox alignment="TOP_CENTER" prefHeight="49.0" prefWidth="122.0">
+                           <children>
+                              <Circle fill="WHITE" radius="26.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Circle>
+                              <ImageView fx:id="imageWinnerAvatar" fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@img/rabbit.png" />
+                                 </image>
+                                 <VBox.margin>
+                                    <Insets right="-0.25" top="-49.0" />
+                                 </VBox.margin>
+                              </ImageView>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </VBox>
+                        <Label fx:id="labelWinnerName" alignment="CENTER" prefHeight="26.0" prefWidth="134.0" styleClass="label-game-participant" text="twirl" textAlignment="CENTER">
+                           <VBox.margin>
+                              <Insets top="-10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="labelWinnerPoints" styleClass="label-game-participant-score" text="500">
+                           <VBox.margin>
+                              <Insets top="-5.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <Button fx:id="btnExitFromGame" mnemonicParsing="false" styleClass="btn-exit" text="Выйти" />
+               </children>
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
+            </VBox>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

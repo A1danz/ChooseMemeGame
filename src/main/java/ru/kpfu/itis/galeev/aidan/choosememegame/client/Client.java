@@ -368,6 +368,10 @@ public class Client {
                         case ServerMessages.COMMAND_NEW_ROUND_BEGIN -> {
                             game.setNewRoundBegin(true);
                         }
+                        case ServerMessages.COMMAND_TIMER_SITUATION_INTRODUCTION -> {
+                            int seconds = Integer.parseInt(arguments[0][0]);
+                            game.timerUpdatesProperty().set(seconds);
+                        }
                         default -> {
                             throw new UnsupportedOperationException("Unsupported command: " + command);
                         }

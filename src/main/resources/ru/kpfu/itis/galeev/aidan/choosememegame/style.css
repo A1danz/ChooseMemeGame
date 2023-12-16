@@ -385,3 +385,13 @@ AnchorPane {
     -fx-padding: 2px 5px;
     -fx-font-weight: bold;
 }
+
+.end-game-pane {
+    -fx-background-color: rgb(0, 0, 0, 0.5);
+}
+
+.winner-box {
+    -fx-background-image: url(img/background.png);
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+}

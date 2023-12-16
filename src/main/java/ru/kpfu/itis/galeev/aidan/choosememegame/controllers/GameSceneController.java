@@ -119,6 +119,7 @@ public class GameSceneController {
             initVoteUpdates();
             initStartVotingProcess();
             initNewRoundBegin();
+            initTimerUpdates();
 
             client.followToGameUpdates(gameStarted, startTimer, usersThrownCards, game);
             initStartGameActions();
@@ -428,7 +429,7 @@ public class GameSceneController {
             int secondsForThrowCard = Config.SECONDS_FOR_VOTE;
             try {
                 while (secondsForThrowCard > -1) {
-                    if (userThrewCard) break;
+
                     int finalSecondsForThrowCard = secondsForThrowCard;
                     Platform.runLater(() -> {
                         String seconds = getSecondsByNumber(finalSecondsForThrowCard);
@@ -452,7 +453,7 @@ public class GameSceneController {
     private void initStartVotingProcess() {
         game.votingStartedProperty().addListener((observableValue, oldValue, newValue) -> {
             if (newValue) {
-
+                startVotingTimer();
                 setClickOnCards(false);
                 Platform.runLater(() -> {
                     setClickableThrownCards(true);
@@ -461,6 +462,31 @@ public class GameSceneController {
                 game.setVotingStarted(false);
             }
         });
+    }
+
+    private void startVotingTimer() {
+        new Thread(() -> {
+            try {
+                int secondsForVote = Config.SECONDS_FOR_VOTE;
+                while (secondsForVote > -1) {
+
+                    int finalSecondsForVote = secondsForVote;
+                    Platform.runLater(() -> {
+                        labelStartTimer.setText("00:" + getSecondsByNumber(finalSecondsForVote));
+                    });
+                    Thread.sleep(1000);
+                    secondsForVote--;
+                }
+                if (!userVoted) {
+                    Node randomThrownCard = thrownCardsPane.getChildren().get(rand.nextInt(thrownCardsPane.getChildren().size() - 1));
+                    randomThrownCard.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED,
+                            randomThrownCard.getLayoutX(), randomThrownCard.getLayoutY(), 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
+                            true, true, true, true, true, true, null));
+                }
+            } catch (InterruptedException ex) {
+                System.out.println("timer votes interrupted");
+            }
+        }).start();
     }
 
     private void setClickableThrownCards(boolean isClickable) {
@@ -474,6 +500,7 @@ public class GameSceneController {
             node.setOnMouseClicked(mouseEvent -> {
                 String votedFor = nodeOwnerMap.get(node);
                 if (!votedFor.equals(MainApplication.getClient().getUser().getUsername())) {
+                    userVoted = true;
                     MainApplication.getClient().voteInGame(game.getCreator().getUsername(), votedFor);
                     setClickableThrownCards(false);
                 }
@@ -491,6 +518,7 @@ public class GameSceneController {
             if (newValue) {
                 Platform.runLater(() -> {
                     userThrewCard = false;
+                    userVoted = false;
                     smallSituationPane.setVisible(false);
                     clearThrownCards();
                     labelHelpText.setText("Чтобы выбрать мем - просто нажмите на картинку");
@@ -498,6 +526,14 @@ public class GameSceneController {
                 });
             }
         });
+    }
+
+    private void initTimerUpdates() {
+        game.timerUpdatesProperty().addListener(((observableValue, oldValue, newValue) -> {
+            Platform.runLater(() -> {
+                labelActionTimer.setText("00:" + getSecondsByNumber(newValue.intValue()));
+            });
+        }));
     }
 
     private void clearThrownCards() {

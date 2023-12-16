@@ -48,6 +48,7 @@ public interface ServerMessages {
     String COMMAND_ADD_MEME_CARD = "ADD_MEME_CARD";
     String COMMAND_UPDATE_MEME_CARDS_COUNT = "UPD_MEME_CARDS_CNT";
     String COMMAND_NEW_ROUND_BEGIN = "ROUND_BEGIN";
+    String COMMAND_TIMER_SITUATION_INTRODUCTION = "TIMER_SITUATION";
 
     public static void sendMessage(BufferedWriter out, String message) throws IOException {
         out.write(message);
