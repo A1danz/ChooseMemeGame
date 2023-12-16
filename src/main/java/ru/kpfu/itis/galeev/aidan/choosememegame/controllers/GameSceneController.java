@@ -6,7 +6,10 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleMapProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
+import javafx.collections.ObservableMap;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -24,6 +28,7 @@ import ru.kpfu.itis.galeev.aidan.choosememegame.client.Client;
 import ru.kpfu.itis.galeev.aidan.choosememegame.model.*;
 import ru.kpfu.itis.galeev.aidan.choosememegame.utils.DataHolder;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class GameSceneController {
@@ -78,7 +83,8 @@ public class GameSceneController {
     private GameSimple game;
     private SimpleBooleanProperty gameStarted = new SimpleBooleanProperty(false);
     private SimpleIntegerProperty startTimer = new SimpleIntegerProperty(10);
-    private SimpleMapProperty<String, ThrownCard> usersThrownCards = new SimpleMapProperty<>();
+    private HashMap<String, ThrownCard> innerMap = new HashMap<>();
+    private ObservableMap<String, ThrownCard> usersThrownCards = FXCollections.observableMap(innerMap);
 
     @FXML
     public void initialize() {
@@ -216,6 +222,14 @@ public class GameSceneController {
             imageView.setPreserveRatio(true);
             imageView.setPickOnBounds(true);
 
+            imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    MainApplication.getClient().throwCard(game.getCreator().getUsername(), card.getPathToCard());
+                    userMemesBox.getChildren().remove(imageView);
+                }
+            });
+
             userMemesBox.getChildren().add(imageView);
         });
     }
@@ -238,11 +252,9 @@ public class GameSceneController {
                 if (change.wasAdded()) {
                     String cardOwner = change.getKey();
                     ThrownCard thrownCard = change.getValueAdded();
+                    System.out.println("card owner - " + cardOwner + " thrown-card - " + thrownCard.getMemeCard().getPathToCard());
 
                     // generating box
-                    VBox vBox = new VBox();
-                    vBox.setAlignment(Pos.TOP_CENTER);
-
                     ImageView imageView = new ImageView(new Image(String.valueOf(
                             MainApplication.class.getResource(thrownCard.getMemeCard().getPathToCard())
                     )));
@@ -254,14 +266,24 @@ public class GameSceneController {
                     Label label = new Label(cardOwner);
                     label.getStyleClass().add("label-card-owner");
                     VBox.setMargin(label, new Insets(-5, 0, 0, 0));
-
-                    vBox.getChildren().addAll(imageView, label);
-
+                    System.out.println(thrownCardsPane.getChildren());
                     List<GameUserSimple> users = game.getUsersInGame();
-
-                    for (int i = 0; i < users.size(); i++) {
-                        if (users.get(i).getUser().getUsername().equals(cardOwner)) {
-                            thrownCardsPane.getChildren().set(i, vBox);
+                    System.out.println(users.size());
+                    if (cardOwner.equals(MainApplication.getClient().getUser().getUsername())) {
+                        Platform.runLater(() -> {
+                            System.out.println((VBox) thrownCardsPane.getChildren().get(users.size()) + " myself card");
+                            ((VBox) thrownCardsPane.getChildren().get(users.size())).getChildren().addAll(imageView, label);
+                        });
+                    } else {
+                        for (int i = 0; i < users.size(); i++) {
+                            if (users.get(i).getUser().getUsername().equals(cardOwner)) {
+                                int memePlaceIndex = i;
+                                Platform.runLater(() -> {
+                                    System.out.println((VBox) thrownCardsPane.getChildren().get(memePlaceIndex) + " other card");
+                                    ((VBox) thrownCardsPane.getChildren().get(memePlaceIndex)).getChildren().addAll(imageView, label);
+                                });
+                                break;
+                            }
                         }
                     }
                 }
@@ -270,11 +292,14 @@ public class GameSceneController {
     }
 
     private void initThrownCardsPane() {
+        System.out.println(thrownCardsPane.getColumnConstraints() + " old column");
+        System.out.println(thrownCardsPane.getRowConstraints() + " old row");
         thrownCardsPane.getChildren().clear();
         thrownCardsPane.getColumnConstraints().clear();
         thrownCardsPane.getRowConstraints().clear();
-        int rowCount = game.getUsersInGame().size() > 5 ? 2 : 1;
-        int columnCount = Math.min(game.getUsersInGame().size(), 5);
+        int usersCount = game.getUsersInGame().size() + 1;
+        int rowCount = usersCount > 5 ? 2 : 1;
+        int columnCount = Math.min(usersCount, 5);
         for (int i = 0; i < columnCount; i++) {
             // <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             ColumnConstraints colConst = new ColumnConstraints();
@@ -291,6 +316,23 @@ public class GameSceneController {
             rowConstraints.setVgrow(Priority.SOMETIMES);
             thrownCardsPane.getRowConstraints().add(rowConstraints);
         }
+        System.out.println(rowCount * columnCount + "rowCount * columnCount");
+        for (int i = 0; i < rowCount * columnCount; i++) {
+            int rowIndex = i % 5;
+            int columnIndex = i / 5;
+            VBox vBox = new VBox();
+            if (rowCount * columnCount > 5) {
+                vBox.setAlignment(Pos.TOP_CENTER);
+            } else {
+                vBox.setAlignment(Pos.CENTER);
+            }
+            thrownCardsPane.add(vBox, rowIndex, columnIndex);
+        }
+
+        System.out.println(thrownCardsPane.getColumnConstraints() + " columnConst");
+        System.out.println(thrownCardsPane.getRowConstraints() + " rownConst");
+        System.out.println(thrownCardsPane.getColumnCount() + " colCount");
+        System.out.println(thrownCardsPane.getRowCount() + "rowConst");
     }
 
     public void initUpdatingSituation() {
@@ -301,6 +343,7 @@ public class GameSceneController {
             } else {
                 setBigSituation(false, newValue);
                 setSmallSituation(true, old);
+                startThrowCardProcess();
             }
         }));
     }
@@ -316,6 +359,12 @@ public class GameSceneController {
         Platform.runLater(() -> {
             smallSituationPane.setVisible(visible);
             labelSmallSituation.setText(situationText);
+        });
+    }
+
+    private void startThrowCardProcess() {
+        Platform.runLater(() -> {
+            labelHelpText.setText("Настала очередь бросать карту!\nПросто нажмите на подходящую картинку");
         });
     }
 }

@@ -19,7 +19,8 @@ public class Game {
     private Stack<Situation> situations;
     private Stack<MemeCard> memeCards;
     private SimpleIntegerProperty readyCounter = new SimpleIntegerProperty(0);
-    private ObservableMap<String, ThrownCard> observableThrownCardsMap = new SimpleMapProperty<>();
+    private Map<String, ThrownCard> innerMap = new HashMap<>();
+    private ObservableMap<String, ThrownCard> observableThrownCardsMap = FXCollections.observableMap(innerMap);
     public Game(Server server, User creator, ObservableList<GameUser> usersInGame, List<Situation> situations, List<MemeCard> memeCards) {
         this.server = server;
         this.creator = creator;
@@ -157,7 +158,7 @@ public class Game {
         }
     }
 
-    private void userThrowsCard(String username, MemeCard card) {
-
+    public void userThrowCard(String username, MemeCard card) {
+        observableThrownCardsMap.put(username, new ThrownCard(card));
     }
 }

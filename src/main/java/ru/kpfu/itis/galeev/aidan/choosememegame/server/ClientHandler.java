@@ -243,6 +243,15 @@ public class ClientHandler implements Runnable {
                             Game game = server.games.get(gameOwner);
                             game.increaseReadyPlayersCount();
                         }
+                        case ServerMessages.COMMAND_CLIENT_THROW_CARD -> {
+                            String gameOwner = arguments[0][0];
+                            String pathToCard = arguments[0][1];
+
+                            Game game = server.games.get(gameOwner);
+                            if (game != null) {
+                                game.userThrowCard(user.getUsername(), new MemeCard(pathToCard));
+                            }
+                        }
                         default -> {
                             throw new UnsupportedOperationException("Unsupported command: " + command);
                         }

@@ -40,6 +40,7 @@ public interface ServerMessages {
     String COMMAND_USER_THROW_CARD = "USER_THROW_CARD";
     String COMMAND_NEW_SITUATION_CARD = "NEW_SITUATION_CARD";
     String COMMAND_DROP_BIG_SITUATION = "DROP_BIG_SITUATION";
+    String COMMAND_CLIENT_THROW_CARD = "CLIENT_THROW_CARD"; // NOTIFY GAME THAT CLIENT THROW CARD
 
 
     public static void sendMessage(BufferedWriter out, String message) throws IOException {

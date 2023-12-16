@@ -8,6 +8,7 @@ import javafx.beans.value.ObservableBooleanValue;
 import javafx.beans.value.ObservableIntegerValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import ru.kpfu.itis.galeev.aidan.choosememegame.config.Config;
 import ru.kpfu.itis.galeev.aidan.choosememegame.exceptions.FullLobbyException;
 import ru.kpfu.itis.galeev.aidan.choosememegame.exceptions.LobbyDoesntExistException;
@@ -307,7 +308,7 @@ public class Client {
     }
 
     public void followToGameUpdates(SimpleBooleanProperty gameStarted, SimpleIntegerProperty gameStartTimer,
-                                    SimpleMapProperty<String, ThrownCard> usersThrownCards, GameSimple game
+                                    ObservableMap<String, ThrownCard> usersThrownCards, GameSimple game
                                     ) {
         Thread gameUpdatesThread = new Thread(() -> {
             try {
@@ -361,6 +362,17 @@ public class Client {
             );
         } catch (IOException ex) {
             throw new RuntimeException(ex);
+        }
+    }
+
+    public void throwCard(String gameOwner, String pathToCard) {
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_CLIENT_THROW_CARD,
+                    new String[][]{new String[]{gameOwner, pathToCard}}
+            ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
