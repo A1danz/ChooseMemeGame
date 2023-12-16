@@ -17,6 +17,7 @@ public class GameSimple {
     private SimpleIntegerProperty situationsCount = new SimpleIntegerProperty();
     private SimpleStringProperty situation = new SimpleStringProperty();
     private ObservableList<MemeCard> userCards = FXCollections.observableArrayList();
+    private SimpleBooleanProperty votingStarted = new SimpleBooleanProperty(false);
 
     public GameSimple(User creator, List<GameUserSimple> usersInGame, int memeCardsCount, int situationsCount, User clientUser) {
         this.creator = creator;
@@ -62,6 +63,18 @@ public class GameSimple {
 
     public void setSituationText(String textSituation) {
         situation.set(textSituation);
+    }
+
+    public boolean isVotingStarted() {
+        return votingStarted.get();
+    }
+
+    public SimpleBooleanProperty votingStartedProperty() {
+        return votingStarted;
+    }
+
+    public void setVotingStarted(boolean votingStarted) {
+        this.votingStarted.set(votingStarted);
     }
 
     @Override

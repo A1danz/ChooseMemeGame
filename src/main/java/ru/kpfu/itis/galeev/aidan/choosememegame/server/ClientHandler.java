@@ -252,6 +252,15 @@ public class ClientHandler implements Runnable {
                                 game.userThrowCard(user.getUsername(), new MemeCard(pathToCard));
                             }
                         }
+                        case ServerMessages.COMMAND_CLIENT_VOTED -> {
+                            String gameOwner = arguments[0][0];
+                            String votedFor = arguments[0][1];
+
+                            Game game = server.games.get(gameOwner);
+                            if (game != null) {
+                                game.increaseVotes(votedFor);
+                            }
+                        }
                         default -> {
                             throw new UnsupportedOperationException("Unsupported command: " + command);
                         }
@@ -374,6 +383,40 @@ public class ClientHandler implements Runnable {
             ServerMessages.sendMessage(out, StringConverter.createCommand(
                     ServerMessages.COMMAND_DROP_BIG_SITUATION,
                     new String[][]{new String[]{"drop_big_situation"}}
+            ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void notifyStartVotingProcess() {
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_START_VOTING,
+                    new String[][]{new String[]{"start"}}
+            ));
+        } catch (IOException ex) {
+
+        }
+
+    }
+
+    public void notifyUserVoted(String votedFor, int votesCount) {
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_USER_VOTED,
+                    new String[][]{new String[]{votedFor, String.valueOf(votesCount)}}
+            ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void notifyPointsUpdated(String pointsOwner, int points) {
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_POINTS_UPDATED,
+                    new String[][]{new String[]{pointsOwner, String.valueOf(points)}}
             ));
         } catch (IOException e) {
             throw new RuntimeException(e);

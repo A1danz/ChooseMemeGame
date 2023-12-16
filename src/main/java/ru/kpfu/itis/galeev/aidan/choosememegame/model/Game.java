@@ -11,6 +11,7 @@ import ru.kpfu.itis.galeev.aidan.choosememegame.server.ClientHandler;
 import ru.kpfu.itis.galeev.aidan.choosememegame.server.Server;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Game {
     private Server server;
@@ -21,6 +22,7 @@ public class Game {
     private SimpleIntegerProperty readyCounter = new SimpleIntegerProperty(0);
     private Map<String, ThrownCard> innerMap = new HashMap<>();
     private ObservableMap<String, ThrownCard> observableThrownCardsMap = FXCollections.observableMap(innerMap);
+    private int votesCount = 0;
     public Game(Server server, User creator, ObservableList<GameUser> usersInGame, List<Situation> situations, List<MemeCard> memeCards) {
         this.server = server;
         this.creator = creator;
@@ -59,12 +61,15 @@ public class Game {
             for (int i = 0; i < Config.PLAYER_CARDS_COUNT; i++) {
                 userCards.add(memeCards.pop());
             }
-            usersInGame.add(new GameUser(
+            GameUser gameUser = new GameUser(
                     participant,
                     userCards,
                     new SimpleIntegerProperty(0),
-                    new SimpleBooleanProperty(false)
-            ));
+                    new SimpleBooleanProperty(false));
+            gameUser.pointsProperty().addListener((observableValue, oldValue, newValue) -> {
+                server.notifyPointsUpdated(creator.getUsername(), participant.getUser().getUsername(), newValue.intValue());
+            });
+            usersInGame.add(gameUser);
         }
 
     }
@@ -134,7 +139,12 @@ public class Game {
             @Override
             public void onChanged(Change<? extends String, ? extends ThrownCard> change) {
                 if (change.wasAdded()) {
+                    String cardOwner = change.getKey();
+                    ThrownCard thrownCard = change.getValueAdded();
                     server.notifyUserThrowCard(creator.getUsername(), change.getKey(), change.getValueAdded());
+                    thrownCard.votesProperty().addListener((observableValue, oldValue, newValue) -> {
+                        server.notifyUserVoted(creator.getUsername(), cardOwner, newValue.intValue());
+                    });
                 }
             }
         });
@@ -150,7 +160,12 @@ public class Game {
                 while (observableThrownCardsMap.keySet().size() != usersInGame.size()) {
                     Thread.sleep(100);
                 }
-
+                server.notifyStartVotingProcess(creator.getUsername());
+                while (votesCount != usersInGame.size()) {
+                    Thread.sleep(100);
+                }
+                determineWinners();
+                Thread.sleep(10000);
 
             }
         } catch (InterruptedException ex) {
@@ -161,4 +176,34 @@ public class Game {
     public void userThrowCard(String username, MemeCard card) {
         observableThrownCardsMap.put(username, new ThrownCard(card));
     }
+
+    public void increaseVotes(String votedFor) {
+        observableThrownCardsMap.get(votedFor).increaseVotesValue();
+        votesCount++;
+    }
+
+    public void determineWinners() {
+        Set<Map.Entry<String, ThrownCard>> usersThrownCards = observableThrownCardsMap.entrySet();
+        List<Map.Entry<String, ThrownCard>> sortedThrownCards = usersThrownCards.stream()
+                .sorted((o1, o2) -> o2.getValue().getVotes() - o1.getValue().getVotes())
+                .toList();
+        ArrayList<String> winners = new ArrayList<>();
+        for (int i = 0; i < sortedThrownCards.size(); i++) {
+            Map.Entry<String, ThrownCard> entry = sortedThrownCards.get(i);
+            winners.add(entry.getKey());
+            if (i != sortedThrownCards.size() - 2) {
+                if (entry.getValue().getVotes() != sortedThrownCards.get(i + 1).getValue().getVotes()) {
+                    break;
+                }
+            }
+        }
+
+        List<GameUser> winUsers = usersInGame.stream()
+                .filter((user) -> winners.contains(user.getUser().getUsername()))
+                .toList();
+
+        winUsers.forEach((participant) -> participant.setPoints(participant.getPoints() + Config.WIN_POINTS));
+    }
+
+
 }

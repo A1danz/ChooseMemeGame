@@ -138,4 +138,31 @@ public class Server {
         }
     }
 
+    public void notifyStartVotingProcess(String gameOwner) {
+        Game game = games.get(gameOwner);
+        if (game != null) {
+            game.getUsersInGame().forEach((participant) -> {
+                participant.getClientHandler().notifyStartVotingProcess();
+            });
+        }
+    }
+
+    public void notifyUserVoted(String gameOwner, String votedFor, int votesCount) {
+        Game game = games.get(gameOwner);
+        if (game != null) {
+            game.getUsersInGame().forEach((participant) -> {
+                participant.getClientHandler().notifyUserVoted(votedFor, votesCount);
+            });
+        }
+    }
+
+    public void notifyPointsUpdated(String gameOwner, String pointsOwner, int points) {
+        Game game = games.get(gameOwner);
+        if (game != null) {
+            game.getUsersInGame().forEach((participant) -> {
+                participant.getClientHandler().notifyPointsUpdated(pointsOwner, points);
+            });
+        }
+    }
+
 }

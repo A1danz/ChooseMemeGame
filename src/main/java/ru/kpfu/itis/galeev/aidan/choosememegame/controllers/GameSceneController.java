@@ -8,11 +8,13 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -85,6 +87,7 @@ public class GameSceneController {
     private SimpleIntegerProperty startTimer = new SimpleIntegerProperty(10);
     private HashMap<String, ThrownCard> innerMap = new HashMap<>();
     private ObservableMap<String, ThrownCard> usersThrownCards = FXCollections.observableMap(innerMap);
+    private HashMap<Node, String> nodeOwnerMap = new HashMap<>();
 
     @FXML
     public void initialize() {
@@ -104,6 +107,8 @@ public class GameSceneController {
             // game updates
             initUserThrownCard();
             initUpdatingSituation();
+            initVoteUpdates();
+            initStartVotingProcess();
 
             client.followToGameUpdates(gameStarted, startTimer, usersThrownCards, game);
             initStartGameActions();
@@ -138,10 +143,15 @@ public class GameSceneController {
         });
     }
 
-    public void initUserCard(GameUserSimple gameUser ) {
+    public void initUserCard(GameUserSimple gameUser) {
         labelUsername.setText(gameUser .getUser().getUsername());
         labelScore.setText(String.valueOf(gameUser .getPoints()));
         userAvatar.setImage(new Image(String.valueOf(MainApplication.class.getResource("img/avatars/" + gameUser.getUser().getPathToAvatar()))));
+        gameUser.pointsProperty().addListener((observable, oldValue, newValue) -> {
+            Platform.runLater(() -> {
+                labelScore.setText(newValue.toString());
+            });
+        });
     }
 
     public void initCardsCount(int cardsCount) {
@@ -189,10 +199,15 @@ public class GameSceneController {
             label1.setTextAlignment(TextAlignment.CENTER);
             VBox.setMargin(label1, new Insets(-10, 0, 0, 0));
 
-            Label label2 = new Label();
-            label2.getStyleClass().add("label-game-participant-score");
-            label2.setText(String.valueOf(participant.getPoints()));
-            VBox.setMargin(label2, new Insets(-5, 0, 0, 0));
+            Label points = new Label();
+            points.getStyleClass().add("label-game-participant-score");
+            points.setText(String.valueOf(participant.getPoints()));
+            VBox.setMargin(points, new Insets(-5, 0, 0, 0));
+            participant.pointsProperty().addListener((observableValue, oldValue, newValue) -> {
+                Platform.runLater(() -> {
+                    points.setText(newValue.toString());
+                });
+            });
 
             Circle mustThrowCircle = new Circle();
             mustThrowCircle.setFill(Color.web("#f6b801"));
@@ -203,7 +218,7 @@ public class GameSceneController {
             mustThrowCircle.setVisible(false);
             VBox.setMargin(mustThrowCircle, new Insets(-3, 0, 0, 0));
 
-            vbox.getChildren().addAll(innerVBox, label1, label2, mustThrowCircle);
+            vbox.getChildren().addAll(innerVBox, label1, points, mustThrowCircle);
             innerVBox.getChildren().addAll(circleBehindAvatar, imageView);
 
             participantsBox.getChildren().add(vbox);
@@ -222,6 +237,7 @@ public class GameSceneController {
             imageView.setPreserveRatio(true);
             imageView.setPickOnBounds(true);
 
+            setClickable(false, imageView);
             imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
@@ -232,6 +248,13 @@ public class GameSceneController {
 
             userMemesBox.getChildren().add(imageView);
         });
+    }
+
+    public void setClickOnCards(boolean clickable) {
+        ObservableList<Node> userMemesNodes =  userMemesBox.getChildren();
+        for (Node node : userMemesNodes) {
+            setClickable(clickable, node);
+        }
     }
 
     private void initInstruction() {
@@ -252,7 +275,6 @@ public class GameSceneController {
                 if (change.wasAdded()) {
                     String cardOwner = change.getKey();
                     ThrownCard thrownCard = change.getValueAdded();
-                    System.out.println("card owner - " + cardOwner + " thrown-card - " + thrownCard.getMemeCard().getPathToCard());
 
                     // generating box
                     ImageView imageView = new ImageView(new Image(String.valueOf(
@@ -262,16 +284,23 @@ public class GameSceneController {
                     imageView.setFitWidth(122);
                     imageView.setPickOnBounds(true);
                     imageView.setPreserveRatio(true);
-
-                    Label label = new Label(cardOwner);
+                    Label label = new Label(cardOwner + " | 0");
                     label.getStyleClass().add("label-card-owner");
                     VBox.setMargin(label, new Insets(-5, 0, 0, 0));
-                    System.out.println(thrownCardsPane.getChildren());
+
+                    thrownCard.votesProperty().addListener((observableValue, oldValue, newValue) -> {
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                label.setText(cardOwner + " | " + newValue);
+                            }
+                        });
+                    });
+
                     List<GameUserSimple> users = game.getUsersInGame();
-                    System.out.println(users.size());
                     if (cardOwner.equals(MainApplication.getClient().getUser().getUsername())) {
                         Platform.runLater(() -> {
-                            System.out.println((VBox) thrownCardsPane.getChildren().get(users.size()) + " myself card");
+                            nodeOwnerMap.put(thrownCardsPane.getChildren().get(users.size()), cardOwner);
                             ((VBox) thrownCardsPane.getChildren().get(users.size())).getChildren().addAll(imageView, label);
                         });
                     } else {
@@ -279,7 +308,7 @@ public class GameSceneController {
                             if (users.get(i).getUser().getUsername().equals(cardOwner)) {
                                 int memePlaceIndex = i;
                                 Platform.runLater(() -> {
-                                    System.out.println((VBox) thrownCardsPane.getChildren().get(memePlaceIndex) + " other card");
+                                    nodeOwnerMap.put(thrownCardsPane.getChildren().get(memePlaceIndex), cardOwner);
                                     ((VBox) thrownCardsPane.getChildren().get(memePlaceIndex)).getChildren().addAll(imageView, label);
                                 });
                                 break;
@@ -292,8 +321,6 @@ public class GameSceneController {
     }
 
     private void initThrownCardsPane() {
-        System.out.println(thrownCardsPane.getColumnConstraints() + " old column");
-        System.out.println(thrownCardsPane.getRowConstraints() + " old row");
         thrownCardsPane.getChildren().clear();
         thrownCardsPane.getColumnConstraints().clear();
         thrownCardsPane.getRowConstraints().clear();
@@ -326,13 +353,9 @@ public class GameSceneController {
             } else {
                 vBox.setAlignment(Pos.CENTER);
             }
+            setClickable(false, vBox);
             thrownCardsPane.add(vBox, rowIndex, columnIndex);
         }
-
-        System.out.println(thrownCardsPane.getColumnConstraints() + " columnConst");
-        System.out.println(thrownCardsPane.getRowConstraints() + " rownConst");
-        System.out.println(thrownCardsPane.getColumnCount() + " colCount");
-        System.out.println(thrownCardsPane.getRowCount() + "rowConst");
     }
 
     public void initUpdatingSituation() {
@@ -364,7 +387,42 @@ public class GameSceneController {
 
     private void startThrowCardProcess() {
         Platform.runLater(() -> {
+            setClickOnCards(true);
             labelHelpText.setText("Настала очередь бросать карту!\nПросто нажмите на подходящую картинку");
         });
+    }
+
+    private void initStartVotingProcess() {
+        game.votingStartedProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (newValue) {
+                Platform.runLater(() -> {
+                    setClickableThrownCards(true);
+                    labelHelpText.setText("Теперь вы можете проголосовать за лучшую карту!");
+                });
+            }
+        });
+    }
+
+    private void setClickableThrownCards(boolean isClickable) {
+        for (Node node : thrownCardsPane.getChildren()) {
+            setClickable(isClickable, node);
+        }
+    }
+
+    private void initVoteUpdates() {
+        for (Node node : thrownCardsPane.getChildren()) {
+            node.setOnMouseClicked(mouseEvent -> {
+                String votedFor = nodeOwnerMap.get(node);
+                if (!votedFor.equals(MainApplication.getClient().getUser().getUsername())) {
+                    MainApplication.getClient().voteInGame(game.getCreator().getUsername(), votedFor);
+                    setClickableThrownCards(false);
+                }
+
+            });
+        }
+    }
+
+    private void setClickable(boolean isClickable, Node node) {
+        node.setMouseTransparent(!isClickable);
     }
 }

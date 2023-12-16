@@ -375,3 +375,13 @@ AnchorPane {
     -fx-text-fill: white;
     -fx-font-size: 60px;
 }
+
+.label-small-timer {
+    -fx-font-size: 14px;
+    -fx-font-family: Rubik;
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-text-fill: #7679ee;
+    -fx-padding: 2px 5px;
+    -fx-font-weight: bold;
+}

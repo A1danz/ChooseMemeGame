@@ -30,4 +30,16 @@ public class GameUser {
     public ClientHandler getClientHandler() {
         return clientHandler;
     }
+
+    public int getPoints() {
+        return points.get();
+    }
+
+    public SimpleIntegerProperty pointsProperty() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points.set(points);
+    }
 }

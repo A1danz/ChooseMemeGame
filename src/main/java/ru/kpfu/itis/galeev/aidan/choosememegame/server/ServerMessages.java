@@ -41,7 +41,10 @@ public interface ServerMessages {
     String COMMAND_NEW_SITUATION_CARD = "NEW_SITUATION_CARD";
     String COMMAND_DROP_BIG_SITUATION = "DROP_BIG_SITUATION";
     String COMMAND_CLIENT_THROW_CARD = "CLIENT_THROW_CARD"; // NOTIFY GAME THAT CLIENT THROW CARD
-
+    String COMMAND_START_VOTING = "START_VOTING";
+    String COMMAND_CLIENT_VOTED = "CLIENT_VOTED";
+    String COMMAND_USER_VOTED = "USER_VOTED";
+    String COMMAND_POINTS_UPDATED = "POINTS_UPDATED";
 
     public static void sendMessage(BufferedWriter out, String message) throws IOException {
         out.write(message);

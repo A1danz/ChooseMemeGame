@@ -21,6 +21,7 @@ public interface Config {
     Map<String, GameData> GAME_THEMES = initGameThemes();
     int PLAYER_CARDS_COUNT = 6;
     int TIME_BEFORE_START = 12;
+    int WIN_POINTS = 100;
 
     private static Map<String, GameData> initGameThemes() {
         HashMap<String, GameData> gameThemes = new HashMap<>();

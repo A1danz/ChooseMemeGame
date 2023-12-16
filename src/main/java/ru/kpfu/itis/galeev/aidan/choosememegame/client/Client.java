@@ -337,6 +337,23 @@ public class Client {
                         case ServerMessages.COMMAND_DROP_BIG_SITUATION -> {
                             game.setSituationText("");
                         }
+                        case ServerMessages.COMMAND_START_VOTING -> {
+                            game.setVotingStarted(true);
+                        }
+                        case ServerMessages.COMMAND_USER_VOTED -> {
+                            String votedFor = arguments[0][0];
+                            int votesCount = Integer.parseInt(arguments[0][1]);
+                            usersThrownCards.get(votedFor).setVotes(votesCount);
+                        }
+                        case ServerMessages.COMMAND_POINTS_UPDATED -> {
+                            String pointsOwner = arguments[0][0];
+                            int points = Integer.parseInt(arguments[0][1]);
+                            game.getUsersInGame().forEach((participant) -> {
+                                if (participant.getUser().getUsername().equals(pointsOwner)) {
+                                    participant.pointsProperty().set(points);
+                                }
+                            });
+                        }
                         default -> {
                             throw new UnsupportedOperationException("Unsupported command: " + command);
                         }
@@ -370,6 +387,17 @@ public class Client {
             ServerMessages.sendMessage(out, StringConverter.createCommand(
                     ServerMessages.COMMAND_CLIENT_THROW_CARD,
                     new String[][]{new String[]{gameOwner, pathToCard}}
+            ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void voteInGame(String gameOwner, String votedFor) {
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_CLIENT_VOTED,
+                    new String[][]{new String[]{gameOwner, votedFor}}
             ));
         } catch (IOException e) {
             throw new RuntimeException(e);
