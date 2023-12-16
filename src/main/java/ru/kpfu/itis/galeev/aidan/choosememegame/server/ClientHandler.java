@@ -44,18 +44,21 @@ public class ClientHandler implements Runnable {
                     switch (command) {
                         case ServerMessages.COMMAND_USER -> {
                             String username = messageByClient.getValue()[0][0];
+                            String pathToAvatar = messageByClient.getValue()[0][1];
                             String result;
 
                             if (server.usernameIsFree(username)) {
-                                user = new User(username);
-                                //out.write(ServerMessages.SUCCESS_AUTH);
+                                user = new User(username, pathToAvatar);
                                 result = ServerMessages.SUCCESS_AUTH;
                             } else {
                                 result = ServerMessages.OCCUPIED_USERNAME;
                             }
 
-                            out.write(StringConverter.createCommand(ServerMessages.COMMAND_AUTH, new String[][]{new String[]{result}}));
-                            out.flush();
+                            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                                    ServerMessages.COMMAND_AUTH,
+                                    new String[][]{new String[]{result}}
+                            ));
+
                         }
                         case ServerMessages.COMMAND_REQ_LOBBIES -> {
                             List<Lobby> lobbies = server.getLobbies();

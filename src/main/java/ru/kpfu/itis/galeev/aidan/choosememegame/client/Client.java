@@ -48,8 +48,9 @@ public class Client {
 
     private void sendInfoAboutUser() {
         try {
-            out.write(StringConverter.createCommand(ServerMessages.COMMAND_USER, new String[][]{new String[]{user.getUsername()}}));
-            out.flush();
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_USER,
+                    new String[][]{new String[]{user.getUsername(), user.getPathToAvatar()}}));
             System.out.println("INFO SENDED");
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -12,8 +12,8 @@ public class User {
 
     public User(String username) {
         this.username = username;
-        pathToAvatar = "default/1.png";
-//        pathToAvatar = Config.defaultAvatarPaths.get(random.nextInt(Config.defaultAvatarPaths.size()));
+//        pathToAvatar = "default/1.png";
+        pathToAvatar = Config.defaultAvatarPaths.get(random.nextInt(Config.defaultAvatarPaths.size()));
     }
 
     public User(String username, String pathToAvatar) {
