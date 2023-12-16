@@ -66,7 +66,7 @@ public class LobbySceneController {
     private Label labelTheme;
 
     @FXML
-    private Label questionsCount;
+    private Label situationsCount;
 
     @FXML
     private GridPane participantsPane;
@@ -131,6 +131,9 @@ public class LobbySceneController {
         labelStatus.setText("Ожидание");
         System.out.println(lobby.getTheme());
         labelTheme.setText(Config.GAME_THEMES.get(lobby.getTheme()).getName());
+        cardsCount.setText("Карточек: " + Config.GAME_THEMES.get(lobby.getTheme()).getMemeImgs().size());
+        situationsCount.setText("Ситуаций: " + Config.GAME_THEMES.get(lobby.getTheme()).getSituations().size());
+
         labelParticipantsCount.setText(lobby.getParticipantsCount() + "/" + lobby.getLobbyCapacity());
 
         List<User> participants = lobby.getUsersInLobby();
