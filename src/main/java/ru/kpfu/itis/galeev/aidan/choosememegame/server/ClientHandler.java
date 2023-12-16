@@ -423,6 +423,28 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    public void addCard(String pathToCard) {
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_ADD_MEME_CARD,
+                    new String[][]{new String[]{pathToCard}}
+            ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateMemeCardsCount(int cardsCount) {
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_UPDATE_MEME_CARDS_COUNT,
+                    new String[][]{new String[]{String.valueOf(cardsCount)}}
+            ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

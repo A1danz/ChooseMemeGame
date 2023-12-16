@@ -354,6 +354,14 @@ public class Client {
                                 }
                             });
                         }
+                        case ServerMessages.COMMAND_ADD_MEME_CARD -> {
+                            String pathToCard = arguments[0][0];
+                            game.setAddedCard(pathToCard);
+                        }
+                        case ServerMessages.COMMAND_UPDATE_MEME_CARDS_COUNT -> {
+                            int cardsCount = Integer.parseInt(arguments[0][0]);
+                            game.setMemeCardsCount(cardsCount);
+                        }
                         default -> {
                             throw new UnsupportedOperationException("Unsupported command: " + command);
                         }

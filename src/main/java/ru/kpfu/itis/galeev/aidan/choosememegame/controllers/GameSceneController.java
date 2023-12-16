@@ -156,6 +156,11 @@ public class GameSceneController {
 
     public void initCardsCount(int cardsCount) {
         labelCardsCount.setText(String.valueOf(cardsCount));
+        game.memeCardsCountProperty().addListener((observableValue, oldValue, newValue) -> {
+            Platform.runLater(() -> {
+                labelCardsCount.setText(String.valueOf(newValue));
+            });
+        });
     }
 
     public void initGameParticipants(List<GameUserSimple> participants) {
@@ -228,26 +233,35 @@ public class GameSceneController {
     public void initUserCards(List<MemeCard> cards) {
         userMemesBox.getChildren().clear();
         cards.forEach((card) -> {
-            ImageView imageView = new ImageView(new Image(String.valueOf(
-                    MainApplication.class.getResource(card.getPathToCard())
-            )));
-
-            imageView.setFitHeight(70);
-            imageView.setFitWidth(100);
-            imageView.setPreserveRatio(true);
-            imageView.setPickOnBounds(true);
-
-            setClickable(false, imageView);
-            imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    MainApplication.getClient().throwCard(game.getCreator().getUsername(), card.getPathToCard());
-                    userMemesBox.getChildren().remove(imageView);
-                }
-            });
-
-            userMemesBox.getChildren().add(imageView);
+            addMemeCardToBox(card);
         });
+
+        game.addedCardProperty().addListener((observableValue, oldValue, newValue) -> {
+            MemeCard memeCard = new MemeCard(newValue);
+            addMemeCardToBox(memeCard);
+        });
+    }
+
+    private void addMemeCardToBox(MemeCard memeCard) {
+        ImageView imageView = new ImageView(new Image(String.valueOf(
+                MainApplication.class.getResource(memeCard.getPathToCard())
+        )));
+
+        imageView.setFitHeight(70);
+        imageView.setFitWidth(100);
+        imageView.setPreserveRatio(true);
+        imageView.setPickOnBounds(true);
+
+        setClickable(false, imageView);
+        imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                MainApplication.getClient().throwCard(game.getCreator().getUsername(), memeCard.getPathToCard());
+                userMemesBox.getChildren().remove(imageView);
+            }
+        });
+
+        userMemesBox.getChildren().add(imageView);
     }
 
     public void setClickOnCards(boolean clickable) {

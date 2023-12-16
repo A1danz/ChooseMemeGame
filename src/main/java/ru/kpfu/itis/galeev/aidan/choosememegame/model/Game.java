@@ -7,6 +7,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.*;
 import ru.kpfu.itis.galeev.aidan.choosememegame.config.Config;
+import ru.kpfu.itis.galeev.aidan.choosememegame.exceptions.NoMoreCardsException;
 import ru.kpfu.itis.galeev.aidan.choosememegame.server.ClientHandler;
 import ru.kpfu.itis.galeev.aidan.choosememegame.server.Server;
 
@@ -166,6 +167,12 @@ public class Game {
                 }
                 determineWinners();
                 Thread.sleep(10000);
+                try {
+                    prepareForNewRound();
+                } catch (NoMoreCardsException ex) {
+                    // todo
+                }
+
 
             }
         } catch (InterruptedException ex) {
@@ -205,5 +212,21 @@ public class Game {
         winUsers.forEach((participant) -> participant.setPoints(participant.getPoints() + Config.WIN_POINTS));
     }
 
+    private void prepareForNewRound() {
+        for (GameUser user : usersInGame) {
+            try {
+                MemeCard card = memeCards.pop();
+                user.getClientHandler().addCard(card.getPathToCard());
+            } catch (EmptyStackException ex) {
+                throw new NoMoreCardsException("no more cards in stack");
+            }
+        }
+        updateMemeCardsCount(memeCards.size());
+    }
 
+    private void updateMemeCardsCount(int cardsCount) {
+        usersInGame.forEach((participant) -> {
+            participant.getClientHandler().updateMemeCardsCount(cardsCount);
+        });
+    }
 }
