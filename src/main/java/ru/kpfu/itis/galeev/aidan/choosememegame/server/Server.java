@@ -165,4 +165,13 @@ public class Server {
         }
     }
 
+    public void notifyNewRoundBegin(String gameOwner) {
+        Game game = games.get(gameOwner);
+        if (game != null) {
+            game.getUsersInGame().forEach((participant) -> {
+                participant.getClientHandler().notifyNewRoundBegin();
+            });
+        }
+    }
+
 }

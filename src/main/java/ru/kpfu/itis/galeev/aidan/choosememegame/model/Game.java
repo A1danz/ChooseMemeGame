@@ -198,7 +198,7 @@ public class Game {
         for (int i = 0; i < sortedThrownCards.size(); i++) {
             Map.Entry<String, ThrownCard> entry = sortedThrownCards.get(i);
             winners.add(entry.getKey());
-            if (i != sortedThrownCards.size() - 2) {
+            if (i != sortedThrownCards.size() - 2 && i != sortedThrownCards.size() - 1) {
                 if (entry.getValue().getVotes() != sortedThrownCards.get(i + 1).getValue().getVotes()) {
                     break;
                 }
@@ -222,6 +222,9 @@ public class Game {
             }
         }
         updateMemeCardsCount(memeCards.size());
+        server.notifyNewRoundBegin(creator.getUsername());
+        observableThrownCardsMap.clear();
+        votesCount = 0;
     }
 
     private void updateMemeCardsCount(int cardsCount) {

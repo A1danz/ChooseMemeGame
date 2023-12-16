@@ -19,6 +19,7 @@ public class GameSimple {
     private ObservableList<MemeCard> userCards = FXCollections.observableArrayList();
     private SimpleBooleanProperty votingStarted = new SimpleBooleanProperty(false);
     private SimpleStringProperty addedCard = new SimpleStringProperty("");
+    private SimpleBooleanProperty newRoundBegin = new SimpleBooleanProperty(false);
 
     public GameSimple(User creator, List<GameUserSimple> usersInGame, int memeCardsCount, int situationsCount, User clientUser) {
         this.creator = creator;
@@ -97,6 +98,20 @@ public class GameSimple {
     public SimpleIntegerProperty memeCardsCountProperty() {
         return memeCardsCount;
     }
+
+    public boolean isNewRoundBegin() {
+        return newRoundBegin.get();
+    }
+
+    public SimpleBooleanProperty newRoundBeginProperty() {
+        return newRoundBegin;
+    }
+
+    public void setNewRoundBegin(boolean newRoundBegin) {
+        this.newRoundBegin.set(newRoundBegin);
+    }
+
+
 
     @Override
     public String toString() {

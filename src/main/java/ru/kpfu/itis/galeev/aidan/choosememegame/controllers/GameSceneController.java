@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -27,11 +28,13 @@ import javafx.scene.shape.StrokeType;
 import javafx.scene.text.TextAlignment;
 import ru.kpfu.itis.galeev.aidan.choosememegame.MainApplication;
 import ru.kpfu.itis.galeev.aidan.choosememegame.client.Client;
+import ru.kpfu.itis.galeev.aidan.choosememegame.config.Config;
 import ru.kpfu.itis.galeev.aidan.choosememegame.model.*;
 import ru.kpfu.itis.galeev.aidan.choosememegame.utils.DataHolder;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class GameSceneController {
     @FXML
@@ -82,12 +85,18 @@ public class GameSceneController {
     @FXML
     private Label labelStartTimer;
 
+    @FXML
+    private Label labelActionTimer;
+
     private GameSimple game;
     private SimpleBooleanProperty gameStarted = new SimpleBooleanProperty(false);
     private SimpleIntegerProperty startTimer = new SimpleIntegerProperty(10);
     private HashMap<String, ThrownCard> innerMap = new HashMap<>();
     private ObservableMap<String, ThrownCard> usersThrownCards = FXCollections.observableMap(innerMap);
     private HashMap<Node, String> nodeOwnerMap = new HashMap<>();
+    private boolean userThrewCard = false;
+    private boolean userVoted = false;
+    private Random rand = new Random();
 
     @FXML
     public void initialize() {
@@ -109,6 +118,7 @@ public class GameSceneController {
             initUpdatingSituation();
             initVoteUpdates();
             initStartVotingProcess();
+            initNewRoundBegin();
 
             client.followToGameUpdates(gameStarted, startTimer, usersThrownCards, game);
             initStartGameActions();
@@ -238,7 +248,9 @@ public class GameSceneController {
 
         game.addedCardProperty().addListener((observableValue, oldValue, newValue) -> {
             MemeCard memeCard = new MemeCard(newValue);
-            addMemeCardToBox(memeCard);
+            Platform.runLater(() -> {
+                addMemeCardToBox(memeCard);
+            });
         });
     }
 
@@ -256,8 +268,11 @@ public class GameSceneController {
         imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                Platform.runLater(() -> {
+                    userMemesBox.getChildren().remove(imageView);
+                });
                 MainApplication.getClient().throwCard(game.getCreator().getUsername(), memeCard.getPathToCard());
-                userMemesBox.getChildren().remove(imageView);
+                userThrewCard = true;
             }
         });
 
@@ -377,6 +392,7 @@ public class GameSceneController {
             System.out.println(old + " - old; " + newValue + " - new");
             if (!newValue.isEmpty()) {
                 setBigSituation(true, newValue);
+                setClickableThrownCards(false);
             } else {
                 setBigSituation(false, newValue);
                 setSmallSituation(true, old);
@@ -401,18 +417,48 @@ public class GameSceneController {
 
     private void startThrowCardProcess() {
         Platform.runLater(() -> {
+            startThrowTimer();
             setClickOnCards(true);
             labelHelpText.setText("Настала очередь бросать карту!\nПросто нажмите на подходящую картинку");
         });
     }
 
+    private void startThrowTimer() {
+        new Thread(() -> {
+            int secondsForThrowCard = Config.SECONDS_FOR_VOTE;
+            try {
+                while (secondsForThrowCard > -1) {
+                    if (userThrewCard) break;
+                    int finalSecondsForThrowCard = secondsForThrowCard;
+                    Platform.runLater(() -> {
+                        String seconds = getSecondsByNumber(finalSecondsForThrowCard);
+                        labelActionTimer.setText("00:" + seconds);
+                    });
+                    secondsForThrowCard -= 1;
+                    Thread.sleep(1000);
+                }
+                if (!userThrewCard) {
+                    Node randomMemeCard = userMemesBox.getChildren().get(rand.nextInt(userMemesBox.getChildren().size()));
+                    randomMemeCard.fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED,
+                            randomMemeCard.getLayoutX(), randomMemeCard.getLayoutY(), 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
+                            true, true, true, true, true, true, null));
+                }
+            } catch (InterruptedException ex) {
+                System.out.println("Timer for throw interrupted");
+            }
+        }).start();
+    }
+
     private void initStartVotingProcess() {
         game.votingStartedProperty().addListener((observableValue, oldValue, newValue) -> {
             if (newValue) {
+
+                setClickOnCards(false);
                 Platform.runLater(() -> {
                     setClickableThrownCards(true);
                     labelHelpText.setText("Теперь вы можете проголосовать за лучшую карту!");
                 });
+                game.setVotingStarted(false);
             }
         });
     }
@@ -438,5 +484,29 @@ public class GameSceneController {
 
     private void setClickable(boolean isClickable, Node node) {
         node.setMouseTransparent(!isClickable);
+    }
+
+    private void initNewRoundBegin() {
+        game.newRoundBeginProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (newValue) {
+                Platform.runLater(() -> {
+                    userThrewCard = false;
+                    smallSituationPane.setVisible(false);
+                    clearThrownCards();
+                    labelHelpText.setText("Чтобы выбрать мем - просто нажмите на картинку");
+                    game.setNewRoundBegin(false);
+                });
+            }
+        });
+    }
+
+    private void clearThrownCards() {
+        for (Node node : thrownCardsPane.getChildren()) {
+            ((VBox) node).getChildren().clear();
+        }
+    }
+
+    private String getSecondsByNumber(int seconds) {
+        return seconds / 10 >= 1 ? String.valueOf(seconds) : "0" + seconds;
     }
 }

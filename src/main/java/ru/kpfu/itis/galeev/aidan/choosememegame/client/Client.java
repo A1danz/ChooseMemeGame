@@ -348,6 +348,9 @@ public class Client {
                         case ServerMessages.COMMAND_POINTS_UPDATED -> {
                             String pointsOwner = arguments[0][0];
                             int points = Integer.parseInt(arguments[0][1]);
+                            if (pointsOwner.equals(user.getUsername())) {
+                                game.getUser().pointsProperty().set(points);
+                            }
                             game.getUsersInGame().forEach((participant) -> {
                                 if (participant.getUser().getUsername().equals(pointsOwner)) {
                                     participant.pointsProperty().set(points);
@@ -361,6 +364,9 @@ public class Client {
                         case ServerMessages.COMMAND_UPDATE_MEME_CARDS_COUNT -> {
                             int cardsCount = Integer.parseInt(arguments[0][0]);
                             game.setMemeCardsCount(cardsCount);
+                        }
+                        case ServerMessages.COMMAND_NEW_ROUND_BEGIN -> {
+                            game.setNewRoundBegin(true);
                         }
                         default -> {
                             throw new UnsupportedOperationException("Unsupported command: " + command);

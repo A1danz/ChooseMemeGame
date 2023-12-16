@@ -22,6 +22,9 @@ public interface Config {
     int PLAYER_CARDS_COUNT = 6;
     int TIME_BEFORE_START = 12;
     int WIN_POINTS = 100;
+    int SECONDS_FOR_THROW_CARD = 8;
+    int SECONDS_FOR_VOTE = 10;
+    int SECONDS_BEFORE_NEW_ROUND = 5;
 
     private static Map<String, GameData> initGameThemes() {
         HashMap<String, GameData> gameThemes = new HashMap<>();

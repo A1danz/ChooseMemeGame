@@ -445,6 +445,17 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    public void notifyNewRoundBegin() {
+        try {
+            ServerMessages.sendMessage(out, StringConverter.createCommand(
+                    ServerMessages.COMMAND_NEW_ROUND_BEGIN,
+                    new String[][]{new String[]{"new"}}
+            ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
