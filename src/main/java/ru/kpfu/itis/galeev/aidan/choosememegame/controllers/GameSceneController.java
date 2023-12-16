@@ -323,6 +323,7 @@ public class GameSceneController {
                             @Override
                             public void run() {
                                 label.setText(cardOwner + " | " + newValue);
+                                labelHelpText.setText("Идет подведение итогов. Ознакомтесь с результатами.");
                             }
                         });
                     });
@@ -472,7 +473,7 @@ public class GameSceneController {
 
                     int finalSecondsForVote = secondsForVote;
                     Platform.runLater(() -> {
-                        labelStartTimer.setText("00:" + getSecondsByNumber(finalSecondsForVote));
+                        labelActionTimer.setText("00:" + getSecondsByNumber(finalSecondsForVote));
                     });
                     Thread.sleep(1000);
                     secondsForVote--;
@@ -521,7 +522,7 @@ public class GameSceneController {
                     userVoted = false;
                     smallSituationPane.setVisible(false);
                     clearThrownCards();
-                    labelHelpText.setText("Чтобы выбрать мем - просто нажмите на картинку");
+                    labelHelpText.setText("Ознакомьтесь с картой ситуации.");
                     game.setNewRoundBegin(false);
                 });
             }

@@ -154,7 +154,7 @@ public class Game {
                 server.notifyNewSituationCard(creator.getUsername(), situations.pop());
                 int throwSituationCardViewDelay = 8;
                 while (throwSituationCardViewDelay > -1) {
-                    server.notifySituationTimer(creator.getUsername(), throwSituationCardViewDelay);
+                    server.notifyGameTimer(creator.getUsername(), throwSituationCardViewDelay);
                     Thread.sleep(1000);
                     throwSituationCardViewDelay--;
                 }
@@ -167,6 +167,12 @@ public class Game {
                     Thread.sleep(100);
                 }
                 determineWinners();
+                int delayBetweenRounds = Config.SECONDS_BEFORE_NEW_ROUND;
+                while (delayBetweenRounds > -1) {
+                    server.notifyGameTimer(creator.getUsername(), delayBetweenRounds);
+                    Thread.sleep(1000);
+                    delayBetweenRounds--;
+                }
                 try {
                     prepareForNewRound();
                 } catch (NoMoreCardsException ex) {

@@ -174,11 +174,11 @@ public class Server {
         }
     }
 
-    public void notifySituationTimer(String gameOwner, int seconds) {
+    public void notifyGameTimer(String gameOwner, int seconds) {
         Game game = games.get(gameOwner);
         if (game != null) {
             game.getUsersInGame().forEach((participant) -> {
-                participant.getClientHandler().notifySituationTimer(seconds);
+                participant.getClientHandler().notifyGameTimer(seconds);
             });
         }
     }

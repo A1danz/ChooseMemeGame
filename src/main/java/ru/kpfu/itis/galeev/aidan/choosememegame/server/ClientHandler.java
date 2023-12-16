@@ -456,10 +456,10 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public void notifySituationTimer(int seconds) {
+    public void notifyGameTimer(int seconds) {
         try {
             ServerMessages.sendMessage(out, StringConverter.createCommand(
-                    ServerMessages.COMMAND_TIMER_SITUATION_INTRODUCTION,
+                    ServerMessages.COMMAND_GAME_TIMER,
                     new String[][]{new String[]{String.valueOf(seconds)}}
             ));
         } catch (IOException e) {
