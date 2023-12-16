@@ -4,9 +4,7 @@ import ru.kpfu.itis.galeev.aidan.choosememegame.MainApplication;
 import ru.kpfu.itis.galeev.aidan.choosememegame.model.*;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public interface Config {
     Integer PORT = 4555;
@@ -15,6 +13,11 @@ public interface Config {
     String MENU_SCENE = "menu-view.fxml";
     String LOBBY_SCENE = "waiting-lobby.fxml";
     String GAME_SCENE = "game-view.fxml";
+    List<String> defaultAvatarPaths = List.of(
+            "default/1.png", "default/2.png", "default/anaconda.png", "default/armadillo.png", "default/bear.png",
+            "default/bird.png", "default/butterfly.png", "default/deer.png", "default/ganesha.png", "default/jacutinga.png",
+            "default/jaguar.png", "default/turtle.png"
+            );
     int SCENE_WIDTH = 900;
     int SCENE_HEIGHT = 600;
     Map<String, String> MATCH_THEMES = new HashMap<>();

@@ -1,14 +1,19 @@
 package ru.kpfu.itis.galeev.aidan.choosememegame.model;
 
+import ru.kpfu.itis.galeev.aidan.choosememegame.config.Config;
+
 import java.util.Objects;
+import java.util.Random;
 
 public class User {
     private String username;
     private String pathToAvatar;
+    private static final Random random = new Random();
 
     public User(String username) {
         this.username = username;
         pathToAvatar = "default/1.png";
+//        pathToAvatar = Config.defaultAvatarPaths.get(random.nextInt(Config.defaultAvatarPaths.size()));
     }
 
     public User(String username, String pathToAvatar) {

@@ -196,4 +196,7 @@ public class Server {
         games.remove(gameOwner);
     }
 
+    public void removeLobby(User creator) {
+        lobbies.remove(creator.getUsername());
+    }
 }
