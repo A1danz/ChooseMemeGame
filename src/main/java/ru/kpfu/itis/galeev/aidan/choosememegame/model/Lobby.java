@@ -25,6 +25,7 @@ public class Lobby {
     private int timer = timeBeforeStart;
     private final static int minPlayersForStart = 2;
     private final static int timeBeforeStart = Config.TIME_BEFORE_START;
+    private boolean lobbyIsAlive = true;
 
 
     public Lobby(User creator, Server server, int lobbyCapacity, String theme, int participantsCount, String name) {
@@ -123,14 +124,14 @@ public class Lobby {
 
     private void startTimer() {
         try {
-            while (timer > 0) {
+            while (timer > 0 && lobbyIsAlive) {
                 Thread.sleep(1000);
                 timer -= 1;
                 server.notifyTimerUpdate(timer, creator);
             }
-            if (getParticipantsCount() >= minPlayersForStart) {
+            if (lobbyIsAlive && getParticipantsCount() >= minPlayersForStart) {
                 server.notifyStartGame(creator);
-            } else {
+            } else if (lobbyIsAlive) {
                 timer = timeBeforeStart;
                 server.notifyNeedMorePlayersForStart(creator, getParticipantsCount(), minPlayersForStart);
                 startTimer();
@@ -138,5 +139,9 @@ public class Lobby {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void setAlive(boolean lobbyIsAlive) {
+        this.lobbyIsAlive = lobbyIsAlive;
     }
 }

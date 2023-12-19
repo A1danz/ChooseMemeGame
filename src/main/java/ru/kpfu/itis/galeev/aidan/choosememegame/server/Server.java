@@ -197,6 +197,9 @@ public class Server {
     }
 
     public void removeLobby(User creator) {
-        lobbies.remove(creator.getUsername());
+        Lobby lobby = lobbies.remove(creator.getUsername());
+        if (lobby != null) {
+            lobby.setAlive(false);
+        }
     }
 }
