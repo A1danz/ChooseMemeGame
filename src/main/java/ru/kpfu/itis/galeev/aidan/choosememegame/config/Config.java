@@ -8,7 +8,7 @@ import java.util.*;
 
 public interface Config {
     Integer PORT = 4555;
-    String HOST = "127.0.0.1";
+    String HOST = System.getenv().getOrDefault("GAME_HOST", "127.0.0.1");
     String START_SCENE = "start-page-view.fxml";
     String MENU_SCENE = "menu-view.fxml";
     String LOBBY_SCENE = "waiting-lobby.fxml";
@@ -40,7 +40,7 @@ public interface Config {
         if (defaultMemes.listFiles() != null) {
             for (File file : defaultMemes.listFiles()) {
                 count++;
-                if (count > 14) {
+                if (count > 150) {
                     break;
                 }
                 defaultMemeCardsPaths.add(new MemeCard("memes/default/" + file.getName()));

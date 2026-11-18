@@ -1,0 +1,4 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ChooseMemeGame</title>
+<style>body{font:20px system-ui;background:#f0ebff;color:#261449;max-width:36rem;margin:12vh auto;padding:1rem}a{display:inline-block;background:#4c337e;color:white;padding:.7em 1em;border-radius:.6em;margin:.25em}</style>
+<h1>ChooseMemeGame</h1><p>Выберите отдельное место для каждого игрока. В игре создайте лобби или присоединитесь к друзьям.</p><nav></nav>
+<script>for(let i=1;i<=4;i++){const a=document.createElement('a'),u=new URL('/vnc.html?autoconnect=1&resize=scale',location.href);u.port=8090+i;a.href=u;a.textContent='Игрок '+i;document.querySelector('nav').append(a)}</script></html>
